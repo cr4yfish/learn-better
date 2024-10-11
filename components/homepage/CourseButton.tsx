@@ -1,7 +1,6 @@
 
 import { Course } from "@/types/db";
-import { Button } from "@nextui-org/button";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card"
+import { Card, CardHeader, CardBody } from "@nextui-org/card"
 
 export default function CourseButton({ course, active, onPress } : { course: Course, active: boolean, onPress: () => void }) {
      

@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/input"
 import { Checkbox } from "@nextui-org/checkbox"
 
 import { userLogin, getSession, userLogOut, getProfile } from "@/functions/client/supabase";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { SessionState } from "@/types/auth";
 
 export default function LoginButton({ sessionState, setSessionState } : { sessionState: SessionState, setSessionState: React.Dispatch<React.SetStateAction<SessionState>> }) {
@@ -30,7 +30,7 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         if(res.success) {
             
             const profile = await getProfile(res.user.id as string);
-            const { data: sessionData, error } = await getSession();
+            const { data: sessionData } = await getSession();
 
             if(profile && sessionData.session) {
                 setSessionState({...sessionState, user: res.user, profile: profile, session: sessionData.session, isLoggedIn: true});

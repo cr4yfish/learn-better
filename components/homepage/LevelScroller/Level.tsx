@@ -1,16 +1,12 @@
 "use client";
 
-import { useState } from "react"
 import { Button } from "@nextui-org/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import Icon from "../../Icon"
-import Link from "next/link";
 import { Topic } from "@/types/db";
 import ConditionalLink from "@/components/ConditionalLink";
-import { Tooltip } from "@nextui-org/tooltip";
 
 export default function Level({ topic, active, offset } : { topic: Topic, active: boolean, offset: number }) {
-    const [isPressed, setIsPressed] = useState(false)
     return (
         <div
             style={{
@@ -30,8 +26,6 @@ export default function Level({ topic, active, offset } : { topic: Topic, active
                     size="lg"
                     isIconOnly
                     color={topic.completed ? "primary" :  active ? "primary" : "default"}
-                    onMouseDown={() => setIsPressed(true)} 
-                    onMouseUp={() => setIsPressed(false)} 
                 >
                     {!active && <p className=" text-gray-200 "></p>}
                     <Icon upscale filled color={active ? "white" : "gray-200"} >grade</Icon>

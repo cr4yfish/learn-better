@@ -2,9 +2,8 @@
 
 import LoginButton from "@/components/LoginButton"
 import { useEffect, useState } from "react";
-import { getCurrentUser, getProfile } from "@/functions/client/supabase";
+import { getCurrentUser } from "@/functions/client/supabase";
 import { SessionState } from "@/types/auth";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Navigation from "@/components/homepage/Navigation";
 
 export default function User() {

@@ -9,13 +9,7 @@ import { addUserQuestion } from "@/functions/client/supabase";
 import { useStopwatch } from "react-use-precision-timer";
 import { SessionState } from "@/types/auth";
 
-type QuestionState = {
-    options: string[],
-    selected: string,
-    correct: "correct" | "wrong" | "initial"
-}
-
-type OptionState = "selected" | "unselected" | "correct" | "wrong"
+import { QuestionState, OptionState } from "@/types/client";
 
 export default function Question({
     question, setLevelState, session
@@ -24,7 +18,7 @@ export default function Question({
     setLevelState: React.Dispatch<React.SetStateAction<LevelState>>,
     session?: SessionState
 }) {
-    const { onOpen, onOpenChange, onClose, isOpen} = useDisclosure()
+    const { onOpen, onOpenChange, isOpen} = useDisclosure()
     const [isLoading, setIsLoading] = useState(false)
     const [questionState, setQuestionState] = useState<QuestionState>({
         options: question.answer_options,
@@ -126,7 +120,7 @@ export default function Question({
                 {[...question.answer_options, question.answer_correct].map((option: string, index: number) => (
                     <Option 
                         state={getOptionState(questionState, option)}
-                        setState={() => setQuestionState({...questionState, selected: option})}
+                        setQuestionState={() => setQuestionState({...questionState, selected: option})}
                         key={index}
                         active={questionState.correct == "initial"}
                         >

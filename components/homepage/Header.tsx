@@ -1,16 +1,13 @@
 "use client";
 
 import { Button } from "@nextui-org/button"
-
-
-import CourseSelect from "./CourseSelect"
 import Streak from "../Streak"
 import Xp from "../Xp"
 import { Course } from "@/types/db";
 import React from "react";
 
 export default function Header({ 
-    currentCourse, courses, onOpen } : { 
+    currentCourse, onOpen } : { 
         currentCourse?: Course, courses?: Course[], onOpen: () => void }) {
     
 

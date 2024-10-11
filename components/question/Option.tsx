@@ -2,24 +2,23 @@
 
 import { Card, CardBody } from "@nextui-org/card"
 import Icon from "../Icon"
-import { Skeleton } from "@nextui-org/skeleton";
+import React from "react";
 
-type OptionState = "selected" | "unselected" | "correct" | "wrong"
-
+import { OptionState } from "@/types/client";
 
 export default function Option(
-    { children, state, setState, active } : 
+    { children, state, setQuestionState, active } : 
     { 
         children: React.ReactNode,
         state: OptionState
-        setState: any,
+        setQuestionState: (state: boolean) => void,
         active: boolean
     }) {
     
     return (
         <Card
             isPressable
-            onPress={() => active && setState(!(state == "selected"))}
+            onPress={() => active && setQuestionState(!(state == "selected"))}
             className={`
                 flex flex-row items-center justify-start gap-2 
                 ${state == "selected" ? "bg-primary-500 text-white" : ""}

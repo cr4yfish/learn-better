@@ -14,7 +14,7 @@ import { Button } from "@nextui-org/button";
 export default function Home() {
   const [currentCourse, setCurrentCourse] = useState<Course>({} as Course)
   const [courses, setCourses] = useState<Course[]>([])
-  const { onOpen, onClose, onOpenChange, isOpen } = useDisclosure();
+  const { onOpen, onOpenChange, isOpen } = useDisclosure();
 
   const fetchCourses = async () => {
     const res = await getCourses()

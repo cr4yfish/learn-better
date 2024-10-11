@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/css";
 import CourseButton from './CourseButton';
 import { Course } from '@/types/db';
-import { Button } from "@nextui-org/button";
 
 export default function CourseSelect({ 
     courses, currentCourse, setCurrentCourse } : 
