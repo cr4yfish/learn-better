@@ -1,11 +1,15 @@
+import {nextui} from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/components/(accordion|avatar|badge|button|calendar|card|checkbox|chip|divider|dropdown|input|kbd|link|modal|progress|radio|scroll-shadow|skeleton|slider|spinner|toggle|table|tabs|popover|user|ripple|menu|spacer).js"
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -14,6 +18,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    typography,
+    nextui()
+  ],
 };
 export default config;

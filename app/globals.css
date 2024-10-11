@@ -25,3 +25,8 @@ body {
     text-wrap: balance;
   }
 }
+
+
+.material-symbols-filled {
+  font-variation-settings: "FILL" 1;
+}
