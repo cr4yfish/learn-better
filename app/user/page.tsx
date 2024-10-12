@@ -30,7 +30,7 @@ export default function User() {
         </div>
 
     </div>
-    <Navigation />
+    <Navigation activeTitle="Profile" />
     </>
 
     )

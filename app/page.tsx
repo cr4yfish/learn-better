@@ -36,7 +36,7 @@ export default function Home() {
       <Header currentCourse={currentCourse} courses={courses} onOpen={onOpen} />
       <LevelScroller currentCourse={currentCourse} />
     </main>
-    <Navigation />
+    <Navigation activeTitle="Home" />
 
     <Modal 
         className="dark"
