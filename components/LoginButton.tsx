@@ -24,11 +24,9 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
-        console.log(data);
 
         const res = await userLogin(data.email as string, data.password as string);
 
-        console.log(res);
         if(res.success) {
             
             const profile = await getProfile(res.user.id as string);
@@ -47,8 +45,9 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         setIsLoading(true);
 
         const res = await userLogOut();
-
-        console.log(res);
+        if(res) {
+            console.error("LoginButtonError:",res);
+        }
         
         setSessionState({...sessionState, user: undefined, profile: undefined, session: null, isLoggedIn: false});
 

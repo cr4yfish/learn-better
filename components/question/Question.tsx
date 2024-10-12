@@ -50,7 +50,7 @@ export default function Question({
             setQuestionState({...questionState, correct: "wrong"})
         }            
         
-        const res = await addUserQuestion({
+        await addUserQuestion({
             user: session.user?.id as string,
             question: question.id,
             completed: completed,
@@ -59,8 +59,6 @@ export default function Question({
             accuracy: questionState.correct == "correct" ? 1 : 0,
             seconds: stopwatch.getElapsedRunningTime()
         })
-
-        console.log(res);
 
         stopwatch.stop(); // reset the timer
 

@@ -30,13 +30,11 @@ export default function Level({ params } : { params: { topic: string }}) {
     const addUserTopic = async () => {
         if(!session || !session?.user?.id) return;
 
-        const res = await addUsersTopics({
+        await addUsersTopics({
             topicID: params.topic,
             userID: session.user.id,
             completed: true,
         })
-
-        console.log(res);
     }
 
     useEffect(() => {
@@ -46,12 +44,11 @@ export default function Level({ params } : { params: { topic: string }}) {
                 setSession(res);
             });
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
 
         async function fetchQuestions(): Promise<QuestionType[]> {
             const res = await getQuestions(params.topic);
-            console.log(res)
             return res;
         }
 
