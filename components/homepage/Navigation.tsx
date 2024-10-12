@@ -29,7 +29,7 @@ export default function Navigation({ activeTitle } : { activeTitle: Links }) {
             <div className="flex items-center justify-evenly w-full gap-4">
                 <LinkComponent title="Home" href="/" icon="home" activeTitle={activeTitle} />
                 <LinkComponent title="Training" href="/training" icon="exercise" activeTitle={activeTitle} />
-                <LinkComponent title="Community" href="/community" icon="leaderboard" activeTitle={activeTitle} />
+                <LinkComponent title="Community" href="/community" icon="communities" activeTitle={activeTitle} />
                 <LinkComponent title="Profile" href="/user" icon="account_circle" activeTitle={activeTitle} />
             </div>
         </div>
