@@ -1,7 +1,7 @@
 
 import { createClient, User } from "@supabase/supabase-js";
 
-import { Profile, Question, Rank, Topic, User_Question, User_Topic } from "@/types/db";
+import { Profile, Question, Rank, Settings, Topic, User_Question, User_Topic } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
 function getClient() {
@@ -91,9 +91,21 @@ export async function getProfile(id: string): Promise<Profile> {
     return data[0];
 }
 
-export async function getCurrentUser(): Promise<SessionState> {
+export async function getSettings(userID: string): Promise<Settings> {
+    const { data, error } = await getClient().from("settings").select().eq("user", userID);
+    if(error) { throw error; }
+    return data[0];
+}
+
+export async function getCurrentUser(): Promise<SessionState | null> {
     const session = await getSession();
+
+    if(!session.data.session) {
+        return null;
+    }
+
     const profile = await getProfile(session.data.session?.user.id as string);
+    const settings = await getSettings(session.data.session?.user.id as string);
 
     return {
         session: session.data.session,
@@ -101,9 +113,7 @@ export async function getCurrentUser(): Promise<SessionState> {
         profile: profile,
         isLoggedIn: true,
         pendingAuth: false,
-        settings: {
-            theme: "dark"
-        }
+        settings: settings
     }
 }
 

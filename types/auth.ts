@@ -1,10 +1,7 @@
 
 import { User, Session } from "@supabase/supabase-js";
-import { Profile } from "./db";
+import { Profile, Settings } from "./db";
 
-export interface Settings {
-    theme: "dark" | "light";
-}
 
 export interface SessionState {
     user: User | undefined;
