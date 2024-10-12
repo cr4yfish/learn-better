@@ -13,6 +13,7 @@ import Navigation from "@/components/homepage/Navigation";
 import Header from "@/components/homepage/Header";
 import CourseSelect from "@/components/homepage/CourseSelect";
 import { SessionState } from "@/types/auth";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -54,10 +55,14 @@ export default function Home() {
       <ModalContent>
           <ModalHeader>Your Courses</ModalHeader>
           <ModalBody>
-              <CourseSelect userCourses={sessionState.courses} currentUserCourse={currentUserCourse} setCurrentUserCourse={setCurrentUserCourse} />
+              <CourseSelect 
+                userCourses={sessionState.courses} 
+                currentUserCourse={currentUserCourse}
+                setCurrentUserCourse={setCurrentUserCourse} 
+              />
           </ModalBody>
           <ModalFooter>
-            <Button>View all courses</Button>
+            <Link href={"/community"}><Button>View all courses</Button></Link>
           </ModalFooter>
       </ModalContent>
     </Modal>
