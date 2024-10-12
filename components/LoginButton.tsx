@@ -57,8 +57,8 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
 
     return (
         <>
-        {!sessionState.isLoggedIn ? <Button color="primary" variant="shadow" onPress={onOpen}>Login</Button>
-        : <Button color="danger" variant="shadow" onPress={handleLogout}>Logout</Button>     }
+        {!sessionState.isLoggedIn ? <Button color="primary" variant="shadow" onClick={onOpen}>Login</Button>
+        : <Button color="danger" variant="shadow" onClick={handleLogout}>Logout</Button>     }
 
 
         <Modal className="dark" backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -74,7 +74,7 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
                     </form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose} isDisabled={isLoading}>
+                    <Button color="danger" variant="light" onClick={onClose} isDisabled={isLoading}>
                         Close
                     </Button>
                     <Button type="submit" color="primary" form="loginForm" isLoading={isLoading}>
