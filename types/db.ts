@@ -3,9 +3,38 @@ import { User } from "@supabase/supabase-js";
 export type Profile = {
     id: string;
     username: string;
-    avatar?: string,
+    avatar?: Object,
+    banner?: Object,
     total_xp: number;
     rank: string;
+}
+
+export type Object = {
+    id: string;
+    bucket_id: Bucket;
+    name: string;
+    owner?: User;
+    created_at?: string; // timestampz
+    updated_at?: string; // timestampz
+    last_accessed_at?: string; // timestampz
+    metadata: JSON;
+    path_tokens: string[];
+    version: string;
+    owner_id?: string;
+    user_metadata?: JSON;
+}
+
+export type Bucket = {
+    id: string;
+    name: string;
+    Owner?: User;
+    created_at?: string; // timestampz
+    updated_at?: string; // timestampz
+    public: boolean;
+    avif_autodetection: boolean;
+    file_size_limit: number;
+    allowed_mime_types: string[];
+    owner_id?: string;
 }
 
 export type Rank = {
@@ -50,6 +79,33 @@ export type Course = {
     title: string;
     abbreviation: string;
     description: string;
+    creator: User;
+    is_official: boolean;
+    institution: Institution;
+}
+
+export type Institution = {
+    id: string;
+    created_at?: string; // timestampz
+    title: string;
+    abbreviation: string;
+    description: string;
+    creator: User;
+    avatar?: Object;
+    banner?: Object;
+}
+
+export type Community = {
+    id: string;
+    created_at?: string; // timestampz
+    title: string;
+    description: string;
+    avatar?: Object;
+    banner?: Object;
+    is_official: boolean;
+    is_verified: boolean;
+    institution?: Institution;
+    creator: User;
 }
 
 export type Question_Type = {
@@ -59,10 +115,20 @@ export type Question_Type = {
     description: string;
 }
 
+export type Settings = {
+    user: User; // primary key
+    created_at?: string; // timestampz
+    updated_at?: string; // timestampz
+    theme: string;
+    color: string;
+    current_course: Course;
+}
+
 export type User_Question = {
     user: string;
     question: string;
     created_at?: string; // timestampz
+    last_tried_at?: string; // timestampz
     completed: boolean;
     tries?: number;
     seconds?: number;
@@ -86,4 +152,20 @@ export type User_Topic = {
     user: User;
     topic: Topic;
     completed: boolean;
+}
+
+export type User_Community = {
+    user: User;
+    community: Community;
+    joined_at: string; // timestampz
+    is_admin: boolean;
+    is_moderator: boolean;
+}
+
+export type User_Institution = {
+    user: User;
+    institution: Institution;
+    joined_at: string; // timestampz
+    is_admin: boolean;
+    is_moderator: boolean;
 }
