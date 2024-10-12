@@ -5,6 +5,7 @@ export default function ConditionalLink({ children, href, active } : { children:
     if(active) {
         return (
             <Link
+                className="w-full"
                 href={href}
             >
                 {children}
