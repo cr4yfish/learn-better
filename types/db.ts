@@ -3,12 +3,15 @@ import { User } from "@supabase/supabase-js";
 export type Profile = {
     id: string;
     username: string;
-    avatar?: Object,
-    banner?: Object,
+    avatar?: string,
+    avatarLink?: string,
+    banner?: string,
+    bannerLink?: string,
     total_xp: number;
     rank: string;
 }
 
+// unused right now
 export type Object = {
     id: string;
     bucket_id: Bucket;
@@ -91,8 +94,8 @@ export type Institution = {
     abbreviation: string;
     description: string;
     creator: User;
-    avatar?: Object;
-    banner?: Object;
+    avatar?: string;
+    banner?: string;
 }
 
 export type Community = {
@@ -100,8 +103,8 @@ export type Community = {
     created_at?: string; // timestampz
     title: string;
     description: string;
-    avatar?: Object;
-    banner?: Object;
+    avatar?: string;
+    banner?: string;
     is_official: boolean;
     is_verified: boolean;
     institution?: Institution;
