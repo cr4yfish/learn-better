@@ -35,7 +35,6 @@ async function loadMoreTopics({
 } : {
     currentCourse: Course, topics: Topic[], cursor: number, limit?: number,
 }): Promise<{ data: { cursor: number, topics: Topic[], offsets: number[], canLoadMore: boolean } } | { error: string }>  {
-    console.log("Fetch data", cursor);
     let canLoadMore = true;
 
     if (!currentCourse?.id) {  return { error: "No course selected" }; }
@@ -86,8 +85,7 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
 
 
     const handleLoadMore = async () => {
-        if(isLoading) { return; } // this line can be called very often, so leave it short
-        console.log("Loading more topics", cursor, isLoading);
+        if(isLoading || !canLoadMore) { return; } // this line can be called very often, so leave it short
         setIsLoading(true);
 
         const result = await loadMoreTopics({
@@ -96,6 +94,7 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
 
         if ('error' in result) {
             console.error(result.error);
+            setCanLoadMore(false);
         } else {
             const { cursor, topics, offsets, canLoadMore } = result.data;
             setCursor(cursor);
@@ -110,7 +109,7 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
         <InfiniteScroll 
             className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll  pb-80"
             pageStart={1}
-            loadMore={handleLoadMore}
+            loadMore={() => canLoadMore && handleLoadMore()}
             hasMore={canLoadMore}
             loader={<Spinner key="spinner" />}
             key="infinite-scroll"
@@ -123,6 +122,12 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
                     offset={offsets[index]}
                 />
             ))}
+            {!canLoadMore && topics.length === 0 && (
+                <span>No topics found.</span>
+            )}
+            {!canLoadMore && topics.length > 0 && (
+                <span>You reached the end.</span>
+            )}
         </InfiniteScroll>
     )
 }
