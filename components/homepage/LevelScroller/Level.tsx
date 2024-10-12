@@ -2,10 +2,11 @@
 
 import { Button } from "@nextui-org/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
-import Icon from "../../Icon"
-import { Topic } from "@/types/db";
-import ConditionalLink from "@/components/ConditionalLink";
 
+import { Topic } from "@/types/db";
+
+import ConditionalLink from "@/components/ConditionalLink";
+import Icon from "../../Icon"
 export default function Level({ topic, active, offset } : { topic: Topic, active: boolean, offset: number }) {
     return (
         <div

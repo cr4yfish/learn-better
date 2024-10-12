@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/css";
+
 import CourseButton from './CourseButton';
 import { Course } from '@/types/db';
 

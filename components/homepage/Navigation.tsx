@@ -1,8 +1,7 @@
-
-import React from "react"
-import Icon from "../Icon"
-
 import Link from "next/link"
+import React from "react"
+
+import Icon from "../Icon"
 
 const LinkComponent = ({ href, icon, active } : { href: string, icon: string, active: boolean }) => {
     return (

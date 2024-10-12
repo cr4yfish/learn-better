@@ -1,13 +1,15 @@
 
 "use client";
 
+import {  useState } from "react";
+
 import { Button } from "@nextui-org/button"
 import { Modal, ModalContent, ModalBody, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/modal"
 import { Input } from "@nextui-org/input"
 import { Checkbox } from "@nextui-org/checkbox"
 
 import { userLogin, getSession, userLogOut, getProfile } from "@/functions/client/supabase";
-import {  useState } from "react";
+
 import { SessionState } from "@/types/auth";
 
 export default function LoginButton({ sessionState, setSessionState } : { sessionState: SessionState, setSessionState: React.Dispatch<React.SetStateAction<SessionState>> }) {

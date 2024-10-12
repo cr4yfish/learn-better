@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * Swap strings with Date objects in data
  * @param data | data[]

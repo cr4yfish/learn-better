@@ -1,10 +1,11 @@
 "use client";
 
+import React from "react";
 import { Button } from "@nextui-org/button"
+
 import Streak from "../Streak"
 import Xp from "../Xp"
 import { Course } from "@/types/db";
-import React from "react";
 
 export default function Header({ 
     currentCourse, onOpen } : { 

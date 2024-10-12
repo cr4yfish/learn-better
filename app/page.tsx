@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import Header from "@/components/homepage/Header";
-import LevelScroller from "@/components/homepage/LevelScroller/LevelScroller";
-import { Course } from "@/types/db";
-import { getCourses } from "@/functions/client/supabase";
-import Navigation from "@/components/homepage/Navigation";
-import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter } from "@nextui-org/modal";
-import CourseSelect from "@/components/homepage/CourseSelect";
 import { Button } from "@nextui-org/button";
+import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter } from "@nextui-org/modal";
+
+import { Course } from "@/types/db";
+
+import { getCourses } from "@/functions/client/supabase";
+
+import LevelScroller from "@/components/homepage/LevelScroller/LevelScroller";
+import Navigation from "@/components/homepage/Navigation";
+import Header from "@/components/homepage/Header";
+import CourseSelect from "@/components/homepage/CourseSelect";
+
 
 export default function Home() {
   const [currentCourse, setCurrentCourse] = useState<Course>({} as Course)

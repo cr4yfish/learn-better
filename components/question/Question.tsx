@@ -1,15 +1,16 @@
+import React, { useEffect, useState } from "react";
+import { Button } from "@nextui-org/button";
+import { useStopwatch } from "react-use-precision-timer";
+import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
 
 import { Question as QuestionType } from "@/types/db";
-import React, { useEffect, useState } from "react";
-import Option from "./Option";
-import { Button } from "@nextui-org/button";
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
-import { LevelState } from "@/types/client";
-import { addUserQuestion } from "@/functions/client/supabase";
-import { useStopwatch } from "react-use-precision-timer";
 import { SessionState } from "@/types/auth";
-
+import { LevelState } from "@/types/client";
 import { QuestionState, OptionState } from "@/types/client";
+
+import Option from "./Option";
+
+import { addUserQuestion } from "@/functions/client/supabase";
 
 export default function Question({
     question, setLevelState, session
@@ -105,7 +106,7 @@ export default function Question({
         return () => {
             stopwatch.stop();
         }
-    }, [])
+    }, [stopwatch])
 
     return (
         <>

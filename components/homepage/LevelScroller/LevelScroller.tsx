@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { Spinner } from "@nextui-org/spinner";
+import InfiniteScroll from "react-infinite-scroller";
+
 import { Course, Topic } from "@/types/db"
 import Level from "./Level"
 import { getCourseTopics } from "@/functions/client/supabase"
-import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroller";
-import { Spinner } from "@nextui-org/spinner";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {
     const offsets = [];
@@ -29,6 +30,42 @@ const calculateOffsets = (numLevels: number, maxOffset: number) => {
     return offsets;
 };
 
+async function loadMoreTopics({
+    cursor, currentCourse, topics, limit=20
+} : {
+    currentCourse: Course, topics: Topic[], cursor: number, limit?: number,
+}): Promise<{ data: { cursor: number, topics: Topic[], offsets: number[], canLoadMore: boolean } } | { error: string }>  {
+    console.log("Fetch data", cursor);
+    let canLoadMore = true;
+
+    if (!currentCourse?.id) {  return { error: "No course selected" }; }
+
+    try {
+        const res = await getCourseTopics(currentCourse.id, cursor, limit);
+
+        // filter out duplicates
+        const filteredRes = res.filter((topic) => !topics.some((t) => t.id === topic.id));
+
+        // Safety checks
+        if (filteredRes.length < limit || filteredRes.length === 0) {  canLoadMore = false;  }
+        if (filteredRes.length === 0) { return { error: "No more topics to load" }; }
+
+        const calcOffsets = calculateOffsets(filteredRes.length, 4);
+
+        return {
+            data :{
+                cursor: cursor + limit + 1,
+                topics: [...topics, ...filteredRes],
+                offsets: calcOffsets,
+                canLoadMore: canLoadMore,
+            }
+        }
+
+    } catch (error) {
+        console.error(error);
+        return { error: "An error occurred while fetching topics" };
+    }
+}
 
 export default function LevelScroller({ currentCourse } : { currentCourse: Course }) {
     const [topics, setTopics] = useState<Topic[]>([])
@@ -37,68 +74,43 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
     const [cursor, setCursor] = useState<number>(0)
     const [isLoading, setIsLoading] = useState(false)
 
+    
+    useEffect(() => {
+        // Reset stuff when course changes
+        setTopics([]);
+        setOffsets([]);
+        setCursor(0);
+        setCanLoadMore(true);
 
-    const loadMore = async () => {
-        if(isLoading || !currentCourse?.id) {
-            console.log("Someone wanted to load more while loading or no course selected");
-            return;
-        }
+    }, [currentCourse]);
 
+
+    const handleLoadMore = async () => {
+        if(isLoading) { return; } // this line can be called very often, so leave it short
+        console.log("Loading more topics", cursor, isLoading);
         setIsLoading(true);
-        console.log("Trying to load more");
 
-        if(!currentCourse?.id) {
-            console.log("cant load, no course selected");
-            return
-        }
-        try {
-            const limit = 20;
-            const res = await getCourseTopics(currentCourse.id, cursor, limit)
+        const result = await loadMoreTopics({
+            cursor, currentCourse, topics, limit: 20
+        });
 
-            // filter out duplicates
-            const filteredRes = res.filter((topic) => !topics.some((t) => t.id === topic.id))
-
-            console.log("Filtered out ", res.length - filteredRes.length, " duplicates")
-
-            // Safety check
-            if(filteredRes.length < limit) { 
-                setCanLoadMore(false) 
-                console.log("No more topics to load")
-            }
-            if(filteredRes.length === 0) {
-                setCanLoadMore(false)
-                setIsLoading(false);
-                console.log("No more topics to load")
-                return
-            }
-
-            const calcOffsets = calculateOffsets(filteredRes.length, 4)
-            setOffsets(calcOffsets)
-            
-            setTopics((prevState) => {
-                return [...prevState, ...filteredRes]
-            })
-            setCursor(cursor + limit+1)
-
-        } catch (error) {
-            console.error("Error in Levelscroller with:", currentCourse, error)
+        if ('error' in result) {
+            console.error(result.error);
+        } else {
+            const { cursor, topics, offsets, canLoadMore } = result.data;
+            setCursor(cursor);
+            setTopics(topics);
+            setOffsets(offsets);
+            setCanLoadMore(canLoadMore);
         }
         setIsLoading(false);
     }
-
-    useEffect(() => {
-        setTopics([])
-        setOffsets([])
-        setCursor(0)
-        setIsLoading(false)
-        loadMore()
-    }, [currentCourse])
 
     return (
         <InfiniteScroll 
             className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll  pb-80"
             pageStart={1}
-            loadMore={async () => await loadMore()}
+            loadMore={handleLoadMore}
             hasMore={canLoadMore}
             loader={<Spinner key="spinner" />}
             key="infinite-scroll"

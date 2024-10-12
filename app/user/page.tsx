@@ -1,10 +1,14 @@
 "use client";
 
-import LoginButton from "@/components/LoginButton"
+
 import { useEffect, useState } from "react";
+
 import { getCurrentUser } from "@/functions/client/supabase";
+
 import { SessionState } from "@/types/auth";
+
 import Navigation from "@/components/homepage/Navigation";
+import LoginButton from "@/components/LoginButton"
 
 export default function User() {
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);

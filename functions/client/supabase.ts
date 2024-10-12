@@ -1,6 +1,7 @@
 
 import { createClient, User } from "@supabase/supabase-js";
-import { Profile, Question, Rank, Topic, User_Question, User_Topic, UserQuestionClient } from "@/types/db";
+
+import { Profile, Question, Rank, Topic, User_Question, User_Topic } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
 function getClient() {

@@ -1,15 +1,18 @@
 "use client";
 
+import { Button } from "@nextui-org/button";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
 import Icon from "@/components/Icon";
 import Header from "@/components/question/Header"
 import Question from "@/components/question/Question"
+
 import { addUsersTopics, getCurrentUser, getQuestions } from "@/functions/client/supabase";
-import { SessionState } from "@/types/auth";
+
 import { Question as QuestionType } from "@/types/db";
-import { Button } from "@nextui-org/button";
-import { useEffect, useState } from "react";
 import { LevelState } from "@/types/client";
-import Link from "next/link";
+import { SessionState } from "@/types/auth";
 
 
 export default function Level({ params } : { params: { topic: string }}) {
