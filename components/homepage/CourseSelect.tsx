@@ -24,7 +24,11 @@ export default function CourseSelect({
             >
                 {userCourses.map((userCourse) => (
                     <SwiperSlide className=' w-fit min-h-full' key={userCourse.course.id}>
-                        <CourseButton onPress={() => setCurrentUserCourse(userCourse)} course={userCourse.course} active={userCourse.course.id === currentUserCourse.course.id} />
+                        <CourseButton 
+                            onPress={() => setCurrentUserCourse(userCourse)} 
+                            course={userCourse.course}
+                            active={userCourse.course.id === currentUserCourse.course.id} 
+                        />
                     </SwiperSlide>
                 ))}
             </Swiper>

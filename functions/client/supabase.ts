@@ -113,7 +113,7 @@ export async function getSettings(userID: string): Promise<Settings> {
     if(error) { throw error; }
 
     // oh god
-    let tmp: any = data[0] as any;
+    const tmp = data[0] as any;
 
     return {
         ...tmp,
@@ -123,7 +123,21 @@ export async function getSettings(userID: string): Promise<Settings> {
 
 export async function getUserCourses(userID: string): Promise<User_Course[]> {
     const { data, error } = await getClient().from("users_courses").select(`
-        courses (*),
+        courses (
+            abbreviation,
+            created_at,
+            creator,
+            description,
+            id,
+            institutions (
+                id,
+                title,
+                abbreviation,
+                description
+            ),
+            title,
+            is_official
+        ),
         joined_at,
         is_admin,
         is_moderator,
@@ -133,7 +147,16 @@ export async function getUserCourses(userID: string): Promise<User_Course[]> {
     
     return data.map((db: any) => {
         return {
-            course: db.courses as Course,
+            course: {
+                abbreviation: db.courses.abbreviation,
+                created_at: db.courses.created_at,
+                creator: db.courses.creator,
+                description: db.courses.description,
+                id: db.courses.id,
+                institution: db.courses.institutions,
+                title: db.courses.title,
+                is_official: db.courses.is_official
+            },
             joined_at: db.joined_at,
             is_admin: db.is_admin,
             is_moderator: db.is_moderator,
@@ -164,8 +187,108 @@ export async function getCurrentUser(): Promise<SessionState | null> {
     }
 }
 
-export async function getCourses() {
-    const { data, error } = await getClient().from("courses").select();
+export async function getCourses(): Promise<Course[]> {
+    const { data, error } = await getClient()
+        .from("courses")
+        .select(`
+            abbreviation,
+            created_at,
+            creator,
+            description,
+            id,
+            institutions (
+                id,
+                title,
+                abbreviation,
+                description
+            ),
+            title,
+            is_official
+        `)
+        .order("created_at", { ascending: false });
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            abbreviation: db.abbreviation,
+            created_at: db.created_at,
+            creator: db.creator,
+            description: db.description,
+            id: db.id,
+            institution: db.institutions,
+            title: db.title,
+            is_official: db.is_official
+        }
+    })
+}
+
+/**
+ * Searches for courses using SearchQuery in the title, abbreviation, and description
+ * @param searchQuery 
+ * @returns 
+ */
+export async function searchCourses(searchQuery: string): Promise<Course[]> {
+    console.log("Searching courses", searchQuery);
+    const { data, error } = await getClient()
+        .from("courses")
+        .select(`
+            abbreviation,
+            created_at,
+            creator,
+            description,
+            id,
+            institutions (
+                id,
+                title,
+                abbreviation,
+                description
+            ),
+            title,
+            is_official
+        `)
+        .or(`title.ilike.*${searchQuery}*` + "," + `abbreviation.ilike.*${searchQuery}*` + "," + `description.ilike.*${searchQuery}*`);
+        
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            abbreviation: db.abbreviation,
+            created_at: db.created_at,
+            creator: db.creator,
+            description: db.description,
+            id: db.id,
+            institution: db.institutions,
+            title: db.title,
+            is_official: db.is_official
+        }
+    })
+}
+
+export async function joinCourse(courseID: string, userID: string): Promise<User_Course> {
+    const { data: db, error } = await getClient().from("users_courses").insert([
+        { user: userID, course: courseID, joined_at: new Date() }
+    ]).eq("user", userID).eq("course", courseID).select(`
+        courses (*),
+        joined_at,
+        is_admin,
+        is_moderator,
+        is_collaborator
+    `).single();
+    if(error) { throw error; }
+    console.log("Join course result:", db);
+    
+    return {
+        course: db.courses as any as Course,
+        joined_at: db.joined_at,
+        is_admin: db.is_admin,
+        is_moderator: db.is_moderator,
+        is_collaborator: db.is_collaborator
+    }
+
+}
+
+export async function leaveCourse(courseID: string, userID: string) {
+    const { data, error } = await getClient().from("users_courses").delete().eq("user", userID).eq("course", courseID).select();
     if(error) { throw error; }
     return data;
 }
