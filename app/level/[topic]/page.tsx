@@ -40,9 +40,14 @@ export default function Level({ params } : { params: { topic: string }}) {
     }
 
     useEffect(() => {
-        getCurrentUser().then(res => {
-            setSession(res);
-        });
+        try {
+            getCurrentUser().then(res => {
+                if(res == null) return;
+                setSession(res);
+            });
+        } catch (error) {
+            console.log(error);
+        }
 
         async function fetchQuestions(): Promise<QuestionType[]> {
             const res = await getQuestions(params.topic);

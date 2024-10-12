@@ -16,6 +16,7 @@ export default function User() {
     useEffect(() => {
         // get profile
         getCurrentUser().then(res => {
+            if(res === null) return;
             setSessionState(res);
         })
     }, [])
