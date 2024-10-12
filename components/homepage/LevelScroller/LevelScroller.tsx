@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
+import { Button } from "@nextui-org/button";
 import InfiniteScroll from "react-infinite-scroller";
 
-import { Course, Topic } from "@/types/db"
+import { Course, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
 import { getCourseTopics } from "@/functions/client/supabase"
+import Icon from "@/components/Icon";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {
     const offsets = [];
@@ -66,7 +68,7 @@ async function loadMoreTopics({
     }
 }
 
-export default function LevelScroller({ currentCourse } : { currentCourse: Course }) {
+export default function LevelScroller({ currentUserCourse } : { currentUserCourse: User_Course }) {
     const [topics, setTopics] = useState<Topic[]>([])
     const [offsets, setOffsets] = useState<number[]>([])
     const [canLoadMore, setCanLoadMore] = useState(true)
@@ -81,7 +83,7 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
         setCursor(0);
         setCanLoadMore(true);
 
-    }, [currentCourse]);
+    }, [currentUserCourse]);
 
 
     const handleLoadMore = async () => {
@@ -89,7 +91,7 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
         setIsLoading(true);
 
         const result = await loadMoreTopics({
-            cursor, currentCourse, topics, limit: 20
+            cursor, currentCourse: currentUserCourse.course, topics, limit: 20
         });
 
         if ('error' in result) {
@@ -123,7 +125,15 @@ export default function LevelScroller({ currentCourse } : { currentCourse: Cours
                 />
             ))}
             {!canLoadMore && topics.length === 0 && (
+                <>
                 <span>No topics found.</span>
+                {currentUserCourse.is_collaborator && (
+                    <>
+                    <Button color="primary" startContent={<Icon filled>add</Icon>}>Add a topic</Button>
+                    </>
+                )}
+                </>
+                
             )}
             {!canLoadMore && topics.length > 0 && (
                 <span>You reached the end.</span>

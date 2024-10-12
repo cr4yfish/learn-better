@@ -116,7 +116,7 @@ export type Question_Type = {
 }
 
 export type Settings = {
-    user: User; // primary key
+    user?: User; // primary key
     created_at?: string; // timestampz
     updated_at?: string; // timestampz
     theme: string;
@@ -168,4 +168,13 @@ export type User_Institution = {
     joined_at: string; // timestampz
     is_admin: boolean;
     is_moderator: boolean;
+}
+
+export type User_Course = {
+    user?: User;
+    course: Course;
+    joined_at: string; // timestampz
+    is_admin: boolean;
+    is_moderator: boolean;
+    is_collaborator: boolean;
 }

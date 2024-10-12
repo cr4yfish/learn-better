@@ -2,13 +2,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/css";
 
 import CourseButton from './CourseButton';
-import { Course } from '@/types/db';
+import { User_Course } from '@/types/db';
 
 export default function CourseSelect({ 
-    courses, currentCourse, setCurrentCourse } : 
+    userCourses, currentUserCourse, setCurrentUserCourse } : 
     { 
-        courses: Course[], currentCourse: Course, 
-        setCurrentCourse: React.Dispatch<React.SetStateAction<Course>> 
+        userCourses: User_Course[], currentUserCourse: User_Course, 
+        setCurrentUserCourse: React.Dispatch<React.SetStateAction<User_Course>> 
     }) {
 
     return (
@@ -21,12 +21,10 @@ export default function CourseSelect({
                 loop={false}
                 simulateTouch
                 className=' w-full h-full max-w-full overflow-x-scroll'
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
             >
-                {courses.map((course) => (
-                    <SwiperSlide className=' w-fit min-h-full' key={course.id}>
-                        <CourseButton onPress={() => setCurrentCourse(course)} course={course} active={course.id === currentCourse.id} />
+                {userCourses.map((userCourse) => (
+                    <SwiperSlide className=' w-fit min-h-full' key={userCourse.course.id}>
+                        <CourseButton onPress={() => setCurrentUserCourse(userCourse)} course={userCourse.course} active={userCourse.course.id === currentUserCourse.course.id} />
                     </SwiperSlide>
                 ))}
             </Swiper>

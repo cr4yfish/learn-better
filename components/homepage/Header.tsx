@@ -5,11 +5,11 @@ import { Button } from "@nextui-org/button"
 
 import Streak from "../Streak"
 import Xp from "../Xp"
-import { Course } from "@/types/db";
+import { User_Course } from "@/types/db";
 
 export default function Header({ 
-    currentCourse, onOpen } : { 
-        currentCourse?: Course, courses?: Course[], onOpen: () => void }) {
+    currentUserCourse, onOpen } : { 
+        currentUserCourse?: User_Course, onOpen: () => void }) {
     
 
     return (
@@ -18,12 +18,13 @@ export default function Header({
             <div className="flex flex-row items-center justify-evenly flex-nowrap gap-5 backdrop-blur w-full">
                 <Button 
                     variant="bordered" color="primary"
-                    className="font-black" onClick={() => {
-                        console.log("Opening modal");
+                    className="font-black" 
+                    onClick={() => {
                         onOpen();
                     }} 
+                    isLoading={!currentUserCourse?.course?.abbreviation}
                 >
-                    {currentCourse?.abbreviation}
+                    {currentUserCourse?.course?.abbreviation}
                 </Button>
                 <Streak streak={365} />
                 <Xp xp={2000} />

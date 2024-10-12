@@ -1,6 +1,6 @@
 
 import { User, Session } from "@supabase/supabase-js";
-import { Profile, Settings } from "./db";
+import { Profile, Settings, User_Course } from "./db";
 
 
 export interface SessionState {
@@ -9,5 +9,6 @@ export interface SessionState {
     session: Session | null;
     isLoggedIn: boolean;
     pendingAuth: boolean;
-    settings: Settings
+    settings: Settings;
+    courses: User_Course[];
 }

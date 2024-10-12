@@ -4,37 +4,44 @@ import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter } from "@nextui-org/modal";
 
-import { Course } from "@/types/db";
+import { User_Course } from "@/types/db";
 
-import { getCourses } from "@/functions/client/supabase";
+import { getCurrentUser } from "@/functions/client/supabase";
 
 import LevelScroller from "@/components/homepage/LevelScroller/LevelScroller";
 import Navigation from "@/components/homepage/Navigation";
 import Header from "@/components/homepage/Header";
 import CourseSelect from "@/components/homepage/CourseSelect";
+import { SessionState } from "@/types/auth";
 
 
 export default function Home() {
-  const [currentCourse, setCurrentCourse] = useState<Course>({} as Course)
-  const [courses, setCourses] = useState<Course[]>([])
+  const [currentUserCourse, setCurrentUserCourse] = useState<User_Course>({} as User_Course)
+  const [sessionState, setSessionState] = useState<SessionState>({} as SessionState)
   const { onOpen, onOpenChange, isOpen } = useDisclosure();
 
-  const fetchCourses = async () => {
-    const res = await getCourses()
-    console.log(res)
-    setCourses(res)
-    setCurrentCourse(res[0])
+  const fetchSessionState = async () => {
+    const res = await getCurrentUser()
+    if(!res) return
+    setSessionState(res as SessionState)
+
+    const currentCourse = res?.settings.current_course;
+    const userCourses = res?.courses;
+
+    if(currentCourse) {
+      setCurrentUserCourse(userCourses.find((uc) => uc.course.id == currentCourse.id) as User_Course)
+    }
   }
 
   useEffect(() => {
-    fetchCourses()
+    fetchSessionState();
   }, [])
 
   return (
     <>
     <main className="flex flex-col justify-between items-center w-full min-h-full h-full ">
-      <Header currentCourse={currentCourse} courses={courses} onOpen={onOpen} />
-      <LevelScroller currentCourse={currentCourse} />
+      <Header currentUserCourse={currentUserCourse} onOpen={onOpen} />
+      <LevelScroller currentUserCourse={currentUserCourse} />
     </main>
     <Navigation activeTitle="Home" />
 
@@ -47,7 +54,7 @@ export default function Home() {
       <ModalContent>
           <ModalHeader>Your Courses</ModalHeader>
           <ModalBody>
-              <CourseSelect courses={courses} currentCourse={currentCourse} setCurrentCourse={setCurrentCourse} />
+              <CourseSelect userCourses={sessionState.courses} currentUserCourse={currentUserCourse} setCurrentUserCourse={setCurrentUserCourse} />
           </ModalBody>
           <ModalFooter>
             <Button>View all courses</Button>

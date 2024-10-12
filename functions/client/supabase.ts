@@ -1,7 +1,7 @@
 
 import { createClient, User } from "@supabase/supabase-js";
 
-import { Profile, Question, Rank, Settings, Topic, User_Question, User_Topic } from "@/types/db";
+import { Course, Profile, Question, Rank, Settings, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
 function getClient() {
@@ -92,9 +92,43 @@ export async function getProfile(id: string): Promise<Profile> {
 }
 
 export async function getSettings(userID: string): Promise<Settings> {
-    const { data, error } = await getClient().from("settings").select().eq("user", userID);
+    const { data, error } = await getClient().from("settings").select(`
+        created_at,
+        updated_at,
+        theme,
+        color,
+        courses (*)    
+    `).eq("user", userID);
     if(error) { throw error; }
-    return data[0];
+
+    // oh god
+    let tmp: any = data[0] as any;
+
+    return {
+        ...tmp,
+        current_course: tmp.courses as Course
+    };
+}
+
+export async function getUserCourses(userID: string): Promise<User_Course[]> {
+    const { data, error } = await getClient().from("users_courses").select(`
+        courses (*),
+        joined_at,
+        is_admin,
+        is_moderator,
+        is_collaborator
+    `).eq("user", userID);
+    if(error) { throw error; }
+    
+    return data.map((db: any) => {
+        return {
+            course: db.courses as Course,
+            joined_at: db.joined_at,
+            is_admin: db.is_admin,
+            is_moderator: db.is_moderator,
+            is_collaborator: db.is_collaborator
+        }
+    });
 }
 
 export async function getCurrentUser(): Promise<SessionState | null> {
@@ -106,6 +140,7 @@ export async function getCurrentUser(): Promise<SessionState | null> {
 
     const profile = await getProfile(session.data.session?.user.id as string);
     const settings = await getSettings(session.data.session?.user.id as string);
+    const courses = await getUserCourses(session.data.session?.user.id as string);
 
     return {
         session: session.data.session,
@@ -113,7 +148,8 @@ export async function getCurrentUser(): Promise<SessionState | null> {
         profile: profile,
         isLoggedIn: true,
         pendingAuth: false,
-        settings: settings
+        settings: settings,
+        courses: courses
     }
 }
 
@@ -158,7 +194,6 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
  * @returns 
  */
 export async function getQuestions(topicId: string): Promise<Question[]> {
-    console.log("Getting questions of topic");
     const { data, error } = await getClient().from("questions")
     .select(`
         id,
@@ -172,7 +207,6 @@ export async function getQuestions(topicId: string): Promise<Question[]> {
     `).eq("topic", topicId);
     if(error) { throw error; }
 
-    console.log(data);
 
     // cast db to any since there is a mismatch in the foreign key fields
     return data.map((db: any) => {
