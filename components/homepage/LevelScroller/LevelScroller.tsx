@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import { Button } from "@nextui-org/button";
 import InfiniteScroll from "react-infinite-scroller";
+import Link from "next/link";
 
 import { Course, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
@@ -74,6 +75,7 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
     const [canLoadMore, setCanLoadMore] = useState(true)
     const [cursor, setCursor] = useState<number>(0)
     const [isLoading, setIsLoading] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
 
     
     useEffect(() => {
@@ -82,6 +84,7 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
         setOffsets([]);
         setCursor(0);
         setCanLoadMore(true);
+        setIsAdmin(currentUserCourse.is_collaborator || currentUserCourse.is_admin || currentUserCourse.is_moderator);
 
     }, [currentUserCourse]);
 
@@ -106,7 +109,6 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
         }
         setIsLoading(false);
     }
-
     return (
         <InfiniteScroll 
             className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll  pb-80"
@@ -122,6 +124,7 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                     topic={topic} 
                     active={topics[index - 1]?.completed || index === 0}
                     offset={offsets[index]}
+                    isAdmin={isAdmin}
                 />
             ))}
             {!canLoadMore && topics.length === 0 && (
@@ -136,8 +139,14 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                 
             )}
             {!canLoadMore && topics.length > 0 && (
+                <div className="flex flex-col gap-2">
                 <span>You reached the end.</span>
+                {isAdmin && (
+                    <Link href={"/level/new"}><Button color="primary" startContent={<Icon filled>add</Icon>} >Add a new level</Button></Link>   
+                )}
+                </div>
             )}
+            
         </InfiniteScroll>
     )
 }

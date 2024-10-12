@@ -7,7 +7,7 @@ import { Topic } from "@/types/db";
 
 import ConditionalLink from "@/components/ConditionalLink";
 import Icon from "../../Icon"
-export default function Level({ topic, active, offset } : { topic: Topic, active: boolean, offset: number }) {
+export default function Level({ topic, active, offset, isAdmin=false } : { topic: Topic, active: boolean, offset: number, isAdmin?: boolean }) {
     return (
         <div
             style={{
@@ -36,17 +36,22 @@ export default function Level({ topic, active, offset } : { topic: Topic, active
                 <div className="flex flex-col gap-2 p-4">
                     <h2 className="text-lg font-semibold">{topic.title}</h2>
                     <p className="text-sm">{!active ? "Unlock all levels above to unlock this" : topic.description}</p>
-                    <ConditionalLink active={active} href={`/level/${topic.id}`}>
-                        <Button 
-                            className={active ? "bg-white text-primary font-bold" : "font-bold"}
-                            color={active ? "primary" : "default"} 
-                            variant="shadow"
-                            fullWidth
-                            isDisabled={!active}
-                        >
-                            {!active ? "Locked" : topic.completed ? "Review +100 XP" : "Start"}
-                        </Button>
-                    </ConditionalLink>
+                    <div className="flex flex-row gap-1 items-center w-full">
+                        <ConditionalLink active={active} href={`/level/${topic.id}`}>
+                            <Button 
+                                className={` w-full ${active ? "bg-white text-primary font-bold" : "font-bold"}`}
+                                color={active ? "primary" : "default"} 
+                                variant="shadow"
+                                fullWidth
+                                isDisabled={!active}
+                            >
+                                {!active ? "Locked" : topic.completed ? "Review +100 XP" : "Start"}
+                            </Button>
+                        </ConditionalLink>
+                        {isAdmin && (
+                            <Button color="warning" variant="flat" isIconOnly ><Icon color="warning" filled>edit</Icon></Button>
+                        )}
+                    </div>
                 </div>
             </PopoverContent>
         </Popover>
