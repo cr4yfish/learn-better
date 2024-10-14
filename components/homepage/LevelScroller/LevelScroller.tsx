@@ -122,7 +122,7 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                 <Level 
                     key={topic.id} 
                     topic={topic} 
-                    active={topics[index - 1]?.completed || index === 0}
+                    active={topic.completed || topics[index - 1]?.completed || index === 0 ||  false}
                     offset={offsets[index]}
                     isAdmin={isAdmin}
                 />
@@ -132,7 +132,15 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                 <span>No topics found.</span>
                 {isAdmin && (
                     <>
-                    <Link href={"/level/new"}><Button color="primary" startContent={<Icon filled>add</Icon>} >Add a level</Button></Link> 
+                    <Link 
+                        href={"/level/new"}>
+                            <Button 
+                                color="primary" 
+                                startContent={<Icon filled>add</Icon>} 
+                            >
+                                Add new level
+                            </Button>
+                    </Link> 
                     </>
                 )}
                 </>
@@ -142,7 +150,14 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                 <div className="flex flex-col gap-2">
                 <span>You reached the end.</span>
                 {isAdmin && (
-                    <Link href={"/level/new"}><Button color="primary" startContent={<Icon filled>add</Icon>} >Add a new level</Button></Link>   
+                    <Link href={"/level/new"}>
+                        <Button 
+                            color="primary" 
+                            startContent={<Icon filled>add</Icon>} 
+                        >
+                            Add a new level
+                        </Button>
+                    </Link>   
                 )}
                 </div>
             )}

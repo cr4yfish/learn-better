@@ -74,6 +74,7 @@ export type Topic = {
     description: string;
     course: Course;
     order?: number;
+    completed?: boolean; // only client side
 }
 
 export type Course = {

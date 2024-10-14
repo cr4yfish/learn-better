@@ -356,7 +356,6 @@ export async function joinCourse(courseID: string, userID: string, options?: { i
         is_moderator: db.is_moderator,
         is_collaborator: db.is_collaborator
     }
-
 }
 
 export async function leaveCourse(courseID: string, userID: string) {
@@ -376,9 +375,13 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             title,
             abbreviation,
             description
+        ),
+        users_topics (
+            completed
         )
     `)
     .eq("course", courseId)
+    .order("order", { ascending: true })
     .range(from, from + limit -1);
     if(error) { throw error; }
 
@@ -388,7 +391,8 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             created_at: db.created_at,
             title: db.title,
             description: db.description,
-            course: db.course
+            course: db.course,
+            completed: db.users_topics[0]?.completed ?? false
         }
     }));
 }
