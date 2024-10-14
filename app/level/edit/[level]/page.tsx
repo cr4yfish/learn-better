@@ -42,10 +42,6 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
         
     }, [level, topic])
 
-    useEffect(() => {
-        console.log(questions)
-    }, [questions])
-
     const updateQuestionValue = (question: Question, key: string, value: any) => {
         setQuestions((prev) => {
             const index = prev.findIndex(q => q.id == question.id);
