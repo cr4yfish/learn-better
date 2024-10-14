@@ -226,6 +226,22 @@ export async function getCourses({
     })
 }
 
+export async function upsertCourse(course: Course): Promise<{ id: string }> {
+    const dbEntry = {
+        id: course.id,
+        title: course.title,
+        abbreviation: course.abbreviation,
+        description: course.description,
+        creator: course.creator.id,
+        is_official: course.is_official,
+        institution: course.institution?.id ?? null
+    }
+
+    const { data, error } = await getClient().from("courses").upsert([dbEntry]).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
 /**
  * Searches for courses using SearchQuery in the title, abbreviation, and description
  * @param searchQuery 

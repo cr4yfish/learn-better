@@ -21,7 +21,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Course subscription system
 - [x] Basic Level creation
 - [x] Basic Level editing
-- [ ] Basic Course creation
+- [x] Basic Course creation
 - [ ] Basic Course Editing
     - [ ] General info
     - [ ] Change order of Levels 

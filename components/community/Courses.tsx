@@ -7,6 +7,7 @@ import "swiper/css";
 
 import Icon from "../Icon";
 import CourseCard from "./CourseCard";
+import ConditionalLink from "../ConditionalLink";
 
 import { searchCourses, getCourses, getCurrentUser } from "@/functions/client/supabase";
 import { Course, User_Course } from "@/types/db";
@@ -67,7 +68,13 @@ export default function Courses() {
     return (
         <>
         <div className="flex px-4 py-6 flex-col gap-4">
-            <h1 className="font-bold">Community</h1>
+            <h1 className="font-bold">Courses</h1>
+
+            <div>
+                <ConditionalLink active={(sessionState?.user?.id ? true : false)} href={`course/new/${sessionState?.user?.id}`}>
+                    <Button isLoading={sessionState?.user?.id ? false : true} color="primary" startContent={<Icon color="white" filled>add</Icon>}>Create a course</Button>
+                </ConditionalLink>
+            </div>
 
             <h2 className=" font-bold">Newest Courses</h2>
             <Swiper
