@@ -46,7 +46,6 @@ export default function CourseCard ({
 
     // startup
     useEffect(() => {
-        console.log(userCourses?.map((course) => course.course.abbreviation));
         setIsJoined(userCourses && userCourses.find((userCourse) => userCourse.course.id === course.id) ? true : false);
     }, [setIsJoined, userCourses, course, isJoined])
 

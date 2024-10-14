@@ -57,7 +57,6 @@ export default function Courses() {
 
     const updateUserCourses = (newCourses: User_Course[]) => {
         if(sessionState) {
-            console.log("Updating session state with new courses:",newCourses);
             setSessionState({
                 ...sessionState,
                 courses: newCourses
