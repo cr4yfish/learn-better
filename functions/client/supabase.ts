@@ -187,7 +187,10 @@ export async function getCurrentUser(): Promise<SessionState | null> {
     }
 }
 
-export async function getCourses(): Promise<Course[]> {
+export async function getCourses({
+    from = 0,
+    limit = 10
+} : { from?: number, limit?: number }): Promise<Course[]> {
     const { data, error } = await getClient()
         .from("courses")
         .select(`
@@ -205,7 +208,8 @@ export async function getCourses(): Promise<Course[]> {
             title,
             is_official
         `)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .range(from, from + limit - 1);
     if(error) { throw error; }
 
     return data.map((db: any) => {
@@ -227,8 +231,7 @@ export async function getCourses(): Promise<Course[]> {
  * @param searchQuery 
  * @returns 
  */
-export async function searchCourses(searchQuery: string): Promise<Course[]> {
-    console.log("Searching courses", searchQuery);
+export async function searchCourses(searchQuery: string, from=0, limit=10): Promise<Course[]> {
     const { data, error } = await getClient()
         .from("courses")
         .select(`
@@ -246,7 +249,9 @@ export async function searchCourses(searchQuery: string): Promise<Course[]> {
             title,
             is_official
         `)
-        .or(`title.ilike.*${searchQuery}*` + "," + `abbreviation.ilike.*${searchQuery}*` + "," + `description.ilike.*${searchQuery}*`);
+        .or(`title.ilike.*${searchQuery}*` + "," + `abbreviation.ilike.*${searchQuery}*` + "," + `description.ilike.*${searchQuery}*`)
+        .order("created_at", { ascending: false }) // need this for range behavior
+        .range(from, from + limit - 1);
         
     if(error) { throw error; }
 
@@ -275,7 +280,6 @@ export async function joinCourse(courseID: string, userID: string): Promise<User
         is_collaborator
     `).single();
     if(error) { throw error; }
-    console.log("Join course result:", db);
     
     return {
         course: db.courses as any as Course,
@@ -322,6 +326,22 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
     }))
 }
 
+export async function getTopic(topicId: string): Promise<Topic> {
+    const { data, error } = await getClient().from("topics").select().eq("id", topicId).single();
+    if(error) { throw error; }
+    return data;
+}
+
+export async function addCourseTopic(topic: Topic): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("topics").insert([{
+        ...topic,
+        course: topic.course.id,
+    }]).select();
+
+    if(error) { throw error; }
+    return { id: data[0].id };
+}
+
 /**
  * 
  * @param topic uuid of topic
@@ -355,6 +375,30 @@ export async function getQuestions(topicId: string): Promise<Question[]> {
             topic: db.topics // this as well
         }
     });
+}
+
+export async function upsertQuestion(question: Question): Promise<{ id: string }> {
+
+    const dbEntry = {
+        id: question.id,
+        title: question.title,
+        question: question.question,
+        answer_correct: question.answer_correct,
+        answer_options: question.answer_options,
+        type: question.type.id,
+        topic: question.topic.id,
+    };
+
+    const { data, error } = await getClient().from("questions").upsert([dbEntry]).select().single();
+
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
+export async function deleteQuestion(questionID: string): Promise<boolean> {
+    const { error } = await getClient().from("questions").delete().eq("id", questionID);
+    if(error) { throw error; }
+    return true;
 }
 
 export async function getQuestionTypes() {
@@ -490,7 +534,6 @@ export async function getObjectPublicURL(params: { filename?: string, path?: str
     if(params.id) {
         try {
             const fileObject = await getObjectInfoFromID(params.id, params.bucket);
-            console.log("File object:", fileObject, "for id:", params.id);
             return getClient().storage.from(params.bucket).getPublicUrl(fileObject.name).data.publicUrl;
         } catch (error) {
             throw error;
@@ -502,8 +545,6 @@ export async function getObjectPublicURL(params: { filename?: string, path?: str
 
 export async function getObjectInfoFromID(id: string, bucket: string): Promise<FileObject> {
     const res = await getClient().storage.from(bucket).list();
-
-    console.log("Objects:", res.data);
 
     if(res.error) {
         throw res.error;
