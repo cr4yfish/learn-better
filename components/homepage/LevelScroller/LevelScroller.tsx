@@ -130,9 +130,9 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
             {!canLoadMore && topics.length === 0 && (
                 <>
                 <span>No topics found.</span>
-                {currentUserCourse.is_collaborator && (
+                {isAdmin && (
                     <>
-                    <Button color="primary" startContent={<Icon filled>add</Icon>}>Add a topic</Button>
+                    <Link href={"/level/new"}><Button color="primary" startContent={<Icon filled>add</Icon>} >Add a level</Button></Link> 
                     </>
                 )}
                 </>
