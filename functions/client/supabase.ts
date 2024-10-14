@@ -371,9 +371,11 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
         created_at,
         title,
         description,
-        course,
-        users_topics (
-            completed
+        course (
+            id,
+            title,
+            abbreviation,
+            description
         )
     `)
     .eq("course", courseId)
@@ -386,12 +388,9 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             created_at: db.created_at,
             title: db.title,
             description: db.description,
-            course: db.course,
-            completed: db.users_topics[0]?.completed ?? false
+            course: db.course
         }
-    }).sort((a: Topic, b: Topic) => {
-        return a.completed === b.completed ? 0 : a.completed ? -1 : 1;
-    }))
+    }));
 }
 
 export async function getTopic(topicId: string): Promise<Topic> {
@@ -401,7 +400,7 @@ export async function getTopic(topicId: string): Promise<Topic> {
 }
 
 export async function addCourseTopic(topic: Topic): Promise<{ id: string }> {
-    const { data, error } = await getClient().from("topics").insert([{
+    const { data, error } = await getClient().from("topics").upsert([{
         ...topic,
         course: topic.course.id,
     }]).select();

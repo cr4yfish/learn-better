@@ -73,7 +73,7 @@ export type Topic = {
     title: string;
     description: string;
     course: Course;
-    completed: boolean;
+    order?: number;
 }
 
 export type Course = {

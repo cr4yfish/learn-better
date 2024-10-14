@@ -56,8 +56,10 @@
     "react-cookie": "^7.2.0",
     "react-dom": "^18",
     "react-infinite-scroller": "^1.2.6",
+    "react-sortablejs": "^6.1.4",
     "react-toastify": "^10.0.5",
     "react-use-precision-timer": "^3.5.5",
+    "sortablejs": "^1.15.3",
     "swiper": "^11.1.14",
     "uuid": "^10.0.0"
   },
@@ -66,6 +68,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-infinite-scroller": "^1.2.5",
+    "@types/sortablejs": "^1.15.8",
     "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
