@@ -165,6 +165,51 @@ export async function getUserCourses(userID: string): Promise<User_Course[]> {
     });
 }
 
+export async function getUserCourse(courseID: string): Promise<User_Course> {
+    const { data, error } = await getClient().from("users_courses").select(`
+        courses (
+            abbreviation,
+            created_at,
+            creator,
+            description,
+            id,
+            institutions (
+                id,
+                title,
+                abbreviation,
+                description
+            ),
+            title,
+            is_official
+        ),
+        joined_at,
+        is_admin,
+        is_moderator,
+        is_collaborator
+    `).eq("course", courseID);
+    if(error) { throw error; }
+
+    const db = data[0] as any;
+
+    return {
+        course: {
+            abbreviation: db.courses.abbreviation,
+            created_at: db.courses.created_at,
+            creator: db.courses.creator,
+            description: db.courses.description,
+            id: db.courses.id,
+            institution: db.courses.institutions,
+            title: db.courses.title,
+            is_official: db.courses.is_official
+        },
+        joined_at: db.joined_at,
+        is_admin: db.is_admin,
+        is_moderator: db.is_moderator,
+        is_collaborator: db.is_collaborator
+    }
+
+}
+
 export async function getCurrentUser(): Promise<SessionState | null> {
     const session = await getSession();
 

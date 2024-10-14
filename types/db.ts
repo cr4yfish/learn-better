@@ -84,6 +84,7 @@ export type Course = {
     description: string;
     creator: User;
     is_official: boolean;
+    is_public?: boolean;
     institution?: Institution;
 }
 

@@ -23,7 +23,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Basic Level editing
 - [x] Basic Course creation
 - [ ] Basic Course Editing
-    - [ ] General info
+    - [x] General info
     - [ ] Change order of Levels 
 - [ ] Data aquisition on questions & levels
     - [ ] Add Confidence system for questions & topics
