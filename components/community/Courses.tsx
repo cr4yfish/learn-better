@@ -41,7 +41,7 @@ export default function Courses() {
     useEffect(() => {
 
         const fetchCourses = async () => {
-            const res = await getCourses();
+            const res = await getCourses({});
             setCourses(res);
         };
 
