@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
+import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
 import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
@@ -8,8 +8,9 @@ import "swiper/css";
 import Icon from "../Icon";
 import CourseCard from "./CourseCard";
 import ConditionalLink from "../ConditionalLink";
+import CourseSearch from "./CourseSearch";
 
-import { searchCourses, getCourses, getCurrentUser } from "@/functions/client/supabase";
+import { getCourses, getCurrentUser } from "@/functions/client/supabase";
 import { Course, User_Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
@@ -18,26 +19,6 @@ import { SessionState } from "@/types/auth";
 export default function Courses() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [sessionState, setSessionState] = useState<SessionState | null>(null);
-    
-    const [searchQuery, setSearchQuery] = useState("");
-    const [searchLoading, setSearchLoading] = useState(false);
-    const [searchResults, setSearchResults] = useState<Course[]>([]);
-
-    useEffect(() => {
-        const fetchSearchResults = async () => {
-            setSearchLoading(true);
-            const res = await searchCourses(searchQuery);
-            setSearchResults(res);
-            setSearchLoading(false);
-        }
-
-        if (searchQuery.length > 0) {
-            fetchSearchResults();
-        } else if (searchQuery.length === 0) {
-            setSearchResults([]);
-        }
-    }, [searchQuery])
-    
 
     useEffect(() => {
 
@@ -67,13 +48,15 @@ export default function Courses() {
 
     return (
         <>
-        <div className="flex px-4 py-6 flex-col gap-4">
+        <div className="flex px-4 py-6 flex-col gap-4 max-h-screen">
             <h1 className="font-bold">Courses</h1>
 
-            <div>
+            <div className="flex flex-col gap-4">
                 <ConditionalLink active={(sessionState?.user?.id ? true : false)} href={`course/new/${sessionState?.user?.id}`}>
                     <Button isLoading={sessionState?.user?.id ? false : true} color="primary" startContent={<Icon color="white" filled>add</Icon>}>Create a course</Button>
                 </ConditionalLink>
+
+                <CourseSearch sessionState={sessionState} setSessionState={setSessionState} />
             </div>
 
             <h2 className=" font-bold">Newest Courses</h2>
@@ -84,7 +67,7 @@ export default function Courses() {
                 simulateTouch
                 className=' w-full h-full max-w-full overflow-x-scroll select-none'
             >
-                {courses.map((course) => (
+                {courses.slice(0,5).map((course) => (
                     <SwiperSlide className=' w-fit min-h-full' key={course.id}>
                         <CourseCard 
                             isSmall 
@@ -97,38 +80,19 @@ export default function Courses() {
                 ))}
             </Swiper>
 
-            <div className="flex flex-col gap-1">
-                <div className="flex flex-row justify-between items-center w-full">
-                    <h2 className=" font-bold text-tiny">Search Courses</h2>
-                    <Input 
-                        className="dark" 
-                        placeholder="Search courses" 
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        startContent={<Icon filled>search</Icon>} 
-                        endContent={searchQuery.length > 0 && (
-                            <Button 
-                                variant="light" color="primary" 
-                                isIconOnly
-                                isLoading={searchLoading}
-                            >
-                            <Icon color="primary" filled>send</Icon>
-                        </Button>
-                        )}
+            <h2 className=" font-bold">Your courses</h2>
+            <ScrollShadow className="flex flex-col gap-5 max-h-[50vh] overflow-y-scroll">
+                {sessionState?.courses?.map((userCourse) => (
+                    <CourseCard 
+                        key={userCourse.course.id} 
+                        course={userCourse.course} 
+                        userCourses={sessionState?.courses} 
+                        setUserCourses={(courses) => updateUserCourses(courses)}
+                        userID={sessionState?.user?.id}
                     />
-                </div>
-                <div className="flex flex-col gap-2">
-                    {searchResults.map((course) => (
-                        <CourseCard 
-                            key={course.id} 
-                            course={course} 
-                            userCourses={sessionState?.courses} 
-                            setUserCourses={(courses) => updateUserCourses(courses)}
-                            userID={sessionState?.user?.id}
-                        />
-                    ))}
-                </div>
-            </div>
+                ))}
+            </ScrollShadow>
+
         </div>
         </>
     )
