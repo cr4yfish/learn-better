@@ -67,7 +67,7 @@ export default function RootLayout({
 }>) {
   return (
     
-    <html lang="en" className=" min-h-screen dark">
+    <html lang="en" className=" min-h-screen max-h-screen dark">
         <body
           className={`${geistSans.variable} ${geistMono.variable} dark antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden`}
         >
