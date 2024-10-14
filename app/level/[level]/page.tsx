@@ -15,7 +15,7 @@ import { LevelState } from "@/types/client";
 import { SessionState } from "@/types/auth";
 
 
-export default function Level({ params } : { params: { topic: string }}) {
+export default function Level({ params } : { params: { level: string }}) {
 
     const [questions, setQuestions] = useState<QuestionType[]>([]);
     const [session, setSession] = useState<SessionState>();
@@ -31,7 +31,7 @@ export default function Level({ params } : { params: { topic: string }}) {
         if(!session || !session?.user?.id) return;
 
         await addUsersTopics({
-            topicID: params.topic,
+            topicID: params.level,
             userID: session.user.id,
             completed: true,
         })
@@ -48,7 +48,7 @@ export default function Level({ params } : { params: { topic: string }}) {
         }
 
         async function fetchQuestions(): Promise<QuestionType[]> {
-            const res = await getQuestions(params.topic);
+            const res = await getQuestions(params.level);
             return res;
         }
 
