@@ -45,6 +45,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 ### Paywall features (these cost significant money to run)
 These features will be locked either behind a payment plan or by letting users provide their API keys (e.g. for OpenAI).
 Since it's open source the 2nd option will be available anyway for tech-users.
+Right now I prefer the first option since it'll also help pay for server cost.
 
 - [ ] Creating Levels & Questions from Document uploads using AI (PDF, Word, etc)?
 - [ ] Creating Levels & Questions from Pictures of Documents?
