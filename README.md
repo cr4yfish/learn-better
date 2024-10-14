@@ -1,4 +1,4 @@
-# Nouv
+# Nouv - learn better
 The learning app that helps you learn anything you want.
 
 ## Description
