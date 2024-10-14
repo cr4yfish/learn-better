@@ -114,7 +114,7 @@ export type Community = {
 export type Question_Type = {
     id: string;
     created_at?: string; // timestampz
-    title: "Mutltiple Choice" | "Single Choice" | "Boolean" | "Fill in the Blank";
+    title: "Multiple Choice" | "Single Choice" | "Boolean" | "Fill in the Blank";
     description: string;
 }
 
