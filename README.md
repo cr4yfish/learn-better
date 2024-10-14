@@ -10,6 +10,8 @@ The point being that you can learn anything you want, and you can help others le
 The main reason for this project is that I would love to have an App like Duolingo but for university subjects, and since I'd have to create a nice way of adding content to it anyway, I thought why not make it a platform for everyone to use - so here we are.
 
 ## Roadmap
+Features marked with a question mark are not yet decided on, and might be dropped.
+
 ### MVP Features
 - [x] Basic Level interaction
 - [x] Level Scroller
@@ -17,13 +19,16 @@ The main reason for this project is that I would love to have an App like Duolin
 - [x] Course subscription system
 - [x] Basic Level creation
 - [x] Basic Level editing
+- [ ] Basic Course creation
+- [ ] Basic Course Editing
 - [ ] Data aquisition on questions & levels
 
 ### Beta Features
 - [ ] Community Features
+    - [ ] Creating and joining Communities?
     - [ ] Sharing of Courses
     - [ ] Access Control settings for shared Courses
-    - [ ] Commenting on Courses
+    - [ ] Commenting on Courses?
     - [ ] Rating Courses, Levels & Questions
 - [ ] Mass creation UI for Levels & Questions (optimized for Desktop)
 
@@ -38,9 +43,12 @@ The main reason for this project is that I would love to have an App like Duolin
 - [ ] Better Desktop support
 
 ### Paywall features (these cost significant money to run)
-- [ ] Creating Levels & Questions from Document uploads using AI (PDF, Word, etc)
-- [ ] Creating Levels & Questions from Pictures of Documents
-- [ ] AI Helper for creating questions & levels
+These features will be locked either behind a payment plan or by letting users provide their API keys (e.g. for OpenAI).
+Since it's open source the 2nd option will be available anyway for tech-users.
+
+- [ ] Creating Levels & Questions from Document uploads using AI (PDF, Word, etc)?
+- [ ] Creating Levels & Questions from Pictures of Documents?
+- [ ] AI Helper for creating questions & levels (mostly for writing help)
 - [ ] AI Helper for answering questions
 
 ## Open Source & Contributions
