@@ -8,7 +8,7 @@ import { Button } from "@nextui-org/button";
 
 import { Course } from "@/types/db";
 import Icon from "@/components/Icon";
-import { upsertCourse } from "@/functions/client/supabase";
+import { joinCourse, upsertCourse } from "@/functions/client/supabase";
 
 
 export default function NewCourse({ params: { userId }} : { params: { userId: string }}) {
@@ -49,7 +49,17 @@ export default function NewCourse({ params: { userId }} : { params: { userId: st
         console.log(res);
 
         if(res.id) {
-            setDone(true);
+
+            // subscribe to the course
+            const dbRes = await joinCourse(res.id, userId, {
+                is_admin: true,
+                is_moderator: true,
+                is_collaborator: true,
+            });
+
+            if(dbRes) {
+                setDone(true);
+            }
         }
 
         setIsLoading(false);

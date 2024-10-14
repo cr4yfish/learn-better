@@ -285,9 +285,16 @@ export async function searchCourses(searchQuery: string, from=0, limit=10): Prom
     })
 }
 
-export async function joinCourse(courseID: string, userID: string): Promise<User_Course> {
+export async function joinCourse(courseID: string, userID: string, options?: { is_admin: boolean, is_moderator: boolean, is_collaborator: boolean }): Promise<User_Course> {
     const { data: db, error } = await getClient().from("users_courses").insert([
-        { user: userID, course: courseID, joined_at: new Date() }
+        {
+            user: userID, 
+            course: courseID, 
+            joined_at: new Date(), 
+            is_admin: options?.is_admin ?? false, 
+            is_moderator: options?.is_moderator ?? false,
+            is_collaborator: options?.is_collaborator ?? false
+        }
     ]).eq("user", userID).eq("course", courseID).select(`
         courses (*),
         joined_at,
