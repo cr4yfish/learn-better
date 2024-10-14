@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 
@@ -49,7 +50,11 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
                             </Button>
                         </ConditionalLink>
                         {isAdmin && (
-                            <Button color="warning" variant="flat" isIconOnly ><Icon color="warning" filled>edit</Icon></Button>
+                            <Link href={`/level/edit/${topic.id}`}>
+                                <Button color="warning" variant="flat" isIconOnly >
+                                    <Icon color="warning" filled>edit</Icon>
+                                </Button>
+                            </Link>
                         )}
                     </div>
                 </div>
