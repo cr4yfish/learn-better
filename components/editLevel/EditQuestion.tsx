@@ -5,11 +5,11 @@ import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input"
 
 ;
-import { Question } from "@/types/db";
+import { Question, Question_Type, Topic } from "@/types/db";
 import Icon from "../Icon";
 import { deleteQuestion, upsertQuestion } from "@/functions/client/supabase";
 
-export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key: string, value: any) => void , removeQuestion: (question: Question) => void  }) {
+export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key:  keyof Question, value: string & string[] & Topic & Question_Type) => void , removeQuestion: (question: Question) => void  }) {
     const [integrity, setIntegrity] = useState(true);
     const [isSaveLoading, setIsSaveLoading] = useState(false);
     const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -50,9 +50,9 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
         setIsDeleteLoading(false);
     }
 
-    const handleUpdateValue = (key: string, value: any) => {
+    const handleUpdateValue = (key: keyof Question,value: string | string[]) => {
         setIntegrity(false);
-        updateValue(key, value);
+        updateValue(key, value as string & string[] & Topic & Question_Type);
     }
 
     const handleOptionValueChange = (value: string, index: number) => {

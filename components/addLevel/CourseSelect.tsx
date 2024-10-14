@@ -1,18 +1,16 @@
 
 import React from "react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
-import {useInfiniteScroll} from "@nextui-org/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
 
 import { Course } from "@/types/db";
 
-import { useCoursesList } from "@/hooks/useCoursesList";
-import { getCourses, searchCourses } from "@/functions/client/supabase";
+import { searchCourses } from "@/functions/client/supabase";
 
 export default function CourseSelect({ setCourse } : { setCourse: (course: Course) => void }) {
 
     const list = useAsyncList<Course>({
-        async load({signal, filterText}) {
+        async load({filterText}) {
             const res = await searchCourses(filterText || "");
 
             return {

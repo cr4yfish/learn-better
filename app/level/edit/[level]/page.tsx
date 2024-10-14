@@ -10,8 +10,8 @@ import { Modal, ModalContent, ModalBody, ModalFooter, useDisclosure, ModalHeader
 import { Select, SelectItem, SelectSection } from "@nextui-org/select";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
-import { getQuestions, getTopic, upsertQuestion } from "@/functions/client/supabase";
-import { Question, Topic } from "@/types/db";
+import { getQuestions, getTopic } from "@/functions/client/supabase";
+import { Question, Question_Type, Topic } from "@/types/db";
 
 import Icon from "@/components/Icon";
 import EditQuestion from "@/components/editLevel/EditQuestion";
@@ -42,15 +42,15 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
         
     }, [level, topic])
 
-    const updateQuestionValue = (question: Question, key: string, value: any) => {
+    const updateQuestionValue = (question: Question, key: keyof Question, value: string & string[] & Topic & Question_Type) => {
         setQuestions((prev) => {
             const index = prev.findIndex(q => q.id == question.id);
-            prev[index][key] = value;
+            (prev[index] as Question)[key] = value;
             return [...prev];
         })
     }
 
-    const updateNewQuestionValue = (key: string, value: any) => {
+    const updateNewQuestionValue = (key: string, value: string) => {
         setNewQuestion((prev) => {
             return {
                 ...prev,

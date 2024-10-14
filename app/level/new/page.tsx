@@ -1,16 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
 import Icon from "@/components/Icon";
 import CourseSelect from "@/components/addLevel/CourseSelect";
-import ConditionalLink from "@/components/ConditionalLink";
 import { Course, Topic } from "@/types/db";
 import { addCourseTopic } from "@/functions/client/supabase";
 
@@ -22,7 +19,7 @@ export default function NewLevel() {
     const [newTopic, setNewTopic] = useState<Topic>({} as Topic);
 
     // updates any field in the newTopic object
-    const handleUpdateTopicField = (field: string, value: any) => {
+    const handleUpdateTopicField = (field: string, value: string | Course) => {
         setNewTopic((prev) => {
             return {
                 ...prev,
