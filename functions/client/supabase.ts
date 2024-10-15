@@ -1,5 +1,5 @@
 
-import { createClient, User } from "@supabase/supabase-js";
+import { AuthResponse, createClient, User } from "@supabase/supabase-js";
 import { FileObject } from "@supabase/storage-js";
 
 import { Course, Profile, Question, Rank, Settings, Streak, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
@@ -49,10 +49,13 @@ export async function userLogin(email: string, password: string): Promise<{ succ
  * @param password 
  * @returns 
  */
-export async function userSignUp(email: string, password: string, username: string, avatar?: string) {
-    const signUpResult = await getClient().auth.signUp({ email: email, password: password });
-    if(signUpResult.error) {
-        throw signUpResult.error;
+export async function userSignUp(email: string, password: string, username: string, avatar?: string) : Promise<{ profile: Profile, authResponse: AuthResponse, settings: Settings }> {
+    const authResponse = await getClient().auth.signUp({ email: email, password: password, options: {
+        data: { username: username },
+
+    } });
+    if(authResponse.error) {
+        throw authResponse.error;
     } else {
 
         // get lowest rank id -> sort by xp_threshold
@@ -64,18 +67,31 @@ export async function userSignUp(email: string, password: string, username: stri
 
         const dbResult = await getClient().from("profiles").insert([
             { 
-                id: signUpResult.data.user?.id, 
-                email: signUpResult.data.user?.email,
+                id: authResponse.data.user?.id,
                 username: username,
                 avatar: avatar ?? null, // this can be null
                 total_xp: 0, // no xp
                 rank: ranks[0].id // lowest rank
 
-            }]).select();
+            }]).select().single();
+
+        const settingsResult = await getClient().from("settings").insert([
+            {
+                user: authResponse.data.user?.id,
+                theme: "light",
+                color: "blue",
+            }
+
+        ]).select().single();
+        
         if(dbResult.error) {
             throw dbResult.error;
         } else {
-            return { profile: dbResult.data, signUp: signUpResult};
+            return { 
+                profile: dbResult.data as Profile, 
+                authResponse: authResponse,
+                settings: settingsResult.data as Settings
+            };
         }
     }
 }
@@ -117,7 +133,7 @@ export async function getSettings(userID: string): Promise<Settings> {
 
     return {
         ...tmp,
-        current_course: tmp.courses as Course
+        current_course: tmp?.courses as Course
     };
 }
 
@@ -211,35 +227,40 @@ export async function getUserCourse(courseID: string): Promise<User_Course> {
 }
 
 export async function getCurrentUser(): Promise<SessionState | null> {
-    const session = await getSession();
+    try {
+        const session = await getSession();
 
-    if(!session.data.session) {
+        if(!session.data.session) {
+            return null;
+        }
+
+        const profile = await getProfile(session.data.session?.user.id as string);
+        const settings = await getSettings(session.data.session?.user.id as string);
+        const courses = await getUserCourses(session.data.session?.user.id as string);
+        const currentStreak = await getStreakOnDate(session.data.session?.user.id as string, new Date());
+        let currentStreakDays = 0;
+
+        if(currentStreak) {
+            const from = new Date(currentStreak.from);
+            const to = currentStreak.to ? new Date(currentStreak.to) : new Date(); // if to is null, use today -> streak is ongoing
+            const diff = Math.abs(to.getTime() - from.getTime()) + 1;
+            currentStreakDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        return {
+            session: session.data.session,
+            user: session.data.session?.user,
+            profile: profile,
+            isLoggedIn: true,
+            pendingAuth: false,
+            settings: settings,
+            courses: courses,
+            currentStreak: currentStreak,
+            currentStreakDays: currentStreakDays
+        }
+    } catch (error) {
+        console.error("Error getting current user:", error);
         return null;
-    }
-
-    const profile = await getProfile(session.data.session?.user.id as string);
-    const settings = await getSettings(session.data.session?.user.id as string);
-    const courses = await getUserCourses(session.data.session?.user.id as string);
-    const currentStreak = await getStreakOnDate(session.data.session?.user.id as string, new Date());
-    let currentStreakDays = 0;
-
-    if(currentStreak) {
-        const from = new Date(currentStreak.from);
-        const to = currentStreak.to ? new Date(currentStreak.to) : new Date(); // if to is null, use today -> streak is ongoing
-        const diff = Math.abs(to.getTime() - from.getTime()) + 1;
-        currentStreakDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    }
-
-    return {
-        session: session.data.session,
-        user: session.data.session?.user,
-        profile: profile,
-        isLoggedIn: true,
-        pendingAuth: false,
-        settings: settings,
-        courses: courses,
-        currentStreak: currentStreak,
-        currentStreakDays: currentStreakDays
     }
 }
 

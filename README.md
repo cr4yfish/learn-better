@@ -30,7 +30,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Add XP system
     - [x] Track & Show streaks
     - [x] Basic UI for level complete, using that data
-- [ ] Basic Creation for user accounts & profiles (I manually create them in the database right now)
+- [x] Basic Creation for user accounts & profiles (I manually create them in the database right now)
 - [ ] Basic UI for Profiles
     - [ ] Basic Edit Profile
     - [ ] Basic Settings (cloud saved)

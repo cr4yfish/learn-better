@@ -8,13 +8,14 @@ import { Modal, ModalContent, ModalBody, ModalFooter, ModalHeader, useDisclosure
 import { Input } from "@nextui-org/input"
 import { Checkbox } from "@nextui-org/checkbox"
 
-import { userLogin, getSession, userLogOut, getProfile } from "@/functions/client/supabase";
+import { userLogin, getSession, userLogOut, getProfile, userSignUp } from "@/functions/client/supabase";
 
 import { SessionState } from "@/types/auth";
 
 export default function LoginButton({ sessionState, setSessionState } : { sessionState: SessionState, setSessionState: React.Dispatch<React.SetStateAction<SessionState>> }) {
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+    const [isSignUp, setIsSignUp] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,18 +26,37 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         const data = Object.fromEntries(formData.entries());
         
 
-        const res = await userLogin(data.email as string, data.password as string);
+        if(isSignUp) {
 
-        if(res.success) {
-            
-            const profile = await getProfile(res.user.id as string);
-            const { data: sessionData } = await getSession();
+            const res = await userSignUp(data.email as string, data.password as string, data.username as string);
 
-            if(profile && sessionData.session) {
-                setSessionState({...sessionState, user: res.user, profile: profile, session: sessionData.session, isLoggedIn: true});
+            if(res && res.profile && res.authResponse.data) {
+                setSessionState({
+                    ...sessionState,
+                    user: res.authResponse.data.user ?? undefined, 
+                    profile: res.profile, 
+                    session: res.authResponse.data.session, 
+                    isLoggedIn: true,
+                    settings: res.settings
+                });
+                onClose();
             }
 
-            onClose();
+        } else {
+
+            const res = await userLogin(data.email as string, data.password as string);
+
+            if(res.success) {
+                
+                const profile = await getProfile(res.user.id as string);
+                const { data: sessionData } = await getSession();
+
+                if(profile && sessionData.session) {
+                    setSessionState({...sessionState, user: res.user, profile: profile, session: sessionData.session, isLoggedIn: true});
+                }
+
+                onClose();
+            }
         }
         setIsLoading(false);
     }
@@ -60,24 +80,34 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         : <Button color="danger" variant="shadow" onClick={handleLogout}>Logout</Button>     }
 
 
-        <Modal className="dark" backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal className="dark transition-all" size="lg" backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
             {(onClose) => (
                 <>
-                <ModalHeader className="flex flex-col gap-1">Login</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">{isSignUp ? "Sign up" : "Log in" }</ModalHeader>
                 <ModalBody>
                     <form id="loginForm" onSubmit={handleSubmit} className="flex flex-col gap-2">
                         <Input label="Email" type="email" name="email" />
                         <Input label="Password" type="password" name="password" />
-                        <Checkbox name="rememberMe">Remember me</Checkbox>
+
+                        {isSignUp ? (
+                            <>
+                                <Input label="Username" name="username" />
+                                <Checkbox name="rememberMe">Remember me (doesnt do anything yet)</Checkbox>
+                            </>
+                        ) :
+                            <>
+                                <Checkbox name="rememberMe">Remember me (doesnt do anything yet)</Checkbox>
+                            </>
+                        }
                     </form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger" variant="light" onClick={onClose} isDisabled={isLoading}>
-                        Close
+                    <Button color="warning" variant="light" onClick={() => setIsSignUp(!isSignUp)} isDisabled={isLoading}>
+                        {isSignUp ? "Log in instead" : "Sign up instead"}
                     </Button>
                     <Button type="submit" color="primary" form="loginForm" isLoading={isLoading}>
-                        Login
+                        {isSignUp ? "Sign up" : "Log in"}
                     </Button>
                 </ModalFooter>
                 </>
