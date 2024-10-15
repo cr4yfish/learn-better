@@ -130,12 +130,12 @@ export type Settings = {
 }
 
 export type User_Question = {
+    try_id: string;
     user: string;
     question: string;
     created_at?: string; // timestampz
     last_tried_at?: string; // timestampz
     completed: boolean;
-    tries?: number;
     seconds?: number;
     xp?: number;
     accuracy?: number;
@@ -157,6 +157,9 @@ export type User_Topic = {
     user: User;
     topic: Topic;
     completed: boolean;
+    time: number;
+    accuracy: number;
+    xp: number;
 }
 
 export type User_Community = {

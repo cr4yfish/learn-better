@@ -3,6 +3,7 @@
 import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useStopwatch } from "react-use-precision-timer";
 
 import Icon from "@/components/Icon";
 import Header from "@/components/question/Header"
@@ -27,14 +28,31 @@ export default function Level({ params } : { params: { level: string }}) {
         currentQuestionIndex: 0
     });
 
+    const stopwatch = useStopwatch();
+
+    useEffect(() => {
+        stopwatch.start();
+
+        // cleanup
+        return () => {
+            stopwatch.stop();
+        }
+    }, [stopwatch])
+
     const addUserTopic = async () => {
         if(!session || !session?.user?.id) return;
+        
+        stopwatch.pause();
 
         await addUsersTopics({
-            topicID: params.level,
             userID: session.user.id,
+            topicID: params.level,
             completed: true,
-        })
+            time: stopwatch.getElapsedRunningTime(),
+            accuracy: 12,
+            xp: 100
+        })  
+        stopwatch.stop();
     }
 
     useEffect(() => {

@@ -519,18 +519,29 @@ export async function getUsersTopics(): Promise<User_Topic[]> {
             user: db.users as User,
             topic: db.topics as Topic,
             completed: db.completed as boolean,
+            time: db.time as number,
+            accuracy: db.accuracy as number,
+            xp: db.xp as number
         }
     })
 }
 
-export async function addUsersTopics({ userID, topicID, completed } : { userID: string, topicID: string, completed: boolean }): Promise<User_Topic> {
+export async function addUsersTopics({
+    userID, topicID, completed, time, accuracy, xp
+} : {
+    userID: string, topicID: string, completed: boolean, time: number, accuracy: number, xp: number
+}): Promise<User_Topic> {
+
     const { data, error } = await getClient().from("users_topics").insert([{
         user: userID,
         topic: topicID,
-        completed: completed
-    }]).select();
+        completed: completed,
+        time: time,
+        accuracy: accuracy,
+        xp: xp
+    }]).select().single();
     if(error) { throw error; }
-    return data[0];
+    return data;
 }
 
 /**
