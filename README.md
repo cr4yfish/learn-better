@@ -36,13 +36,33 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Basic Edit Profile
     - [ ] Basic Settings (cloud saved)
 - [x] Leaderboard (global for now)
+- [ ] Implement Rank system
+    - [ ] Leaderboard per rank
+    - [ ] Rank up system (weekly-based)
+- [ ] Implement Course Sections
 - [ ] Buy a domain
 
 ### Beta Features
 - [ ] Fix the level scroller offset function (it's a bit janky right now)
-- [ ] Implement Rank system
-    - [ ] Leaderboard per rank
-    - [ ] Rank up system (weekly-based)
+- [ ] Use accumulated data
+    - [ ] Training mode on low confidence questions
+    - [ ] Stats about users & learning
+- [ ] New-user Flow
+    - [ ] Onboarding  
+- [ ] Mass creation UI for Levels & Questions (optimized for Desktop)
+- [ ] Redesign UI
+    - [ ] Move as much as possible to Server Rendering
+    - [ ] Add animations
+- [ ] Offline features
+    - [ ] Making better use of PWA features
+    - [ ] Better caching
+    - [ ] Offline UI
+    - [ ] Manual download of Courses?
+- [ ] Importing Levels & Questions from other sources
+    - [ ] Anki decks    
+
+### Future Features
+- [ ] Achievements
 - [ ] Community Features
     - [ ] Editing Profile, adding more optional info fields
     - [ ] Viewing other user profiles
@@ -53,18 +73,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Commenting on Courses?
     - [ ] Rating Courses, Levels & Questions
     - [ ] Flagging/Reporting Courses, Levels & Questions? - Not like I could afford to moderate it anyway
-- [ ] Mass creation UI for Levels & Questions (optimized for Desktop)
-- [ ] New-user Flow
-    - [ ] Onboarding
-    - [ ] Tutorial?
-        - [ ] How to use the app
-        - [ ] How to create stuff
-
-### Future Features
-- [ ] Use accumulated data
-    - [ ] Add Achievements
-    - [ ] Training mode on low confidence questions
-    - [ ] Stats about users & learning
+- [ ] UI Optimization for Desktop
 - [ ] Add Security features
     - [ ] Cloudflare
     - [ ] Captcha for user sign ups
@@ -72,18 +81,10 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Private Courses
     - [ ] Private User Profiles
     - [ ] Data opt-out? - Why even use a data-drive app if you don't want to provide data?
-- [ ] Institutional Accounts?
-- [ ] Importing Levels & Questions from other sources
-    - [ ] Anki decks
-- [ ] Offline features
-    - [ ] Making better use of PWA features
-    - [ ] Better caching
-    - [ ] Offline UI
-    - [ ] Manual download of Courses?
-- [ ] UI Optimization for Desktop
 - [ ] Localization? - Only if there are enough users to justify it
     - [ ] Multi-language support
     - [ ] Multi-language Courses
+- [ ] Institutional Accounts?    
 
 ### Paywall features (these cost significant money to run)
 These features will be locked either behind a payment plan or by letting users provide their API keys (e.g. for OpenAI).
