@@ -35,7 +35,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Basic UI for Profiles
     - [ ] Basic Edit Profile
     - [ ] Basic Settings (cloud saved)
-- [ ] Leaderboard (global for now)
+- [x] Leaderboard (global for now)
 - [ ] Buy a domain
 
 ### Beta Features
@@ -45,6 +45,8 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Rank up system (weekly-based)
 - [ ] Community Features
     - [ ] Editing Profile, adding more optional info fields
+    - [ ] Viewing other user profiles
+    - [ ] Following other users / Friends
     - [ ] Creating and joining Communities?
     - [ ] Sharing of Courses
     - [ ] Access Control settings for shared Courses aka Collaboration
