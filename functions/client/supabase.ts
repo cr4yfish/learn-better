@@ -491,12 +491,7 @@ export async function getCourseSections(courseId: string): Promise<Course_Sectio
         title,
         description,
         order,
-        courses (
-            id,
-            title,
-            abbreviation,
-            description
-        )
+        course
     `).eq("course", courseId).order("order", { ascending: true });
     if(error) { throw error; }
     return data.map((db: any) => {
@@ -538,7 +533,7 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
     .order("order", { ascending: true })
     .range(from, from + limit -1);
     if(error) { throw error; }
-
+    
     return (data.map((db: any) => {
         return {
             id: db.id,
@@ -546,7 +541,7 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             title: db.title,
             description: db.description,
             course: db.courses,
-            course_sections: db.course_sections,
+            course_section: db.course_sections,
             order: db.order,
             completed: db.users_topics[0]?.completed ?? false
         }

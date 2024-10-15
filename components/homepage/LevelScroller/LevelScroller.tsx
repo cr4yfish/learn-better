@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import { Button } from "@nextui-org/button";
 import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
 
-import { Course, Topic, User_Course } from "@/types/db"
+import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
-import { getCourseTopics } from "@/functions/client/supabase"
+import { getCourseSections, getCourseTopics } from "@/functions/client/supabase"
 import Icon from "@/components/Icon";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {
     const offsets = [];
@@ -71,20 +72,54 @@ async function loadMoreTopics({
 
 export default function LevelScroller({ currentUserCourse } : { currentUserCourse: User_Course }) {
     const [topics, setTopics] = useState<Topic[]>([])
+    const [courseSections, setCourseSections] = useState<Course_Section[]>([])
+    const [currentCourseSection, setCurrentCourseSection] = useState<Course_Section | null>(null)
     const [offsets, setOffsets] = useState<number[]>([])
     const [canLoadMore, setCanLoadMore] = useState(true)
     const [cursor, setCursor] = useState<number>(0)
     const [isLoading, setIsLoading] = useState(false)
     const [isAdmin, setIsAdmin] = useState(false)
+    const levelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+    const handleScrollOutOfView = (entry: any) => {
+        if (!entry.isIntersecting) {
+            const topic = topics.find((t) => t.id === entry.target.dataset.id);;
+            setCurrentCourseSection(topic?.course_section ?? null);
+        }
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(handleScrollOutOfView);
+        });
+
+        levelRefs.current.forEach((ref) => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => {
+            levelRefs.current.forEach((ref) => {
+                if (ref) observer.unobserve(ref);
+            });
+        };
+    }, [topics]);
     
     useEffect(() => {
+        
+        const fetchCourseSections = async () => {
+            if (!currentUserCourse?.course?.id) { return; }
+            const res = await getCourseSections(currentUserCourse.course.id);
+            setCourseSections(res);
+        }
+        
         // Reset stuff when course changes
         setTopics([]);
+        fetchCourseSections();
         setOffsets([]);
         setCursor(0);
         setCanLoadMore(true);
         setIsAdmin(currentUserCourse.is_collaborator || currentUserCourse.is_admin || currentUserCourse.is_moderator);
+
 
     }, [currentUserCourse]);
 
@@ -109,9 +144,20 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
         }
         setIsLoading(false);
     }
+
+    const CourseSectionBanner = ({ courseSection } : { courseSection: Course_Section | null}) => (
+        courseSection &&
+        <Card className=" absolute top-0 w-full z-10">
+            <CardHeader>{courseSection.title}</CardHeader>
+            <CardBody>{courseSection.description}</CardBody>
+        </Card>
+    );
+
     return (
+    <>
+        <CourseSectionBanner courseSection={currentCourseSection} />
         <InfiniteScroll 
-            className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll  pb-80"
+            className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll pb-80 mt-32"
             pageStart={1}
             loadMore={() => canLoadMore && handleLoadMore()}
             hasMore={canLoadMore}
@@ -119,13 +165,14 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
             key="infinite-scroll"
         >
             {topics.map((topic, index) => (
-                <Level 
-                    key={topic.id} 
-                    topic={topic} 
-                    active={topic.completed || topics[index - 1]?.completed || index === 0 ||  false}
-                    offset={offsets[index]}
-                    isAdmin={isAdmin}
-                />
+                <div key={topic.id} ref={(el) => { levelRefs.current[index] = el; }} data-id={topic.id}>
+                    <Level 
+                        topic={topic} 
+                        active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
+                        offset={offsets[index]}
+                        isAdmin={isAdmin}
+                    />
+                </div>
             ))}
             {!canLoadMore && topics.length === 0 && (
                 <>
@@ -163,5 +210,6 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
             )}
             
         </InfiniteScroll>
+    </>
     )
 }
