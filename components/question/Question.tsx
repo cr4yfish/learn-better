@@ -117,7 +117,7 @@ export default function Question({
 
             <div className="flex flex-col gap-2">
                 <span className=" text-tiny">{question?.type?.description}</span>
-                {[...question.answer_options, question.answer_correct].map((option: string, index: number) => (
+                {question.answer_options.map((option: string, index: number) => (
                     <Option 
                         state={getOptionState(questionState, option)}
                         setQuestionState={() => setQuestionState({...questionState, selected: option})}
