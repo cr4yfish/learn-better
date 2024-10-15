@@ -50,6 +50,7 @@ export default function EditCourse({ params: { course }} : { params: { course: s
       topic.order = index;
 
       // remove the .chosen property
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (topic as any).chosen
 
       await addCourseTopic(topic);
