@@ -75,7 +75,7 @@ export default function EditCourse({ params: { course }} : { params: { course: s
           <Card key={topic.id} className=" mb-2  cursor-move select-none">
             <CardBody className="flex flex-row items-center justify-between">
               <span className="">{topic.title}</span>
-              <Icon>move</Icon>
+              <Icon>drag_indicator</Icon>
             </CardBody>
           </Card>
         ))}
