@@ -25,11 +25,11 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Basic Course Editing
     - [x] General info
     - [x] Change order of Levels 
-- [ ] Data aquisition on questions & levels
-    - [ ] Add Confidence system for questions & topics
-    - [ ] Add XP system
-    - [ ] Track & Show streaks
-    - [ ] Basic UI for level complete, using that data
+- [x] Data aquisition on questions & levels
+    - [x] Add accuracy system for questions & topics
+    - [x] Add XP system
+    - [x] Track & Show streaks
+    - [x] Basic UI for level complete, using that data
 - [ ] Basic Creation for user accounts & profiles (I manually create them in the database right now)
 - [ ] Basic UI for Profiles
     - [ ] Basic Edit Profile
