@@ -31,6 +31,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Track & Show streaks
     - [x] Basic UI for level complete, using that data
 - [x] Basic Creation for user accounts & profiles (I manually create them in the database right now)
+- [x] Very basic welcome/login page 
 - [ ] Basic UI for Profiles
     - [ ] Basic Edit Profile
     - [ ] Basic Settings (cloud saved)

@@ -75,6 +75,16 @@ export type Topic = {
     course: Course;
     order?: number;
     completed?: boolean; // only client side
+    course_section?: Course_Section;
+}
+
+export type Course_Section = {
+    id: string;
+    created_at?: string; // timestampz
+    title: string;
+    description: string;
+    order?: number;
+    course: Course;
 }
 
 export type Course = {

@@ -2,8 +2,9 @@
 import { AuthResponse, createClient, User } from "@supabase/supabase-js";
 import { FileObject } from "@supabase/storage-js";
 
-import { Course, Profile, Question, Rank, Settings, Streak, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
+import { Course, Course_Section, Profile, Question, Rank, Settings, Streak, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
 import { SessionState } from "@/types/auth";
+import { isSameDay } from "../helpers";
 
 function getClient() {
     return createClient(
@@ -396,13 +397,77 @@ export async function leaveCourse(courseID: string, userID: string) {
     return data;
 }
 
+export async function upsertCourseSection(courseSection: Course_Section): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("course_sections").upsert([courseSection]).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
+export async function deleteCourseSection(courseSectionID: string): Promise<boolean> {
+    const { error } = await getClient().from("course_sections").delete().eq("id", courseSectionID);
+    if(error) { throw error; }
+    return true;
+}
+
+export async function getCourseSection(courseSectionID: string): Promise<Course_Section> {
+    const { data, error } = await getClient().from("course_sections").select(`
+        id,
+        created_at,
+        title,
+        description,
+        order,
+        courses (
+            id,
+            title,
+            abbreviation,
+            description
+        )
+    `).eq("id", courseSectionID).single();
+    if(error) { throw error; }
+    return {
+        id: data.id,
+        created_at: data.created_at,
+        title: data.title,
+        description: data.description,
+        order: data.order,
+        course: data.courses as any
+    }
+}
+
+export async function getCourseSections(courseId: string): Promise<Course_Section[]> {
+    const { data, error } = await getClient().from("course_sections").select(`
+        id,
+        created_at,
+        title,
+        description,
+        order,
+        courses (
+            id,
+            title,
+            abbreviation,
+            description
+        )
+    `).eq("course", courseId).order("order", { ascending: true });
+    if(error) { throw error; }
+    return data.map((db: any) => {
+        return {
+            id: db.id,
+            created_at: db.created_at,
+            title: db.title,
+            description: db.description,
+            order: db.order,
+            course: db.courses
+        }
+    });
+}
+
 export async function getCourseTopics(courseId: string, from: number, limit: number): Promise<Topic[]> {
     const { data, error } = await getClient().from("topics").select(`
         id,
         created_at,
         title,
         description,
-        course (
+        courses (
             id,
             title,
             abbreviation,
@@ -410,6 +475,13 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
         ),
         users_topics (
             completed
+        ),
+        order,
+        course_sections (
+            id,
+            title,
+            description,
+            order
         )
     `)
     .eq("course", courseId)
@@ -423,7 +495,9 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             created_at: db.created_at,
             title: db.title,
             description: db.description,
-            course: db.course,
+            course: db.courses,
+            course_sections: db.course_sections,
+            order: db.order,
             completed: db.users_topics[0]?.completed ?? false
         }
     }));
@@ -441,7 +515,13 @@ export async function getTopic(topicId: string): Promise<Topic> {
             abbreviation,
             description
         ),
-        order
+        order,
+        course_sections (
+            id,
+            title,
+            description,
+            order
+        )
     `).eq("id", topicId).single();
     if(error) { throw error; }
     return {
@@ -673,6 +753,7 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
     if(error) { throw error; }
 
     if(data.length === 0) {
+        console.log("no streak found, adding new one");
         // no streaks, add a new one
         const { data: db, error: addError } = await getClient().from("streaks").insert([
             {
@@ -686,13 +767,16 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
     } else {
         // check if the streak can be extended
         const lastStreak = data[0] as any as Streak;
-        if(lastStreak.to === today) {
+        const lastStreakTo = new Date(lastStreak.to as string & undefined);
+        if(isSameDay(lastStreakTo, today)) {
             // extend the streak
+            console.log("Extending streak");
             const { data: db, error: extendError } = await getClient().from("streaks").update({ to: today }).eq("id", lastStreak.id).select();
             if(extendError) { throw extendError; }
             return { streak: db[0], isExtended: true, isAdded: false };
         } else {
             // add a new streak
+            console.log("Streak cant be extended, adding new one");
             const { data: db, error: addError } = await getClient().from("streaks").insert([
                 {
                     user: userID,
