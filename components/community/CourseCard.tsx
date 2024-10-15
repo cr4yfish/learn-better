@@ -83,7 +83,7 @@ export default function CourseCard ({
                             Join
                         </Button>
                     }
-                    { isAdmin &&
+                    { isAdmin && !isSmall &&
                         <Link href={`/course/edit/${course.id}`}>
                             <Button 
                                 variant="faded" 
