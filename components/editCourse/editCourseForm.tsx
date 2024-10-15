@@ -97,7 +97,7 @@ export default function EditCourseForm({ userId, isNew, course } : { userId: str
                 color="primary"
                 variant="shadow"
                 isLoading={isLoading}
-                startContent={<Icon filled>{done ? "check_circle" : "add"}</Icon>}
+                startContent={<Icon filled>{done ? "check_circle" : isNew ? "add" : "save"}</Icon>}
                 isDisabled={done}
                 onClick={() => saveCourse(newCourse)}
             >
