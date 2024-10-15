@@ -6,7 +6,7 @@ import { ReactSortable } from "react-sortablejs";
 import { Card, CardBody } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
 
-import { addCourseTopic, getCourseTopics, getCurrentUser, getUserCourse } from "@/functions/client/supabase";
+import { upsertCourseTopic, getCourseTopics, getCurrentUser, getUserCourse } from "@/functions/client/supabase";
 import { Topic, User_Course } from "@/types/db";
 
 import EditCourseForm from "@/components/editCourse/editCourseForm";
@@ -53,7 +53,7 @@ export default function EditCourse({ params: { course }} : { params: { course: s
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (topic as any).chosen
 
-      await addCourseTopic(topic);
+      await upsertCourseTopic(topic);
     })
     setOrderUpdated(false);
     setLoadingOrder(false);

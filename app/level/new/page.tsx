@@ -9,7 +9,7 @@ import { Button } from "@nextui-org/button";
 import Icon from "@/components/Icon";
 import CourseSelect from "@/components/addLevel/CourseSelect";
 import { Course, Topic } from "@/types/db";
-import { addCourseTopic } from "@/functions/client/supabase";
+import { upsertCourseTopic } from "@/functions/client/supabase";
 
 
 export default function NewLevel() {
@@ -43,7 +43,7 @@ export default function NewLevel() {
         setIsLoading(true);
 
         try {
-            const res = await addCourseTopic(newTopic);
+            const res = await upsertCourseTopic(newTopic);
 
             // add id from db to newTopic
             setNewTopic((prev) => {
