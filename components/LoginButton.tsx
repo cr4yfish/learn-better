@@ -82,8 +82,6 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
 
         <Modal className="dark transition-all" size="lg" backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
-            {(onClose) => (
-                <>
                 <ModalHeader className="flex flex-col gap-1">{isSignUp ? "Sign up" : "Log in" }</ModalHeader>
                 <ModalBody>
                     <form id="loginForm" onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -110,8 +108,6 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
                         {isSignUp ? "Sign up" : "Log in"}
                     </Button>
                 </ModalFooter>
-                </>
-            )}
             </ModalContent>
         </Modal>
         </>
