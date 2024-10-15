@@ -17,6 +17,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
     const [userTopic, setUserTopic] = useState<User_Topic>({} as User_Topic);
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);
     const [showStreak, setShowStreak] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
 
@@ -26,6 +27,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                 setSessionState(session);
                 const userTopic = await getUserTopic(session.user.id, level);
                 if(userTopic) setUserTopic(userTopic);
+                setIsLoading(false);
             }
         }
 
@@ -41,6 +43,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                 { userTopic && sessionState && 
                     <LevelComplete 
                         userTopic={userTopic} 
+                        isLoading={isLoading}
                     />
                 }
                 </div>
@@ -73,6 +76,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                         fullWidth
                         onClick={() => setShowStreak(true)}
                         color="primary" 
+                        isDisabled={isLoading}
                         variant="shadow" 
                         endContent={<Icon filled>arrow_right_alt</Icon>}
                     >

@@ -5,40 +5,46 @@ import { Card, CardBody } from "@nextui-org/card"
 import Icon from "./Icon"
 
 import { User_Topic } from "@/types/db"
+import { Spinner } from "@nextui-org/spinner"
+import { formatSeconds } from "@/functions/helpers"
 
-export default function LevelComplete({ userTopic } : { userTopic: User_Topic }) {
+export default function LevelComplete({ userTopic, isLoading } : { userTopic: User_Topic, isLoading: boolean }) {
 
     return (
         <>
         <div className="flex flex-col gap-4 w-full items-center justify-evenly">
 
-            <Card className=" w-full py-2 bg-green-500/20 text-green-300 font-bold text-lg">
+            <Card className=" w-full py-2 bg-success/15 text-success font-bold text-lg">
                 <CardBody className="flex flex-row items-center w-full justify-between">
                     <span>Stars found</span>
+                    {isLoading ? <Spinner color="success" size="sm" /> :
                     <div className="flex items-center gap-1">
-                        <Icon color="green-300" filled>hotel_class</Icon>
+                        <Icon color="success" filled>hotel_class</Icon>
                         {userTopic.xp}
                     </div>
+                    }
                 </CardBody>
             </Card>
 
-            <Card className=" w-full py-2 bg-blue-500/20 text-blue-300 font-bold text-lg">
+            <Card className=" w-full py-2 bg-warning/15 text-warning font-bold text-lg">
                 <CardBody className="flex flex-row items-center w-full justify-between">
                     <span>Time</span>
+                    {isLoading ? <Spinner color="warning" size="sm" /> :
                     <div className="flex items-center gap-1">
-                        <Icon color="blue-300" filled>timer</Icon>
-                        {userTopic.seconds}
-                    </div>
+                        <Icon color="warning" filled>timer</Icon>
+                        {formatSeconds(userTopic.seconds)}
+                    </div>}
                 </CardBody>
             </Card>
 
-            <Card className=" w-full py-2 bg-pink-500/20 text-pink-300 font-bold text-lg">
+            <Card className=" w-full py-2 bg-danger/15 text-danger font-bold text-lg">
                 <CardBody className="flex flex-row items-center w-full justify-between">
                     <span>Accuracy</span>
+                    {isLoading ? <Spinner color="danger" size="sm" /> :
                     <div className="flex items-center gap-1">
-                        <Icon color="pink-300" filled>crisis_alert</Icon>
+                        <Icon color="danger" filled>crisis_alert</Icon>
                         {userTopic.accuracy}%
-                    </div>
+                    </div>}
                 </CardBody>
             </Card>
 
