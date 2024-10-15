@@ -71,7 +71,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} dark antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden`}
         >
-          <NextUIProvider className="h-full min-h-screen overflow-y-hidden flex justify-between flex-col antialiased dark">
+          <NextUIProvider className="h-full max-h-screen overflow-y-hidden flex justify-between flex-col antialiased dark">
               {children}
               
             </NextUIProvider>
