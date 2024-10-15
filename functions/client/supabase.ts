@@ -119,6 +119,12 @@ export async function getProfile(id: string): Promise<Profile> {
     return data[0];
 }
 
+export async function getProfiles(): Promise<Profile[]> {
+    const { data, error } = await getClient().from("profiles").select().order("total_xp", { ascending: false });
+    if(error) { throw error; }
+    return data;
+}
+
 export async function getSettings(userID: string): Promise<Settings> {
     const { data, error } = await getClient().from("settings").select(`
         created_at,

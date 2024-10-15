@@ -3,7 +3,7 @@ import React from "react"
 
 import Icon from "../Icon"
 
-type Links = "Home" | "Training" | "Community" | "Profile"
+type Links = "Home" | "Training" | "Community" | "Profile" | "Leaderboard"
 
 const LinkComponent = ({ href, icon, activeTitle, title } : { href: string, icon: string, activeTitle: string, title: Links }) => {
     const active: boolean = activeTitle === title
@@ -28,6 +28,7 @@ export default function Navigation({ activeTitle } : { activeTitle: Links }) {
         <div className=" absolute bottom-0 bg-black/50 z-50 backdrop-blur-xl rounded-t-xl flex justify-between items-center w-full p-6">
             <div className="flex items-center justify-evenly w-full gap-4">
                 <LinkComponent title="Home" href="/" icon="home" activeTitle={activeTitle} />
+                <LinkComponent title="Leaderboard" href="/leaderboard" icon="leaderboard" activeTitle={activeTitle} />
                 <LinkComponent title="Training" href="/training" icon="exercise" activeTitle={activeTitle} />
                 <LinkComponent title="Community" href="/community" icon="communities" activeTitle={activeTitle} />
                 <LinkComponent title="Profile" href="/user" icon="account_circle" activeTitle={activeTitle} />
