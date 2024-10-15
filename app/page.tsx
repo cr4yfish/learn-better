@@ -23,7 +23,10 @@ export default function Home() {
 
   const fetchSessionState = async () => {
     const res = await getCurrentUser()
-    if(!res) return
+    if(!res) {
+      window.location.href = "/welcome"; // route user to login page
+      return;
+    }
     setSessionState(res as SessionState)
 
     const currentCourse = res?.settings.current_course;
