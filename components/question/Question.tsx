@@ -57,8 +57,9 @@ export default function Question({
             question: question.id,
             completed: completed,
             xp: xp,
-            accuracy: questionState.correct == "correct" ? 1 : 0,
-            seconds: stopwatch.getElapsedRunningTime()
+            accuracy: completed ? 100 : 0,
+            seconds: Math.round(stopwatch.getElapsedRunningTime()/1000),
+            last_tried_at: new Date().toISOString()
         })
 
         stopwatch.stop(); // reset the timer
@@ -66,7 +67,8 @@ export default function Question({
         setLevelState((prevState) => ({
             ...prevState,
             progress: prevState.progress + 1,
-            xp: xp
+            xp: xp,
+            correctQuestions: completed ? ++prevState.correctQuestions : prevState.correctQuestions
         }))
 
         onOpen()

@@ -9,7 +9,7 @@ import Icon from "@/components/Icon";
 import Header from "@/components/question/Header"
 import Question from "@/components/question/Question"
 
-import { addUsersTopics, getCurrentUser, getQuestions } from "@/functions/client/supabase";
+import { addUsersTopics, addXPToProfile, extendOrAddStreak, getCurrentUser, getQuestions } from "@/functions/client/supabase";
 
 import { Question as QuestionType } from "@/types/db";
 import { LevelState } from "@/types/client";
@@ -23,9 +23,11 @@ export default function Level({ params } : { params: { level: string }}) {
     const [levelState, setLevelState] = useState<LevelState>({
         progress: 0,
         answeredQuestions: 0,
+        correctQuestions: 0,
         totalQuestions: 1,
         xp: 0,
-        currentQuestionIndex: 0
+        currentQuestionIndex: 0,
+        seconds: 0
     });
 
     const stopwatch = useStopwatch();
@@ -44,15 +46,25 @@ export default function Level({ params } : { params: { level: string }}) {
         
         stopwatch.pause();
 
-        await addUsersTopics({
+        const newTopic = {
             userID: session.user.id,
             topicID: params.level,
             completed: true,
-            time: stopwatch.getElapsedRunningTime(),
-            accuracy: 12,
-            xp: 100
-        })  
+            seconds: Math.round(stopwatch.getElapsedRunningTime()/1000),
+            accuracy: levelState.correctQuestions/levelState.answeredQuestions * 100,
+            xp: levelState.xp         
+        }
         stopwatch.stop();
+
+        setLevelState((prevState) => ({
+            ...prevState,
+            seconds: newTopic.seconds
+        }))
+
+        await addUsersTopics(newTopic)  
+        await addXPToProfile(session.user.id, levelState.xp);
+        await extendOrAddStreak(session.user.id, new Date());
+        
     }
 
     useEffect(() => {
@@ -100,11 +112,25 @@ export default function Level({ params } : { params: { level: string }}) {
                     />
                 )}
                 {levelState.answeredQuestions > 0 && levelState.answeredQuestions == levelState.totalQuestions && (
-                    <div className="flex flex-col gap-4 items-center justify-center min-h-full h-full">
-                        <Icon filled color="green-500">check_circle</Icon>
-                        <h2 className="text-2xl font-semibold">Congratulations!</h2>
-                        <p>You have completed this level.</p>
-                        <Link className="w-full" href={"/"}><Button color="primary" className="w-full">Continue</Button></Link>
+                    <div className="flex flex-col gap-8 items-center justify-center w-full h-full min-h-screen px-4 pb-[33vh]">
+                        <Icon upscale filled color="green-500">check_circle</Icon>
+                        <div className="flex flex-col justify-center items-center">
+                            <h2 className="text-4xl font-semibold">Congratulations!</h2>
+                            <p>You have completed this level.</p>
+                        </div>
+
+                        <Link 
+                            className="w-full" 
+                            href={`/level/${params.level}/complete`}
+                        >
+                            <Button 
+                                color="primary" 
+                                variant="shadow" 
+                                className="w-full font-bold"
+                            >
+                                Continue
+                            </Button>
+                        </Link>
                     </div>
                 )}
             </div>
