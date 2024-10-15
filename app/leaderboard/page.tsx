@@ -31,7 +31,6 @@ export default function Leaderboard() {
     useEffect(() => {
         const fetchProfiles = async () => {
             const res = await getProfiles();
-            console.log(res);
             setProfiles(res);
         }
 

@@ -33,16 +33,6 @@ export default function EditCourse({ params: { course }} : { params: { course: s
     fetchUserCourse().then(setUserCourse);
   }, [course]);
 
-  useEffect(() => {
-    if(userCourse) {
-      console.log(userCourse);
-    }
-  }, [userCourse]);
-
-  useEffect(() => {
-    console.log(topics);
-  }, [topics])
-
   const updateOrder = async () => {
     setOrderUpdated(true);
     setLoadingOrder(true);

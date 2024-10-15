@@ -759,7 +759,6 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
     if(error) { throw error; }
 
     if(data.length === 0) {
-        console.log("no streak found, adding new one");
         // no streaks, add a new one
         const { data: db, error: addError } = await getClient().from("streaks").insert([
             {
@@ -776,13 +775,11 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
         const lastStreakTo = new Date(lastStreak.to as string & undefined);
         if(isSameDay(lastStreakTo, today)) {
             // extend the streak
-            console.log("Extending streak");
             const { data: db, error: extendError } = await getClient().from("streaks").update({ to: today }).eq("id", lastStreak.id).select();
             if(extendError) { throw extendError; }
             return { streak: db[0], isExtended: true, isAdded: false };
         } else {
             // add a new streak
-            console.log("Streak cant be extended, adding new one");
             const { data: db, error: addError } = await getClient().from("streaks").insert([
                 {
                     user: userID,

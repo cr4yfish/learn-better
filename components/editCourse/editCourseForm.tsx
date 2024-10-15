@@ -26,7 +26,6 @@ export default function EditCourseForm({ userId, isNew, course } : { userId: str
 
     const saveCourse = async (courseToSave: Course) => {
         setIsLoading(true);
-        console.log("save course");
 
         courseToSave.id = (course && !isNew) ? course.id : uuidv4();
 
@@ -41,12 +40,7 @@ export default function EditCourseForm({ userId, isNew, course } : { userId: str
 
         courseToSave.is_official = (course && !isNew) ? course.is_official : false;
 
-
-        console.log("upserting course", courseToSave);
-
         const res = await upsertCourse(courseToSave);
-
-        console.log(res);
 
         if(res.id && isNew) {
 

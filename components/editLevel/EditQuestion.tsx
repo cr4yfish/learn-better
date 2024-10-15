@@ -33,7 +33,6 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
 
     const handleDeleteQuestion = async () => {
         setIsDeleteLoading(true);
-        console.log("Delete", question)
         try {
             const res = await deleteQuestion(question.id);
             if(res) {

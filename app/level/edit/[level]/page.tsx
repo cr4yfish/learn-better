@@ -111,8 +111,7 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
 
     const handleDeleteTopic = async () => {
         setIsLoadingDelete(true);
-        const success = await deleteCourseTopic(topic);
-        console.log(success);
+        await deleteCourseTopic(topic);
 
         // route user to home
         window.location.href = "/";
