@@ -3,8 +3,10 @@ export type LevelState = {
     progress: number,
     answeredQuestions: number,
     totalQuestions: number,
+    correctQuestions: number;
     xp: number,
-    currentQuestionIndex: number
+    currentQuestionIndex: number,
+    seconds: number,
 }
 
 export type QuestionState = {

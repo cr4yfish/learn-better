@@ -154,16 +154,16 @@ export type UserQuestionClient = {
 }
 
 export type User_Topic = {
-    user: User;
+    user?: User;
     topic: Topic;
     completed: boolean;
-    time: number;
+    seconds: number;
     accuracy: number;
     xp: number;
 }
 
 export type User_Community = {
-    user: User;
+    user?: User;
     community: Community;
     joined_at: string; // timestampz
     is_admin: boolean;
@@ -171,7 +171,7 @@ export type User_Community = {
 }
 
 export type User_Institution = {
-    user: User;
+    user?: User;
     institution: Institution;
     joined_at: string; // timestampz
     is_admin: boolean;

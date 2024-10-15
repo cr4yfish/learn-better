@@ -2,7 +2,7 @@
 import { createClient, User } from "@supabase/supabase-js";
 import { FileObject } from "@supabase/storage-js";
 
-import { Course, Profile, Question, Rank, Settings, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
+import { Course, Profile, Question, Rank, Settings, Streak, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
 function getClient() {
@@ -220,6 +220,15 @@ export async function getCurrentUser(): Promise<SessionState | null> {
     const profile = await getProfile(session.data.session?.user.id as string);
     const settings = await getSettings(session.data.session?.user.id as string);
     const courses = await getUserCourses(session.data.session?.user.id as string);
+    const currentStreak = await getStreakOnDate(session.data.session?.user.id as string, new Date());
+    let currentStreakDays = 0;
+
+    if(currentStreak) {
+        const from = new Date(currentStreak.from);
+        const to = currentStreak.to ? new Date(currentStreak.to) : new Date(); // if to is null, use today -> streak is ongoing
+        const diff = Math.abs(to.getTime() - from.getTime()) + 1;
+        currentStreakDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    }
 
     return {
         session: session.data.session,
@@ -228,7 +237,9 @@ export async function getCurrentUser(): Promise<SessionState | null> {
         isLoggedIn: true,
         pendingAuth: false,
         settings: settings,
-        courses: courses
+        courses: courses,
+        currentStreak: currentStreak,
+        currentStreakDays: currentStreakDays
     }
 }
 
@@ -498,7 +509,7 @@ export async function addUserQuestion(userQuestion: User_Question): Promise<User
 
 export async function getUsersTopics(): Promise<User_Topic[]> {
     const { data, error } = await getClient().from("users_topics").select(`
-        users (id, email, username),
+        user,
         topics (
             id, 
             title, 
@@ -516,32 +527,136 @@ export async function getUsersTopics(): Promise<User_Topic[]> {
 
     return data.map((db: any) => {
         return {
-            user: db.users as User,
+            user: undefined,
             topic: db.topics as Topic,
             completed: db.completed as boolean,
-            time: db.time as number,
+            seconds: db.time as number,
             accuracy: db.accuracy as number,
             xp: db.xp as number
         }
     })
 }
 
+export async function getUserTopic(userId: string, topicId: string): Promise<User_Topic> {
+    const { data, error } = await getClient().from("users_topics").select(`
+        user,
+        topics (
+            id, 
+            title, 
+            description,
+            course (
+                id,
+                title,
+                abbreviation,
+                description
+            )
+        ),
+        completed,
+        accuracy,
+        xp,
+        created_at,
+        seconds
+    `).eq("user", userId).eq("topic", topicId).single();
+    if(error) { throw error; }
+    return {
+        user: undefined,
+        topic: data.topics as any as Topic,
+        completed: data.completed as boolean,
+        seconds: data.seconds as number,
+        accuracy: data.accuracy as number,
+        xp: data.xp as number
+    };
+}
+
 export async function addUsersTopics({
-    userID, topicID, completed, time, accuracy, xp
+    userID, topicID, completed, seconds, accuracy, xp
 } : {
-    userID: string, topicID: string, completed: boolean, time: number, accuracy: number, xp: number
+    userID: string, topicID: string, completed: boolean, seconds: number, accuracy: number, xp: number
 }): Promise<User_Topic> {
 
-    const { data, error } = await getClient().from("users_topics").insert([{
+    const { data, error } = await getClient().from("users_topics").upsert([{
         user: userID,
         topic: topicID,
         completed: completed,
-        time: time,
+        seconds: seconds,
         accuracy: accuracy,
         xp: xp
     }]).select().single();
     if(error) { throw error; }
     return data;
+}
+
+export async function addXPToProfile(userID: string, xp: number): Promise<Profile> {
+    const { data, error } = await getClient().from("profiles").update({ total_xp: xp }).eq("id", userID).select();
+    if(error) { throw error; }
+    return data[0];
+}
+
+export async function getStreaks(userID: string) {
+    const { data, error } = await getClient().from("streaks").select().eq("user", userID);
+    if(error) { throw error; }
+    return data;
+}
+
+/**
+ * Returns the current streak of the user, if there is one
+ * @param userID 
+ * @param date 
+ */
+export async function getStreakOnDate(userID: string, date: Date): Promise<Streak> {
+    const { data, error } = await getClient()
+        .from("streaks")
+        .select()
+        .eq("user", userID)
+        .lte("from", date.toISOString()) // from <= date
+        .gte("to", date.toISOString()) // to >= date
+        .single();
+    if(error) { throw error; }
+    return data as Streak;
+
+}
+/**
+ * Either extends a current streak or adds a new one, depending on the dates
+ * @param userID 
+ * @param from 
+ * @param to 
+ */
+export async function extendOrAddStreak(userID: string, today: Date): Promise<{ streak: Streak, isExtended: boolean, isAdded: boolean }> {
+    const { data, error } = await getClient().from("streaks").select().eq("user", userID).order("from", { ascending: false }).limit(1);
+    if(error) { throw error; }
+
+    if(data.length === 0) {
+        // no streaks, add a new one
+        const { data: db, error: addError } = await getClient().from("streaks").insert([
+            {
+                user: userID,
+                from: today,
+                to: today
+            }
+        ]).select();
+        if(addError) { throw addError; }
+        return { streak: db[0], isExtended: false, isAdded: true };
+    } else {
+        // check if the streak can be extended
+        const lastStreak = data[0] as any as Streak;
+        if(lastStreak.to === today) {
+            // extend the streak
+            const { data: db, error: extendError } = await getClient().from("streaks").update({ to: today }).eq("id", lastStreak.id).select();
+            if(extendError) { throw extendError; }
+            return { streak: db[0], isExtended: true, isAdded: false };
+        } else {
+            // add a new streak
+            const { data: db, error: addError } = await getClient().from("streaks").insert([
+                {
+                    user: userID,
+                    from: today,
+                    to: today
+                }
+            ]).select();
+            if(addError) { throw addError; }
+            return { streak: db[0], isExtended: false, isAdded: true };
+        }
+    }
 }
 
 /**

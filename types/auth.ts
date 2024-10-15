@@ -1,6 +1,6 @@
 
 import { User, Session } from "@supabase/supabase-js";
-import { Profile, Settings, User_Course } from "./db";
+import { Profile, Settings, Streak, User_Course } from "./db";
 
 
 export interface SessionState {
@@ -11,4 +11,6 @@ export interface SessionState {
     pendingAuth: boolean;
     settings: Settings;
     courses: User_Course[];
+    currentStreak: Streak | undefined;
+    currentStreakDays: number;
 }
