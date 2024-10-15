@@ -430,12 +430,32 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
 }
 
 export async function getTopic(topicId: string): Promise<Topic> {
-    const { data, error } = await getClient().from("topics").select().eq("id", topicId).single();
+    const { data, error } = await getClient().from("topics").select(`
+        id,
+        created_at,
+        title,
+        description,
+        courses (
+            id,
+            title,
+            abbreviation,
+            description
+        ),
+        order
+    `).eq("id", topicId).single();
     if(error) { throw error; }
-    return data;
+    return {
+        id: data.id,
+        created_at: data.created_at,
+        title: data.title,
+        description: data.description,
+        course: data.courses as any,
+        order: data.order
+    }
 }
 
-export async function addCourseTopic(topic: Topic): Promise<{ id: string }> {
+
+export async function upsertCourseTopic(topic: Topic): Promise<{ id: string }> {
     const { data, error } = await getClient().from("topics").upsert([{
         ...topic,
         course: topic.course.id,
@@ -443,6 +463,12 @@ export async function addCourseTopic(topic: Topic): Promise<{ id: string }> {
 
     if(error) { throw error; }
     return { id: data[0].id };
+}
+
+export async function deleteCourseTopic(topic: Topic): Promise<{ success: boolean }> {
+    const { error } = await getClient().from("topics").delete().eq("id", topic.id);
+    if(error) { throw error; }
+    return { success: true };
 }
 
 /**
