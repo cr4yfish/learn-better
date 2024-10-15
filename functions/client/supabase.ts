@@ -104,10 +104,31 @@ export async function getRanks(): Promise<Rank[]> {
 }
 
 export async function getProfile(id: string): Promise<Profile> {
-    const { data, error } = await getClient().from("profiles").select().eq("id", id);
+    const { data, error } = await getClient().from("profiles").select(`
+        id,
+        username,
+        avatar,
+        total_xp,
+        ranks (
+            id,
+            title,
+            description,
+            xp_threshold
+        ),
+        banner
+    `).eq("id", id).single();
     if(error) { throw error; }
 
-    const profile = data[0] as Profile;
+    const profile = {
+        id: data.id,
+        username: data.username,
+        avatar: data.avatar,
+        total_xp: data.total_xp,
+        rank: data.ranks as any,
+        banner: data.banner,
+        avatarLink: "",
+        bannerLink: ""
+    }
 
     // get links
     try {
@@ -116,11 +137,34 @@ export async function getProfile(id: string): Promise<Profile> {
     } catch (error) {
         console.error("Error getting profile links:", error);
     }
-    return data[0];
+    return profile;
 }
 
 export async function getProfiles(): Promise<Profile[]> {
     const { data, error } = await getClient().from("profiles").select().order("total_xp", { ascending: false });
+    if(error) { throw error; }
+    return data;
+}
+
+export async function getCurrentUserRank(): Promise<Rank> {
+    const session = await getSession();
+    if(!session.data.session) {
+        throw new Error("No session found");
+    }
+
+    const profile = await getProfile(session.data.session.user.id as string);
+    return profile.rank as Rank;
+}
+
+export async function getProfilesInRank(rankID?: string): Promise<Profile[]> {
+    let localRankID = rankID;
+    if(!localRankID) {
+        localRankID = (await getCurrentUserRank()).id;
+    }
+
+    console.log("Rank ID: ", localRankID);
+
+    const { data, error } = await getClient().from("profiles").select().eq("rank", localRankID).order("total_xp", { ascending: false });
     if(error) { throw error; }
     return data;
 }
@@ -719,7 +763,7 @@ export async function addUsersTopics({
     return data;
 }
 
-export async function addXPToProfile(userID: string, xp: number): Promise<Profile> {
+export async function updateTotalXP(userID: string, xp: number): Promise<Profile> {
     const { data, error } = await getClient().from("profiles").update({ total_xp: xp }).eq("id", userID).select();
     if(error) { throw error; }
     return data[0];
@@ -790,6 +834,31 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
             if(addError) { throw addError; }
             return { streak: db[0], isExtended: false, isAdded: true };
         }
+    }
+}
+
+export async function getNextRank(currentRank: Rank): Promise<Rank> {
+    const { data, error } = await getClient()
+        .from("ranks")
+        .select()
+        .gt("xp_threshold", currentRank.xp_threshold)
+        .order("xp_threshold", { ascending: true })
+        .limit(1)
+        .single();
+    if(error) { throw error; }
+    return data as Rank;
+}
+
+export async function tryRankUp(userID: string, xp: number, currentRank: Rank): Promise<{ rank: Rank, rankedUp: boolean }> {
+    const nextRank = await getNextRank(currentRank);
+    console.log("Next rank: ", nextRank);
+    if(xp >= nextRank.xp_threshold) {
+        // rank up
+        const { data, error } = await getClient().from("profiles").update({ rank: nextRank.id }).eq("id", userID).select();
+        if(error) { throw error; }
+        return { rank: nextRank, rankedUp: true };
+    } else {
+        return { rank: currentRank, rankedUp: false };
     }
 }
 

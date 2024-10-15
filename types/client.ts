@@ -7,6 +7,7 @@ export type LevelState = {
     xp: number,
     currentQuestionIndex: number,
     seconds: number,
+    rankUp: boolean,
 }
 
 export type QuestionState = {

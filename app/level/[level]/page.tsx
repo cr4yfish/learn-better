@@ -9,7 +9,7 @@ import Icon from "@/components/Icon";
 import Header from "@/components/question/Header"
 import Question from "@/components/question/Question"
 
-import { addUsersTopics, addXPToProfile, extendOrAddStreak, getCurrentUser, getQuestions } from "@/functions/client/supabase";
+import { addUsersTopics, updateTotalXP, extendOrAddStreak, getCurrentUser, getQuestions, tryRankUp } from "@/functions/client/supabase";
 
 import { Question as QuestionType } from "@/types/db";
 import { LevelState } from "@/types/client";
@@ -27,8 +27,10 @@ export default function Level({ params } : { params: { level: string }}) {
         totalQuestions: 1,
         xp: 0,
         currentQuestionIndex: 0,
-        seconds: 0
+        seconds: 0,
+        rankUp: false
     });
+    const [isLoading, setIsLoading] = useState(true);
 
     const stopwatch = useStopwatch();
 
@@ -42,9 +44,9 @@ export default function Level({ params } : { params: { level: string }}) {
     }, [stopwatch])
 
     const addUserTopic = async () => {
-        if(!session || !session?.user?.id) return;
-        
+        if(!session || !session?.user?.id || !session.profile) return;
         stopwatch.pause();
+        setIsLoading(true);
 
         const newTopic = {
             userID: session.user.id,
@@ -62,8 +64,19 @@ export default function Level({ params } : { params: { level: string }}) {
         }))
 
         await addUsersTopics(newTopic)  
-        await addXPToProfile(session.user.id, levelState.xp);
+        await updateTotalXP(session.user.id, session.profile?.total_xp + levelState.xp);
         await extendOrAddStreak(session.user.id, new Date());
+        const { rank, rankedUp } = await tryRankUp(session.user.id, session.profile?.total_xp + newTopic.xp, session.profile?.rank);
+        console.log(rank, rankedUp);
+
+        if(rankedUp) {
+            setLevelState((prevState) => ({
+                ...prevState,
+                rankUp: true
+            }))
+        }
+        setIsLoading(false);
+    
         
     }
 
@@ -121,12 +134,13 @@ export default function Level({ params } : { params: { level: string }}) {
 
                         <Link 
                             className="w-full" 
-                            href={`/level/${params.level}/complete`}
+                            href={`/level/${params.level}/complete?rankUp=${levelState.rankUp}`}
                         >
                             <Button 
                                 color="primary" 
                                 variant="shadow" 
                                 className="w-full font-bold"
+                                isLoading={isLoading}
                             >
                                 Continue
                             </Button>

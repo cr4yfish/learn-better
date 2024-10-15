@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
+import { useSearchParams } from "next/navigation";
 
 import LevelComplete from "@/components/LevelComplete";
 import ConditionalLink from "@/components/ConditionalLink";
@@ -16,10 +17,13 @@ import { User_Topic } from "@/types/db"
 export default function LevelCompleteScreen({ params: { level }} : { params: { level: string } }) {
     const [userTopic, setUserTopic] = useState<User_Topic>({} as User_Topic);
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);
-    const [showStreak, setShowStreak] = useState(false);
+    const [step, setStep] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [rankUp, setRankUp] = useState(false);
+    const searchParams = useSearchParams();
 
     useEffect(() => {
+        setRankUp(searchParams.get("rankUp") == "true");
 
         const fetchSessionState = async () => {
             const session = await getCurrentUser();
@@ -37,7 +41,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
     return (
         <div className=" flex flex-col gap-8 px-4 py-6 min-h-screen justify-center pb-[33vh]">
             
-            { !showStreak && (
+            { step == 0 && (
                 <div className="flex flex-col items-center justify-center gap-4">
                 <h1 className="font-bold text-5xl">Level complete!</h1>
                 { userTopic && sessionState && 
@@ -49,7 +53,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                 </div>
             )}
 
-            { showStreak && (
+            { step == 1 && (
                 <div className="flex flex-col items-center justify-center gap-4">
                     <span 
                         style={{
@@ -69,12 +73,20 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                     <span className=" text-2xl font-bold">day streak</span>
                 </div>
             )}
+
+            { step == 2 && rankUp && (
+                <div className="flex flex-col items-center justify-center gap-4">
+                    <span className="text-[24pt] font-bold ">You ranked up!</span>
+                    <span className="text-[50pt] font-bold ">{sessionState.profile?.rank.title}</span>
+                    <span className="text-[16pt] ">New rank</span>
+                </div>
+            )}
             
             <div className=" w-full">
-                <ConditionalLink active={showStreak} href="/">
+                <ConditionalLink active={rankUp ? step == 2 : step == 1} href="/">
                     <Button 
                         fullWidth
-                        onClick={() => setShowStreak(true)}
+                        onClick={() => setStep(step + 1)}
                         color="primary" 
                         isDisabled={isLoading}
                         variant="shadow" 

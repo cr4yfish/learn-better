@@ -8,7 +8,7 @@ export type Profile = {
     banner?: string,
     bannerLink?: string,
     total_xp: number;
-    rank: string;
+    rank: Rank;
 }
 
 // unused right now

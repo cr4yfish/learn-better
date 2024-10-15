@@ -9,6 +9,8 @@ The point being that you can learn anything you want, and you can help others le
 
 The main reason for this project is that I would love to have an App like Duolingo but for university subjects, and since I'd have to create a nice way of adding content to it anyway, I thought why not make it a platform for everyone to use - so here we are.
 
+## 
+
 ## Roadmap
 I tried ordering stuff in a logical order, but I might still jump around a bit.
 
@@ -36,9 +38,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Basic Edit Profile
     - [ ] Basic Settings (cloud saved)
 - [x] Leaderboard (global for now)
-- [ ] Implement Rank system
-    - [ ] Leaderboard per rank
-    - [ ] Rank up system (weekly-based)
+- [x] Implement Rank system
+    - [x] Leaderboard per rank
+    - [x] Rank up system (individual)
 - [ ] Implement Course Sections
 - [ ] Buy a domain
 
@@ -62,6 +64,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Anki decks    
 
 ### Future Features
+- [ ] Weekly rank ups
 - [ ] Achievements
 - [ ] Community Features
     - [ ] Editing Profile, adding more optional info fields
