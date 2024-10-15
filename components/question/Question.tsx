@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { useStopwatch } from "react-use-precision-timer";
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
+import { v4 as uuidv4 } from "uuid";
 
 import { Question as QuestionType } from "@/types/db";
 import { SessionState } from "@/types/auth";
@@ -51,10 +52,10 @@ export default function Question({
         }            
         
         await addUserQuestion({
+            try_id: uuidv4(),
             user: session.user?.id as string,
             question: question.id,
             completed: completed,
-            tries: 1,
             xp: xp,
             accuracy: questionState.correct == "correct" ? 1 : 0,
             seconds: stopwatch.getElapsedRunningTime()
