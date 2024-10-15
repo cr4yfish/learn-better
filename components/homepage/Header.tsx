@@ -6,10 +6,11 @@ import { Button } from "@nextui-org/button"
 import Streak from "../Streak"
 import Xp from "../Xp"
 import { User_Course } from "@/types/db";
+import { SessionState } from "@/types/auth";
 
 export default function Header({ 
-    currentUserCourse, onOpen } : { 
-        currentUserCourse?: User_Course, onOpen: () => void }) {
+    currentUserCourse, onOpen, sessionState } : 
+    { currentUserCourse?: User_Course, onOpen: () => void, sessionState: SessionState }) {
     
 
     return (
@@ -26,8 +27,8 @@ export default function Header({
                 >
                     {currentUserCourse?.course?.abbreviation}
                 </Button>
-                <Streak streak={365} />
-                <Xp xp={2000} />
+                <Streak streak={sessionState.currentStreakDays} />
+                <Xp xp={sessionState.profile?.total_xp} />
             </div>
         </div>
  

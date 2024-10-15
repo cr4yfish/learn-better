@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <>
     <main className="flex flex-col justify-between items-center w-full min-h-full h-full ">
-      <Header currentUserCourse={currentUserCourse} onOpen={onOpen} />
+      <Header currentUserCourse={currentUserCourse} onOpen={onOpen} sessionState={sessionState} />
       <LevelScroller currentUserCourse={currentUserCourse} />
     </main>
     <Navigation activeTitle="Home" />
