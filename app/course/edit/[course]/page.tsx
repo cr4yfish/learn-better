@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { ReactSortable } from "react-sortablejs";
-
 import { Card, CardBody } from "@nextui-org/card";
-import { Button } from "@nextui-org/button";
+
 
 import { upsertCourseTopic, getCourseTopics, getCurrentUser, getUserCourse } from "@/functions/client/supabase";
 import { Topic, User_Course } from "@/types/db";
 
+import { Button } from "@/components/Button";
 import EditCourseForm from "@/components/editCourse/editCourseForm";
 import Icon from "@/components/Icon";
 

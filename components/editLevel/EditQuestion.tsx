@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button } from "@nextui-org/button";
+import { Button } from "@/components/Button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input"
 

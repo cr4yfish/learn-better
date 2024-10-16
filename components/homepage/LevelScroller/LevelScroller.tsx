@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
-import { Button } from "@nextui-org/button";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
 import { getCourseTopics } from "@/functions/client/supabase"
 import Icon from "@/components/Icon";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Button } from "@/components/Button";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {
     const offsets = [];

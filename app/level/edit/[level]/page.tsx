@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 
-import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { Modal, ModalContent, ModalBody, ModalFooter, useDisclosure, ModalHeader } from "@nextui-org/modal";
 import { Select, SelectItem, SelectSection } from "@nextui-org/select";
@@ -13,6 +12,7 @@ import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import { deleteCourseTopic, getQuestions, getTopic, upsertCourseTopic } from "@/functions/client/supabase";
 import { Question, Question_Type, Topic } from "@/types/db";
 
+import { Button } from "@/components/Button";
 import Icon from "@/components/Icon";
 import EditQuestion from "@/components/editLevel/EditQuestion";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";

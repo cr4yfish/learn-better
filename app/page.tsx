@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@nextui-org/button";
 import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter } from "@nextui-org/modal";
 
 import { User_Course } from "@/types/db";
 
 import { getCurrentUser } from "@/functions/client/supabase";
 
+import { Button } from "@/components/Button";
 import LevelScroller from "@/components/homepage/LevelScroller/LevelScroller";
 import Navigation from "@/components/homepage/Navigation";
 import Header from "@/components/homepage/Header";

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Button } from "@nextui-org/button";
+import { Button } from "@/components/Button";
 import { Chip } from "@nextui-org/chip";
 
 import Icon from "../Icon";

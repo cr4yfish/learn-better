@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Input } from "@nextui-org/input"
-import { Button } from "@nextui-org/button"
 import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/modal"
 
+import { Button } from "../Button"
 import Icon from "../Icon"
 import CourseCard from "./CourseCard"
 import { SessionState } from "@/types/auth"
@@ -41,7 +41,7 @@ export default function CourseSearch({ sessionState, setSessionState } : { sessi
 
     return (
         <div className="flex flex-col gap-1">
-            <Button color="primary" onClick={onOpen} startContent={<Icon filled>search</Icon>} >Search courses</Button>
+            <Button color="primary" onClick={onOpen} startContent={<Icon color="fuchsia-950" filled>search</Icon>} >Search courses</Button>
         
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top" size="full" >
             <ModalContent>

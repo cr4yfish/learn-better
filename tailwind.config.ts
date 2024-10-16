@@ -20,7 +20,18 @@ const config: Config = {
   },
   plugins: [
     typography,
-    nextui()
+    nextui({
+      themes: {
+        dark: {
+          colors: {
+            primary: {
+              foreground: "#250326",
+              DEFAULT: "#E879F9",
+            }
+          }
+        }
+      }
+    })
   ],
 };
 export default config;

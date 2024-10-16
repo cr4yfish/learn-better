@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 import { Progress } from "@nextui-org/progress";
-import { Button } from "@nextui-org/button";
+import { Button } from "@/components/Button";
 
 import Icon from "../Icon";
 import Xp from "../Xp";

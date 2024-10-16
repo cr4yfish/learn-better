@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button } from "@nextui-org/button";
+
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
 import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
 
+import { Button } from "../Button";
 import Icon from "../Icon";
 import CourseCard from "./CourseCard";
 import ConditionalLink from "../ConditionalLink";
@@ -53,7 +54,9 @@ export default function Courses() {
 
             <div className="flex flex-col gap-4">
                 <ConditionalLink active={(sessionState?.user?.id ? true : false)} href={`course/new/${sessionState?.user?.id}`}>
-                    <Button isLoading={sessionState?.user?.id ? false : true} color="primary" startContent={<Icon color="white" filled>add</Icon>}>Create a course</Button>
+                    <Button 
+                        isLoading={sessionState?.user?.id ? false : true} color="primary" 
+                        startContent={<Icon color="fuchsia-950" filled>add</Icon>}>Create a course</Button>
                 </ConditionalLink>
 
                 <CourseSearch sessionState={sessionState} setSessionState={setSessionState} />

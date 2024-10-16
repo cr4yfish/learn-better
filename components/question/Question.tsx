@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "@nextui-org/button";
+
 import { useStopwatch } from "react-use-precision-timer";
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import { v4 as uuidv4 } from "uuid";
@@ -8,7 +8,7 @@ import { Question as QuestionType } from "@/types/db";
 import { SessionState } from "@/types/auth";
 import { LevelState } from "@/types/client";
 import { QuestionState, OptionState } from "@/types/client";
-
+import { Button } from "@/components/Button";
 import Option from "./Option";
 
 import { addUserQuestion } from "@/functions/client/supabase";
@@ -136,7 +136,7 @@ export default function Question({
                 color={questionState.correct == "initial" ? "primary" : (questionState.correct == "correct" ? "success" : "danger")}
                 isDisabled={questionState.selected.length == 0 || questionState.correct != "initial"}
                 isLoading={isLoading}
-                onPress={handleCheckAnswer}
+                onClick={handleCheckAnswer}
             >
                     {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
             </Button>
@@ -149,7 +149,7 @@ export default function Question({
                     {questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}
                 </ModalBody>
                 <ModalFooter>
-                    <Button isLoading={isLoading} className="w-full" color="primary" onPress={handleNextQuestion}>Next Question</Button>
+                    <Button isLoading={isLoading} className="w-full" color="primary" onClick={handleNextQuestion}>Next Question</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

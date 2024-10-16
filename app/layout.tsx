@@ -1,18 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/system";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const montserrat = Montserrat({
+  subsets: ["latin"],
+})
 
 const APP_NAME = "Learn Better";
 const APP_DEFAULT_TITLE = "Learn Better";
@@ -69,7 +62,7 @@ export default function RootLayout({
     
     <html lang="en" className=" min-h-screen max-h-screen dark">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} dark antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden`}
+          className={`${montserrat.className} dark antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden`}
         >
           <NextUIProvider className="h-full max-h-screen overflow-y-hidden flex justify-between flex-col antialiased dark">
               {children}

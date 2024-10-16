@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/button";
+import { Button } from "@/components/Button";
 
 import Icon from "@/components/Icon";
 import CourseSelect from "@/components/addLevel/CourseSelect";

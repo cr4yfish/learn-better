@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@nextui-org/button";
+import { Button } from "@/components/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 
 import { Topic } from "@/types/db";

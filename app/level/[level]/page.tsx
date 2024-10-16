@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStopwatch } from "react-use-precision-timer";
 
+import { Button } from "@/components/Button";
 import Icon from "@/components/Icon";
 import Header from "@/components/question/Header"
 import Question from "@/components/question/Question"

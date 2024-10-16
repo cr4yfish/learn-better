@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@nextui-org/button";
 import { useSearchParams } from "next/navigation";
 
+import { Button } from "@/components/Button";
 import LevelComplete from "@/components/LevelComplete";
 import ConditionalLink from "@/components/ConditionalLink";
 import Icon from "@/components/Icon";
