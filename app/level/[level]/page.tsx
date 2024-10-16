@@ -67,7 +67,6 @@ export default function Level({ params } : { params: { level: string }}) {
         await updateTotalXP(session.user.id, session.profile?.total_xp + levelState.xp);
         await extendOrAddStreak(session.user.id, new Date());
         const { rank, rankedUp } = await tryRankUp(session.user.id, session.profile?.total_xp + newTopic.xp, session.profile?.rank);
-        console.log(rank, rankedUp);
 
         if(rankedUp) {
             setLevelState((prevState) => ({

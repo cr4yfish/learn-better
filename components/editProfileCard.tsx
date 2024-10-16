@@ -25,7 +25,6 @@ export default function EditProfileCard({ sessionState } : { sessionState: Sessi
         setIsSaved(false);
         const res = await upsertProfile(userProfile);
         if(res) {
-            console.log(res);
             setIsSaved(true);
         }
         setIsSaveLoading(false);
