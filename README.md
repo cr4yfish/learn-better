@@ -50,8 +50,8 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Use accumulated data
     - [ ] Training mode on low confidence questions
     - [ ] Stats about users & learning
-- [ ] New-user Flow
-    - [ ] Onboarding  
+- [x] New-user Flow
+    - [x] Onboarding  
 - [ ] Mass creation UI for Levels & Questions (optimized for Desktop)
 - [ ] Redesign UI
     - [ ] Move as much as possible to Server Rendering
