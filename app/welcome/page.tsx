@@ -10,7 +10,7 @@ export default function Welcome() {
     useEffect(() => {
         if(sessionState.user?.id) {
             // Route user to home once they are logged in
-            window.location.href = "/";
+            window.location.href = "/welcome/course";
         }
     }, [sessionState])
 

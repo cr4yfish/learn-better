@@ -188,6 +188,18 @@ export async function getSettings(userID: string): Promise<Settings> {
     };
 }
 
+export async function updateCurrentCourse(userID: string, courseID: string): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("settings").update({ current_course: courseID }).eq("user", userID).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
+export async function upsertSettings(settings: Settings): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("settings").upsert([settings]).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
 export async function getUserCourses(userID: string): Promise<User_Course[]> {
     const { data, error } = await getClient().from("users_courses").select(`
         courses (
