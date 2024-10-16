@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
-import { getCourseSections, getCourseTopics } from "@/functions/client/supabase"
+import { getCourseTopics } from "@/functions/client/supabase"
 import Icon from "@/components/Icon";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
@@ -72,7 +72,6 @@ async function loadMoreTopics({
 
 export default function LevelScroller({ currentUserCourse } : { currentUserCourse: User_Course }) {
     const [topics, setTopics] = useState<Topic[]>([])
-    const [courseSections, setCourseSections] = useState<Course_Section[]>([])
     const [currentCourseSection, setCurrentCourseSection] = useState<Course_Section | null>(null)
     const [offsets, setOffsets] = useState<number[]>([])
     const [canLoadMore, setCanLoadMore] = useState(true)
@@ -81,9 +80,10 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
     const [isAdmin, setIsAdmin] = useState(false)
     const levelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const handleScrollOutOfView = (entry: any) => {
+    const handleScrollOutOfView = (entry: IntersectionObserverEntry) => {
         if (!entry.isIntersecting) {
-            const topic = topics.find((t) => t.id === entry.target.dataset.id);;
+            const target = entry.target as HTMLElement;
+            const topic = topics.find((t) => t.id === target.dataset.id);
             setCurrentCourseSection(topic?.course_section ?? null);
         }
     };
@@ -93,12 +93,13 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
             entries.forEach(handleScrollOutOfView);
         });
 
-        levelRefs.current.forEach((ref) => {
+        const currentLevelRefs = levelRefs.current;
+        currentLevelRefs.forEach((ref) => {
             if (ref) observer.observe(ref);
         });
 
         return () => {
-            levelRefs.current.forEach((ref) => {
+            currentLevelRefs.forEach((ref) => {
                 if (ref) observer.unobserve(ref);
             });
         };
@@ -106,15 +107,8 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
     
     useEffect(() => {
         
-        const fetchCourseSections = async () => {
-            if (!currentUserCourse?.course?.id) { return; }
-            const res = await getCourseSections(currentUserCourse.course.id);
-            setCourseSections(res);
-        }
-        
         // Reset stuff when course changes
         setTopics([]);
-        fetchCourseSections();
         setOffsets([]);
         setCursor(0);
         setCanLoadMore(true);
