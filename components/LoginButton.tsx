@@ -24,7 +24,7 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
-        if(data.email === "" || data.password === "") {
+        if(data.email === "" || data.password === "" || (isSignUp && data.username === "")) {
             alert("Please fill in all fields");
             return;
         }
