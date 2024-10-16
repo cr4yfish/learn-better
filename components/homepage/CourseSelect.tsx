@@ -10,7 +10,7 @@ export default function CourseSelect({
     userCourses, currentUserCourse, setCurrentUserCourse } : 
     { 
         userCourses: User_Course[], currentUserCourse: User_Course, 
-        setCurrentUserCourse: React.Dispatch<React.SetStateAction<User_Course>> 
+        setCurrentUserCourse: (userCourse: User_Course) => void,
     }) {
     const [swiper, setSwiper] = useState<SwiperType | undefined>();
 

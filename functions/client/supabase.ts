@@ -174,8 +174,6 @@ export async function getProfilesInRank(rankID?: string): Promise<Profile[]> {
         localRankID = (await getCurrentUserRank()).id;
     }
 
-    console.log("Rank ID: ", localRankID);
-
     const { data, error } = await getClient().from("profiles").select().eq("rank", localRankID).order("total_xp", { ascending: false });
     if(error) { throw error; }
     return data;
@@ -207,7 +205,15 @@ export async function updateCurrentCourse(userID: string, courseID: string): Pro
 }
 
 export async function upsertSettings(settings: Settings): Promise<{ id: string }> {
-    const { data, error } = await getClient().from("settings").upsert([settings]).select().single();
+    if(!settings.user?.id) {
+        throw new Error("No user ID provided");
+    }
+    delete (settings as any).courses;
+    const { data, error } = await getClient().from("settings").upsert([{
+        ...settings,
+        current_course: settings.current_course?.id,
+        user: settings.user.id
+    }]).select().single();
     if(error) { throw error; }
     return { id: data.id };
 }
@@ -873,7 +879,6 @@ export async function getNextRank(currentRank: Rank): Promise<Rank> {
 
 export async function tryRankUp(userID: string, xp: number, currentRank: Rank): Promise<{ rank: Rank, rankedUp: boolean }> {
     const nextRank = await getNextRank(currentRank);
-    console.log("Next rank: ", nextRank);
     if(xp >= nextRank.xp_threshold) {
         // rank up
         const { error } = await getClient().from("profiles").update({ rank: nextRank.id }).eq("id", userID).select();

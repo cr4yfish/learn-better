@@ -32,9 +32,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Basic UI for level complete, using that data
 - [x] Basic Creation for user accounts & profiles (I manually create them in the database right now)
 - [x] Very basic welcome/login page 
-- [ ] Basic UI for Profiles
-    - [ ] Basic Edit Profile
-    - [ ] Basic Settings (cloud saved)
+- [x] Basic UI for Profiles
+    - [x] Basic Edit Profile
+    - [x] Basic Settings (cloud saved)
 - [x] Leaderboard (global for now)
 - [x] Implement Rank system
     - [x] Leaderboard per rank

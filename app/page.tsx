@@ -5,7 +5,7 @@ import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter
 
 import { User_Course } from "@/types/db";
 
-import { getCurrentUser } from "@/functions/client/supabase";
+import { getCurrentUser, upsertSettings } from "@/functions/client/supabase";
 
 import { Button } from "@/components/Button";
 import LevelScroller from "@/components/homepage/LevelScroller/LevelScroller";
@@ -41,6 +41,16 @@ export default function Home() {
     fetchSessionState();
   }, [])
 
+  const handleCourseChange = async (userCourse: User_Course) => {
+    setSessionState({...sessionState, settings: {...sessionState.settings, current_course: userCourse.course}})
+    upsertSettings({
+      ...sessionState.settings,
+      current_course: userCourse.course,
+      user: sessionState.user
+    })
+    setCurrentUserCourse(userCourse)
+  }
+
   return (
     <>
     <main className="flex flex-col justify-between items-center w-full min-h-full h-full ">
@@ -63,7 +73,7 @@ export default function Home() {
               <CourseSelect 
                 userCourses={sessionState.courses} 
                 currentUserCourse={currentUserCourse}
-                setCurrentUserCourse={setCurrentUserCourse} 
+                setCurrentUserCourse={handleCourseChange} 
               />
           </ModalBody>
           <ModalFooter>
