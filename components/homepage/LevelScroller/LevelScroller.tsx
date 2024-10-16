@@ -80,15 +80,15 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
     const [isAdmin, setIsAdmin] = useState(false)
     const levelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const handleScrollOutOfView = (entry: IntersectionObserverEntry) => {
-        if (!entry.isIntersecting) {
-            const target = entry.target as HTMLElement;
-            const topic = topics.find((t) => t.id === target.dataset.id);
-            setCurrentCourseSection(topic?.course_section ?? null);
-        }
-    };
-
     useEffect(() => {
+        const handleScrollOutOfView = (entry: IntersectionObserverEntry) => {
+            if (!entry.isIntersecting) {
+                const target = entry.target as HTMLElement;
+                const topic = topics.find((t) => t.id === target.dataset.id);
+                setCurrentCourseSection(topic?.course_section ?? null);
+            }
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(handleScrollOutOfView);
         });
@@ -135,6 +135,9 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
             setTopics(topics);
             setOffsets(offsets);
             setCanLoadMore(canLoadMore);
+            if(!currentCourseSection && topics.length > 0) {
+                setCurrentCourseSection(topics[0].course_section ?? null);
+            }
         }
         setIsLoading(false);
     }
