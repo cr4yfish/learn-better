@@ -140,6 +140,18 @@ export async function getProfile(id: string): Promise<Profile> {
     return profile;
 }
 
+export async function upsertProfile(profile: Profile): Promise<{ id: string }> {
+
+    delete profile.avatarLink;
+    delete profile.bannerLink;
+
+    profile.rank = profile.rank.id as any;
+
+    const { data, error } = await getClient().from("profiles").upsert([profile]).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
 export async function getProfiles(): Promise<Profile[]> {
     const { data, error } = await getClient().from("profiles").select().order("total_xp", { ascending: false });
     if(error) { throw error; }

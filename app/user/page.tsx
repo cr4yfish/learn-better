@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { User as UserCard } from "@nextui-org/user";
 import { Image } from "@nextui-org/image";
+import { Skeleton } from "@nextui-org/skeleton";
 
 import { getCurrentUser } from "@/functions/client/supabase";
 
@@ -11,6 +12,7 @@ import { SessionState } from "@/types/auth";
 
 import Navigation from "@/components/homepage/Navigation";
 import LoginButton from "@/components/LoginButton"
+import EditProfileCard from "@/components/editProfileCard";
 
 export default function User() {
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);
@@ -37,34 +39,37 @@ export default function User() {
 
             </div>
 
-            <UserCard 
-                className="relative z-10 mx-4"
-                name={sessionState.profile?.username} 
-                description={(
-                    <span>{sessionState.profile?.total_xp} XP</span>
-                )}
-                avatarProps={{
-                    src: sessionState.profile?.avatarLink
-                }} 
-            />
+            <Skeleton 
+                isLoaded={!!sessionState.profile}
+                className="rounded-full"
+            >
+                <UserCard 
+                    className="relative z-10 mx-4"
+                    name={sessionState.profile?.username} 
+                    description={(
+                        <span>{sessionState.profile?.total_xp} XP</span>
+                    )}
+                    avatarProps={{
+                        src: sessionState.profile?.avatarLink
+                    }} 
+                />
+            </Skeleton>
         </div>
 
 
-        <div className="flex flex-row items-center justify-between w-full">
-            <h1 className="text-3xl font-bold">Hi, {sessionState.profile?.username}</h1>
+        <div className="flex flex-col items-start gap-4 w-full">
+            <Skeleton
+                isLoaded={!!sessionState.profile}
+                className=" rounded-lg w-full py-2"
+            >
+                <h1 className="text-xl font-bold">Hi, {sessionState.profile?.username}</h1>
+            </Skeleton>
+            
             <LoginButton sessionState={sessionState} setSessionState={setSessionState} />
         </div>
 
-        <h2>Your Courses</h2>
+        <EditProfileCard sessionState={sessionState} />
 
-        <div className="flex flex-row gap-4">
-            {sessionState.courses?.map(userCourse => (
-                <div key={userCourse.course.id} className="flex flex-col gap-2">
-                    <h3>{userCourse.course.title}</h3>
-                    <p>{userCourse.course.abbreviation}</p>
-                </div>
-            ))}
-        </div>
 
     </div>
     <Navigation activeTitle="Profile" />
