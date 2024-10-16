@@ -2,12 +2,10 @@
 The learning app that helps you learn anything you want.
 
 ## Description
-This is a project to help people learn better.
-It's main features are the ability to create and share levels of learning, and to subscribe to courses that other people have created.
-
+This is a project to help people learn better. Its main feature is the ability to create and share courses.
 The point being that you can learn anything you want, and you can help others learn what you know.
 
-The main reason for this project is that I would love to have an App like Duolingo but for university subjects, and since I'd have to create a nice way of adding content to it anyway, I thought why not make it a platform for everyone to use - so here we are.
+The main reason for this project is that I would love to have an App like Duolingo but for university subjects, and since I'd have to create a nice way of adding content to it anyway, I thought why not make it a platform for everyone to use, I thought why not make it a platform for everyone to use - so here we are.
 
 ## 
 
