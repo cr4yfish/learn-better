@@ -288,7 +288,7 @@ export async function getCurrentUser(): Promise<SessionState | null> {
         const profile = await getProfile(session.data.session?.user.id as string);
         const settings = await getSettings(session.data.session?.user.id as string);
         const courses = await getUserCourses(session.data.session?.user.id as string);
-        const currentStreak = await getStreakOnDate(session.data.session?.user.id as string, new Date());
+        const currentStreak = await getCurrentStreak(session.data.session?.user.id as string, new Date());
         let currentStreakDays = 0;
 
         if(currentStreak) {
@@ -775,21 +775,19 @@ export async function getStreaks(userID: string) {
  * @param userID 
  * @param date 
  */
-export async function getStreakOnDate(userID: string, date: Date): Promise<Streak | null> {
+export async function getCurrentStreak(userID: string, date: Date): Promise<Streak | null> {
     const { data, error } = await getClient()
         .from("streaks")
         .select()
         .eq("user", userID)
-        .lte("from", date.toISOString()) // from <= date
-        .gte("to", getDayBefore(date).toISOString()) // to >= date before today
-        .single();
+        .gte("to", getDayBefore(date).toISOString()) // to >= yesterday <- gets hanging or current streak
     if(error) { 
         if(error.details == "The result contains 0 rows") {
             return null;
         }
         throw error; 
     }
-    return data as Streak;
+    return data[0] as Streak;
 
 }
 /**
