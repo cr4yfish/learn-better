@@ -43,48 +43,45 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Viewing course sections
     - [ ] Creating course sections
     - [ ] Editing course sections
-- [ ] Buy a domain
-
-### Beta Features
-- [ ] Fix the level scroller offset function (it's a bit janky right now)
-- [ ] Use accumulated data
-    - [ ] Training mode on low confidence questions
-    - [ ] Stats about users & learning
 - [x] New-user Flow
     - [x] Onboarding  
-- [ ] Mass creation UI for Levels & Questions (optimized for Desktop)
-- [ ] Redesign UI
+- [ ] Community Features 1
+    - [ ] Image upload support
+    - [ ] Adding more optional info fields
+    - [ ] Viewing other user profiles
+    - [ ] Rating Courses, Levels & Questions
+
+### Beta Features
+- [ ] Redesign UI & Refactor Code
     - [ ] Move as much as possible to Server Rendering
     - [ ] Add animations
+    - [ ] Improve UI/UX
+- [ ] Data Features 1
+    - [ ] Training mode on low confidence questions
+    - [ ] Stats about users & learning
+    - [ ] Weekly/Monthly streak/xp goals
+    - [ ] Weekly rank ups
+    - [ ] Achievements
 - [ ] Offline features
     - [ ] Making better use of PWA features
     - [ ] Better caching
     - [ ] Offline UI
     - [ ] Manual download of Courses?
-- [ ] Importing Levels & Questions from other sources
-    - [ ] Anki decks    
+- [ ] Community Features 2
+    - [ ] Following other users / Friends
+    - [ ] Rating Courses, Levels & Questions
+    - [ ] Course Collaboration
+- [ ] Buy a domain
 
 ### Future Features
-- [ ] Weekly rank ups
-- [ ] Achievements
-- [ ] Community Features
-    - [ ] Editing Profile, adding more optional info fields
-    - [ ] Viewing other user profiles
-    - [ ] Following other users / Friends
-    - [ ] Creating and joining Communities?
-    - [ ] Sharing of Courses
-    - [ ] Access Control settings for shared Courses aka Collaboration
-    - [ ] Commenting on Courses?
-    - [ ] Rating Courses, Levels & Questions
-    - [ ] Flagging/Reporting Courses, Levels & Questions? - Not like I could afford to moderate it anyway
-- [ ] UI Optimization for Desktop
-- [ ] Add Security features
+- [ ] Importing Levels & Questions from other sources
+    - [ ] Anki decks   
+- [ ] Security features
     - [ ] Cloudflare
     - [ ] Captcha for user sign ups
 - [ ] Privacy Settings
     - [ ] Private Courses
     - [ ] Private User Profiles
-    - [ ] Data opt-out? - Why even use a data-drive app if you don't want to provide data?
 - [ ] Localization? - Only if there are enough users to justify it
     - [ ] Multi-language support
     - [ ] Multi-language Courses
