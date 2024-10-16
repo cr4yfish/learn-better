@@ -19,12 +19,17 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
-
+     
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
+        if(data.email === "" || data.password === "") {
+            alert("Please fill in all fields");
+            return;
+        }
+        
+        setIsLoading(true);
 
         if(isSignUp) {
 
