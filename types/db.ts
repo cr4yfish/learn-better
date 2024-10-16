@@ -52,8 +52,8 @@ export type Streak = {
     id: string;
     created_at?: string; // timestampz
     user: User;
-    from: Date;
-    to?: Date;
+    from: string;
+    to: string;
 }
 
 export type Question = {

@@ -4,7 +4,7 @@ import { FileObject } from "@supabase/storage-js";
 
 import { Course, Course_Section, Profile, Question, Rank, Settings, Streak, Topic, User_Course, User_Question, User_Topic } from "@/types/db";
 import { SessionState } from "@/types/auth";
-import { isSameDay } from "../helpers";
+import { getDayBefore, isSameDay } from "../helpers";
 
 function getClient() {
     return createClient(
@@ -306,7 +306,7 @@ export async function getCurrentUser(): Promise<SessionState | null> {
             pendingAuth: false,
             settings: settings,
             courses: courses,
-            currentStreak: currentStreak,
+            currentStreak: currentStreak ?? undefined,
             currentStreakDays: currentStreakDays
         }
     } catch (error) {
@@ -775,15 +775,20 @@ export async function getStreaks(userID: string) {
  * @param userID 
  * @param date 
  */
-export async function getStreakOnDate(userID: string, date: Date): Promise<Streak> {
+export async function getStreakOnDate(userID: string, date: Date): Promise<Streak | null> {
     const { data, error } = await getClient()
         .from("streaks")
         .select()
         .eq("user", userID)
         .lte("from", date.toISOString()) // from <= date
-        .gte("to", date.toISOString()) // to >= date
+        .gte("to", getDayBefore(date).toISOString()) // to >= date before today
         .single();
-    if(error) { throw error; }
+    if(error) { 
+        if(error.details == "The result contains 0 rows") {
+            return null;
+        }
+        throw error; 
+    }
     return data as Streak;
 
 }
@@ -849,7 +854,7 @@ export async function tryRankUp(userID: string, xp: number, currentRank: Rank): 
     console.log("Next rank: ", nextRank);
     if(xp >= nextRank.xp_threshold) {
         // rank up
-        const { data, error } = await getClient().from("profiles").update({ rank: nextRank.id }).eq("id", userID).select();
+        const { error } = await getClient().from("profiles").update({ rank: nextRank.id }).eq("id", userID).select();
         if(error) { throw error; }
         return { rank: nextRank, rankedUp: true };
     } else {

@@ -28,3 +28,21 @@ export function formatSeconds(seconds: number) {
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
+
+
+export function getDayBefore(date: Date): Date {
+    const previousDay = new Date(date);
+    previousDay.setDate(date.getDate() - 1);
+    return previousDay;
+}
+
+/**
+ * Returns fortnite of date
+ * @param date | Date
+ * @returns Date
+ */
+export function fortnite(date: Date): Date {
+    const fortnite = new Date(date);
+    fortnite.setDate(date.getDate() + 2);
+    return fortnite;
+}
