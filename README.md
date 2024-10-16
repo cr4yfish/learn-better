@@ -40,6 +40,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Leaderboard per rank
     - [x] Rank up system (individual)
 - [ ] Implement Course Sections
+    - [x] Viewing course sections
+    - [ ] Creating course sections
+    - [ ] Editing course sections
 - [ ] Buy a domain
 
 ### Beta Features
