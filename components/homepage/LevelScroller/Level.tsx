@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 
 import { Topic } from "@/types/db";
-
+import { Button } from "@/components/Button";
 import ConditionalLink from "@/components/ConditionalLink";
-import Icon from "../../Icon"
+import Icon from "@/components/Icon"
+
 export default function Level({ topic, active, offset, isAdmin=false } : { topic: Topic, active: boolean, offset: number, isAdmin?: boolean }) {
     return (
         <div
