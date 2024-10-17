@@ -32,7 +32,7 @@ const Button = React.forwardRef(({
     isIconOnly?: boolean,
     fullWidth?: boolean,
     radius?: "none" | "sm" | "md" | "lg" | "full" | undefined,
-}, ref) => {
+}, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
     return (
         <NextUIButton
