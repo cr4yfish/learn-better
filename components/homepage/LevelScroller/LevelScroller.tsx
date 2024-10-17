@@ -144,17 +144,20 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
 
     const CourseSectionBanner = ({ courseSection } : { courseSection: Course_Section | null}) => (
         courseSection &&
-        <Card className=" absolute top-0 w-full z-10">
-            <CardHeader>{courseSection.title}</CardHeader>
+        <Card className=" top-0 w-full max-w-[960px] z-10 bg-fuchsia-900/55 backdrop-blur">
+            <CardHeader className=" font-bold pb-0">{courseSection.title}</CardHeader>
             <CardBody>{courseSection.description}</CardBody>
         </Card>
     );
 
     return (
     <>
-        <CourseSectionBanner courseSection={currentCourseSection} />
+        <div className=" w-full h-fit absolute flex justify-center items-center px-6">
+            <CourseSectionBanner courseSection={currentCourseSection} />
+        </div>
+        
         <InfiniteScroll 
-            className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll pb-80 mt-32"
+            className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll pb-80 pt-32"
             pageStart={1}
             loadMore={() => canLoadMore && handleLoadMore()}
             hasMore={canLoadMore}
