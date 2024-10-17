@@ -197,7 +197,7 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                     <Link href={"/level/new"}>
                         <Button 
                             color="primary" 
-                            startContent={<Icon filled>add</Icon>} 
+                            startContent={<Icon color="fuchsia-950" filled>add</Icon>} 
                         >
                             Add a new level
                         </Button>
