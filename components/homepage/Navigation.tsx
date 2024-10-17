@@ -25,8 +25,8 @@ export default function Navigation({ activeTitle } : { activeTitle: Links }) {
 
     return (
         <>
-        <div className=" absolute bottom-0 bg-black/50 z-50 backdrop-blur-xl rounded-t-xl flex justify-between items-center w-full p-6">
-            <div className="flex items-center justify-evenly w-full gap-4">
+        <div className=" absolute bottom-0 bg-black/50 z-50 backdrop-blur-xl rounded-t-xl flex justify-center items-center w-full p-6">
+            <div className="flex items-center justify-evenly w-full max-w-[960px] gap-4">
                 <LinkComponent title="Home" href="/" icon="home" activeTitle={activeTitle} />
                 <LinkComponent title="Leaderboard" href="/leaderboard" icon="leaderboard" activeTitle={activeTitle} />
                 <LinkComponent title="Training" href="/training" icon="exercise" activeTitle={activeTitle} />
