@@ -1,6 +1,7 @@
 import { Button as NextUIButton } from "@nextui-org/button"
+import React from "react"
 
-export function Button({
+const Button = React.forwardRef(({
     children,
     className,
     onClick,
@@ -14,7 +15,8 @@ export function Button({
     endContent,
     isIconOnly,
     fullWidth,
-    radius
+    radius,
+
 } : {
     children: React.ReactNode,
     className? : string | undefined,
@@ -29,11 +31,10 @@ export function Button({
     endContent?: React.ReactNode,
     isIconOnly?: boolean,
     fullWidth?: boolean,
-    radius?: "none" | "sm" | "md" | "lg" | "full" | undefined
-}) {
+    radius?: "none" | "sm" | "md" | "lg" | "full" | undefined,
+}, ref) => {
 
     return (
-        <>
         <NextUIButton
             className={` font-black ${color == "primary" && "text-fuchsia-950"} ${className}`}
             onClick={onClick}
@@ -48,9 +49,12 @@ export function Button({
             isIconOnly={isIconOnly}
             fullWidth={fullWidth}
             radius={radius}
+            ref={ref}
         >
             {children}
         </NextUIButton>
-        </>
     )
-}
+})
+
+Button.displayName = "Button"
+export {Button};

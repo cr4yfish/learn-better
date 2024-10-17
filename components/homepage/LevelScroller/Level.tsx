@@ -7,8 +7,11 @@ import { Topic } from "@/types/db";
 import { Button } from "@/components/Button";
 import ConditionalLink from "@/components/ConditionalLink";
 import Icon from "@/components/Icon"
+import React from "react";
 
 export default function Level({ topic, active, offset, isAdmin=false } : { topic: Topic, active: boolean, offset: number, isAdmin?: boolean }) {
+    const [isOpen, setIsOpen] = React.useState(false);
+    
     return (
         <div
             style={{
@@ -17,6 +20,8 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
         >
         <Popover 
             showArrow
+            isOpen={isOpen}
+            onBlur={() => setIsOpen(false)}
             color={active ? "primary" : "default"}
         >
             <PopoverTrigger>
@@ -25,6 +30,7 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
                     radius="full"
                     variant={active ? "shadow" : "flat"}
                     size="lg"
+                    onClick={() => setIsOpen(!isOpen)}
                     isIconOnly
                     color={topic.completed ? "primary" :  active ? "primary" : "default"}
                 >
