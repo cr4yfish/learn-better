@@ -56,8 +56,8 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
                         </ConditionalLink>
                         {isAdmin && (
                             <Link href={`/level/edit/${topic.id}`}>
-                                <Button color="warning" variant="flat" isIconOnly >
-                                    <Icon color="warning" filled>edit</Icon>
+                                <Button color="secondary" variant="ghost" isIconOnly >
+                                    <Icon color="secondary" filled>edit</Icon>
                                 </Button>
                             </Link>
                         )}
