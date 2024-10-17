@@ -1,6 +1,14 @@
 # Nouv - learn better
 The learning app that helps you learn anything you want.
 
+<div style="width: 100%; display: flex; justify-content: center; gap: 1rem;">
+  <img src="https://i.imgur.com/H8Zy6pn.png" style="height: 500px; width: auto;" >
+  <img src="https://i.imgur.com/i6k9Rdp.pngg" style="height: 500px; width: auto;" >
+  <img src="https://i.imgur.com/Q1dJgYl.png" style="height: 500px; width: auto;" >
+  <img src="https://i.imgur.com/aRvuZpp.png" style="height: 500px; width: auto;" >
+
+</div>
+
 ## Description
 This is a project to help people learn better. Its main feature is the ability to create and share courses.
 The point being that you can learn anything you want, and you can help others learn what you know.
