@@ -48,8 +48,7 @@ export default function CourseSearch({ sessionState, setSessionState } : { sessi
                 <ModalHeader>Search Courses</ModalHeader>
                 <ModalBody>
                 <div className="flex flex-row justify-between items-center w-full">
-                    <Input 
-                        className="dark" 
+                    <Input
                         placeholder="Search courses" 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}

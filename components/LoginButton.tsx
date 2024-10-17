@@ -85,7 +85,7 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
         : <Button color="danger" variant="shadow" onClick={handleLogout}>Logout</Button>     }
 
 
-        <Modal className="dark transition-all" size="lg" backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal size="lg" backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1">{isSignUp ? "Sign up" : "Log in" }</ModalHeader>
                 <ModalBody>

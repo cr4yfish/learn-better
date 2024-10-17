@@ -142,7 +142,7 @@ export default function Question({
             </Button>
         </div>
 
-        <Modal hideCloseButton isDismissable={false} isKeyboardDismissDisabled  className="dark" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal hideCloseButton isDismissable={false} isKeyboardDismissDisabled isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                 <ModalHeader>{questionState.correct == "correct" ? "Correct!" : "Wrong!"}</ModalHeader>
                 <ModalBody>

@@ -111,7 +111,7 @@ export default function Level({ params } : { params: { level: string }}) {
     }, [levelState.answeredQuestions])
 
     return (
-        <div className="dark px-4 py-6 flex flex-col gap-4 h-full min-h-full ">
+        <div className="px-4 py-6 flex flex-col gap-4 h-full min-h-full ">
             <Header progress={levelState.progress} numQuestions={levelState.totalQuestions} xp={levelState.xp} />
            
             <div className="flex flex-col justify-between h-full min-h-full gap-12">

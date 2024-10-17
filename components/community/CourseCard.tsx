@@ -55,7 +55,7 @@ export default function CourseCard ({
 
     return (
     <>
-        <Card className={` dark min-h-48 ${isSmall && "min-h-32 max-h-32"} `}>
+        <Card className={`min-h-48 ${isSmall && "min-h-32 max-h-32"} `}>
             <CardHeader className="m-0 pb-0 font-bold">{course.abbreviation}</CardHeader>
             <CardBody className="flex flex-col pb-0">
                 { !isSmall && <span className=" text-tiny font-semibold">{course.title}</span>}

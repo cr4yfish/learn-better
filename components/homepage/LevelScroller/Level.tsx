@@ -17,7 +17,6 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
         >
         <Popover 
             showArrow
-            className="dark"
             color={active ? "primary" : "default"}
         >
             <PopoverTrigger>

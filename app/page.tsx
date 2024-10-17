@@ -62,7 +62,6 @@ export default function Home() {
     <Navigation activeTitle="Home" />
 
     <Modal 
-        className="dark"
         backdrop="blur"
         isOpen={isOpen} 
         onOpenChange={onOpenChange}

@@ -21,7 +21,7 @@ export default function CourseSelect({ setCourse } : { setCourse: (course: Cours
 
     return (
         <Autocomplete
-            className="max-w-xs dark"
+            className="max-w-xs"
             variant="bordered"
             label="Pick a Course"
             placeholder="Select a Course"
@@ -39,7 +39,7 @@ export default function CourseSelect({ setCourse } : { setCourse: (course: Cours
             
         >
             {(item) => (
-                <AutocompleteItem key={item.id} className="capitalize dark">
+                <AutocompleteItem key={item.id} className="capitalize">
                     {item.abbreviation}
                 </AutocompleteItem>
             )}

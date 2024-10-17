@@ -64,7 +64,7 @@ export default function NewLevel() {
 
     return (
         <>
-        <div className="dark flex flex-col gap-4 px-4 py-6">
+        <div className="flex flex-col gap-4 px-4 py-6">
             <div className="flex flex-row items-center gap-4">
                 <div className=" w-fit">
                     <Link href="/">
