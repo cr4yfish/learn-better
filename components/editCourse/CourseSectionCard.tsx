@@ -77,6 +77,13 @@ export default function CourseSectionCard(
 
         topics.forEach(async (topic, index) => {
             topic.order = index;
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (topic as any).chosen;
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            delete (topic as any).selected;
+
             await upsertCourseTopic(topic);
         })
 
