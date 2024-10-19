@@ -46,6 +46,7 @@ export default function Header({
                 <Streak 
                     streak={sessionState.currentStreakDays} 
                     streakHanging={sessionState.currentStreak ? checkStreakHanging(sessionState.currentStreak) : false}
+                    userId={sessionState.user?.id}
                 />
                 <Xp xp={sessionState.profile?.total_xp} />
             </div>
