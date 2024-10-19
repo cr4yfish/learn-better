@@ -8,8 +8,9 @@ import { Button } from "@/components/Button";
 
 import Icon from "@/components/Icon";
 import CourseSelect from "@/components/addLevel/CourseSelect";
-import { Course, Topic } from "@/types/db";
+import { Course, Course_Section, Topic } from "@/types/db";
 import { upsertCourseTopic } from "@/functions/client/supabase";
+import CourseSectionSelect from "@/components/addLevel/CourseSectionSelect";
 
 
 export default function NewLevel() {
@@ -19,7 +20,7 @@ export default function NewLevel() {
     const [newTopic, setNewTopic] = useState<Topic>({} as Topic);
 
     // updates any field in the newTopic object
-    const handleUpdateTopicField = (field: string, value: string | Course) => {
+    const handleUpdateTopicField = (field: string, value: string | Course | Course_Section) => {
         setNewTopic((prev) => {
             return {
                 ...prev,
@@ -84,6 +85,10 @@ export default function NewLevel() {
                     <div className="flex flex-col gap-2">
                     <h2 className="font-bold text-lg" >Which course does the level belong to?</h2>
                         <CourseSelect setCourse={(course) => handleUpdateTopicField("course", course)} />
+                        <CourseSectionSelect 
+                            course={newTopic.course} 
+                            setCourseSection={(courseSection) => handleUpdateTopicField("course_section", courseSection)} 
+                        />
                         <h2 className="font-bold text-lg" >What is the level about?</h2>
                         <Input 
                             label="Title" 

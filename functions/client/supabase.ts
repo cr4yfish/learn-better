@@ -402,6 +402,42 @@ export async function upsertCourse(course: Course): Promise<{ id: string }> {
     return { id: data.id };
 }
 
+export async function searchCourseSections(searchQuery: string, course: Course, from=0, limit=10): Promise<Course_Section[]> {
+    const { data, error } = await getClient()
+        .from("course_sections")
+        .select(`
+            id,
+            created_at,
+            title,
+            description,
+            order,
+            courses (
+                id,
+                title,
+                abbreviation,
+                description
+            )
+        `)
+        .eq("course", course.id)
+        .or(`title.ilike.*${searchQuery}*` + "," + `description.ilike.*${searchQuery}*`)
+        .order("order", { ascending: true }) // need this for range behavior
+        .range(from, from + limit - 1);
+        
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            id: db.id,
+            created_at: db.created_at,
+            title: db.title,
+            description: db.description,
+            order: db.order,
+            course: db.courses
+        }
+    })
+}
+
+
 /**
  * Searches for courses using SearchQuery in the title, abbreviation, and description
  * @param searchQuery 
