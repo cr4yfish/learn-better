@@ -10,7 +10,7 @@ import { Course_Section, User_Course } from "@/types/db";
 
 import { Button } from "@/components/Button";
 import EditCourseForm from "@/components/editCourse/EditCourseForm";
-import EditCourseSection from "@/components/editCourse/EditCourseSection";
+import CourseSectionCard from "@/components/editCourse/CourseSectionCard";
 import Icon from "@/components/Icon";
 
 
@@ -98,7 +98,7 @@ export default function EditCourse({ params: { course }} : { params: { course: s
       { !isOrderMode && (
         <div className="flex flex-col gap-2">
           {courseSections.map((section) => (
-            <EditCourseSection 
+            <CourseSectionCard 
               key={section.id} 
               courseSection={section} 
               courseSections={courseSections} 

@@ -11,7 +11,7 @@ import { Course_Section } from "@/types/db";
 import { upsertCourseSection, deleteCourseSection } from "@/functions/client/supabase";
 
 
-export default function EditCourseSection(
+export default function CourseSectionCard(
     { courseSection, courseSections, setCourseSections } : 
     { 
         courseSection: Course_Section, 
@@ -52,6 +52,7 @@ export default function EditCourseSection(
     const handleDeleteCourseSection = async (section: Course_Section) => {
     setIsCourseSectionDeleteLoading(true);
     if(window.confirm("Are you sure you want to delete this section?")) {
+        console.log(section)
         const res = await deleteCourseSection(section.id);
         if(res) {
         // remove from state
