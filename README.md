@@ -47,13 +47,15 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Implement Rank system
     - [x] Leaderboard per rank
     - [x] Rank up system (individual)
+- [x] New-user Flow
+    - [x] Onboarding      
 - [ ] Implement Course Sections
     - [x] Viewing course sections
     - [x] Creating course sections
     - [x] Editing course sections
     - [ ] Adjust other systems to use course sections
-- [x] New-user Flow
-    - [x] Onboarding  
+        - [ ] Level Scroller
+        - [ ] Level Creation
 - [ ] Community Features 1
     - [ ] Image upload support
     - [ ] Adding more optional info fields
