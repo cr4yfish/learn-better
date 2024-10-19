@@ -573,8 +573,8 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
     .order("order", { ascending: true })
     .range(from, from + limit -1);
     if(error) { throw error; }
-    
-    return (data.map((db: any) => {
+
+    const topics: Topic[] = (data.map((db: any) => {
         return {
             id: db.id,
             created_at: db.created_at,
@@ -585,7 +585,14 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             order: db.order,
             completed: db.users_topics[0]?.completed ?? false
         }
-    }));
+    }))
+
+    // Sort topics by course_section order
+    topics.sort((a, b) => {
+        return a.course_section.order - b.course_section.order;
+    });
+    
+    return topics;
 }
 
 export async function getCourseSectionTopics(courseSectionID: string): Promise<Topic[]> {
@@ -611,7 +618,13 @@ export async function getCourseSectionTopics(courseSectionID: string): Promise<T
             title: db.title,
             description: db.description,
             course: db.courses as any,
-            order: db.order
+            order: db.order,
+            course_section: {
+                id: db.course_section.id,
+                title: "",
+                description: "",
+                course: db.courses.id
+            }
         }
     });
 }
