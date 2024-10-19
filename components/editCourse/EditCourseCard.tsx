@@ -12,7 +12,7 @@ import { Course } from "@/types/db";
 import Icon from "../Icon";
 import { Button } from "@/components/Button";
 
-export default function EditCourseForm({ userId, isNew, course } : { userId: string | undefined, isNew: boolean, course?: Course | undefined }) {
+export default function EditCourseCard({ userId, isNew, course } : { userId: string | undefined, isNew: boolean, course?: Course | undefined }) {
     const [newCourse, setNewCourse] = useState<Course>(course ?? {} as Course);
     const [isLoading, setIsLoading] = useState(false);
     const [done, setDone] = useState(false);

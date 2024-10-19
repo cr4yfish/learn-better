@@ -9,8 +9,8 @@ import { getCurrentUser, getUserCourse, getCourseSections, upsertCourseSection }
 import { Course_Section, User_Course } from "@/types/db";
 
 import { Button } from "@/components/Button";
+import EditCourseCard from "@/components/editCourse/EditCourseCard";
 import CourseSectionCard from "@/components/editCourse/CourseSectionCard";
-import EditCourseForm from "@/components/editCourse/EditCourseForm";
 import Icon from "@/components/Icon";
 
 
@@ -75,7 +75,7 @@ export default function EditCourse({ params: { course }} : { params: { course: s
   return (
     <>
     <div className="px-4 py-6 overflow-y-auto h-full flex flex-col gap-4">
-      <EditCourseForm 
+      <EditCourseCard 
         userId={userCourse?.user?.id} 
         isNew={false} 
         course={userCourse?.course} 
