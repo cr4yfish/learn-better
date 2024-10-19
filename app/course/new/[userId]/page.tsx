@@ -17,7 +17,7 @@ export default function NewCourse({ params: { userId }} : { params: { userId: st
 
     return (
     <>
-        <EditCourseForm userId={userId} isNew={true} />
+        <EditCourseForm userId={userId} isNew={true}  />
     </>
   );
 }

@@ -1,16 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { Input } from "@nextui-org/input"
-import { Button } from "@nextui-org/button"
 import { Switch } from "@nextui-org/switch"
+import { Skeleton } from "@nextui-org/skeleton";
 
 import { upsertCourse, joinCourse } from "@/functions/client/supabase";
 import { Course } from "@/types/db";
-import Icon from "../Icon";
 
-export default function EditCourseForm({ userId, isNew, course } : { userId: string, isNew: boolean, course?: Course }) {
+import Icon from "../Icon";
+import { Button } from "@/components/Button";
+
+export default function EditCourseForm({ userId, isNew, course } : { userId: string | undefined, isNew: boolean, course?: Course | undefined }) {
     const [newCourse, setNewCourse] = useState<Course>(course ?? {} as Course);
     const [isLoading, setIsLoading] = useState(false);
     const [done, setDone] = useState(false);
@@ -25,6 +27,8 @@ export default function EditCourseForm({ userId, isNew, course } : { userId: str
     }
 
     const saveCourse = async (courseToSave: Course) => {
+        if(!userId) return;
+
         setIsLoading(true);
 
         courseToSave.id = (course && !isNew) ? course.id : uuidv4();
@@ -61,35 +65,53 @@ export default function EditCourseForm({ userId, isNew, course } : { userId: str
         setIsLoading(false);
     }
 
+    useEffect(() => {
+        if(course) {
+            setNewCourse(course);
+        }
+    }, [course])
+
     return (
         <>
         <div className="flex flex-col px-4 py-6 gap-4">
-            <h1 className="font-bold text-4xl">{isNew ? "New course" : course?.title}</h1>
-            <Input 
-                label="Course Title" 
-                defaultValue={course?.title}
-                onValueChange={(value) => updateNewCourseValue("title", value)}
-            />
-            <Input 
-                label="Course Abbreviation"
-                defaultValue={course?.abbreviation}
-                onValueChange={(value) => updateNewCourseValue("abbreviation", value)} 
-                maxLength={6} 
-            />
-            <Input 
-                label="Course Description" 
-                defaultValue={course?.description}
-                onValueChange={(value) => updateNewCourseValue("description", value)} 
-            />
+            <Skeleton isLoaded={course ? true : false} className="rounded-lg"><h1 className="font-bold text-4xl">{isNew ? "New course" : course?.title}</h1></Skeleton>
+            
+            <Skeleton isLoaded={course ? true : false} className="rounded-lg">
+                <Input 
+                    label="Course Title" 
+                    value={newCourse?.title}
+                    onValueChange={(value) => updateNewCourseValue("title", value)}
+                />
+            </Skeleton>
+
+            <Skeleton isLoaded={course ? true : false} className="rounded-lg">
+                <Input 
+                    label="Course Abbreviation"
+                    value={newCourse?.abbreviation}
+                    onValueChange={(value) => updateNewCourseValue("abbreviation", value)} 
+                    maxLength={6} 
+                />
+            </Skeleton>
+
+            <Skeleton isLoaded={course ? true : false} className="rounded-lg">
+                <Input 
+                    label="Course Description" 
+                    defaultValue={newCourse?.description}
+                    onValueChange={(value) => updateNewCourseValue("description", value)} 
+                />
+            </Skeleton>
+
             <Switch 
                 isSelected={course?.is_public}
                 onValueChange={(value) => updateNewCourseValue("is_public", value ? true : false)}
                 >
                     Public Course
             </Switch>
+            <div className="flex items-center gap-4">
             <Button
                 color="primary"
-                variant="shadow"
+                variant="flat"
+                className="text-primary"
                 isLoading={isLoading}
                 startContent={<Icon filled>{done ? "check_circle" : isNew ? "add" : "save"}</Icon>}
                 isDisabled={done}
@@ -97,6 +119,16 @@ export default function EditCourseForm({ userId, isNew, course } : { userId: str
             >
                 {isNew ? done ? "Created" : "Create" : done ? "Saved" : "Save"}
             </Button>
+            <Button
+                color="danger"
+                variant="faded"
+                isDisabled
+                startContent={<Icon filled>delete</Icon>}
+            >
+                Delete Course
+            </Button>
+            </div>
+
         </div>
         </>
     )

@@ -480,7 +480,10 @@ export async function leaveCourse(courseID: string, userID: string) {
 }
 
 export async function upsertCourseSection(courseSection: Course_Section): Promise<{ id: string }> {
-    const { data, error } = await getClient().from("course_sections").upsert([courseSection]).select().single();
+    const { data, error } = await getClient().from("course_sections").upsert([{
+        ...courseSection,
+        course: courseSection.course.id
+    }]).select().single();
     if(error) { throw error; }
     return { id: data.id };
 }
@@ -523,7 +526,12 @@ export async function getCourseSections(courseId: string): Promise<Course_Sectio
         title,
         description,
         order,
-        course
+        courses (
+            id,
+            title,
+            abbreviation,
+            description
+        )
     `).eq("course", courseId).order("order", { ascending: true });
     if(error) { throw error; }
     return data.map((db: any) => {

@@ -49,8 +49,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Rank up system (individual)
 - [ ] Implement Course Sections
     - [x] Viewing course sections
-    - [ ] Creating course sections
-    - [ ] Editing course sections
+    - [x] Creating course sections
+    - [x] Editing course sections
+    - [ ] Adjust other systems to use course sections
 - [x] New-user Flow
     - [x] Onboarding  
 - [ ] Community Features 1
