@@ -6,11 +6,13 @@ import { Course, Course_Section, Profile, Question, Rank, Settings, Streak, Topi
 import { SessionState } from "@/types/auth";
 import { getDayBefore, isSameDay } from "../helpers";
 
+const client = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+);
+
 function getClient() {
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    );
+    return client;
 }
 
 export async function getSession() {
