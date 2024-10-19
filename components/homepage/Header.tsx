@@ -9,25 +9,26 @@ import { Streak as StreakType, User_Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 import { getDayBefore, isSameDay } from "@/functions/helpers";
 
+
+/**
+ * Checks wether the streak is hanging (ends yesterday, aka user can extend it today)
+ * @param streak Streak
+ * @returns boolean
+ */
+const checkStreakHanging = (streak: StreakType): boolean => {
+    const today = new Date();
+    const yesterday = getDayBefore(today);
+    const streakEndDate = new Date(streak.to);
+    
+    if(isSameDay(yesterday, streakEndDate)) 
+        return true;
+    return false;
+}
+
+
 export default function Header({ 
     currentUserCourse, onOpen, sessionState } : 
     { currentUserCourse?: User_Course, onOpen: () => void, sessionState: SessionState }) {
-    
-
-    /**
-     * Checks wether the streak is hanging (ends yesterday, aka user can extend it today)
-     * @param streak Streak
-     * @returns boolean
-     */
-    const checkStreakHanging = (streak: StreakType): boolean => {
-        const today = new Date();
-        const yesterday = getDayBefore(today);
-        const streakEndDate = new Date(streak.to);
-        
-        if(isSameDay(yesterday, streakEndDate)) 
-            return true;
-        return false;
-    }
 
     return (
         <>
