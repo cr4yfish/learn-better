@@ -12,5 +12,5 @@ export interface SessionState {
     settings: Settings;
     courses: User_Course[];
     currentStreak: Streak | undefined;
-    currentStreakDays: number;
+    currentStreakDays: number | undefined;
 }
