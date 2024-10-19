@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/popover";
 import { Calendar, DateValue } from "@nextui-org/calendar";
 import { Button } from "@nextui-org/button";
+import { Skeleton } from "@nextui-org/skeleton";
 import { today, getLocalTimeZone, parseDate, isToday } from "@internationalized/date";
 
 import { Streak as StreakType} from "@/types/db";
 import Icon from "./Icon";
 import { getStreaks } from "@/functions/client/supabase";
 
-export default function Streak({ streak, streakHanging, userId } : { streak: number, streakHanging: boolean, userId: string | undefined }) {
+export default function Streak({ streak, streakHanging, userId } : { streak: number | undefined, streakHanging: boolean | undefined, userId: string | undefined }) {
     const [streaks, setStreaks] = useState<StreakType[]>([]);
     
     const isDateInStreak = (date: DateValue, streak: StreakType): boolean => {
@@ -38,25 +39,30 @@ export default function Streak({ streak, streakHanging, userId } : { streak: num
     
     return (
         <>
-        <Popover>
-            <PopoverTrigger>
-                <Button variant="light" startContent={(
-                    <Icon 
-                        filled 
-                        color={`${streakHanging ? "neutral-600" : "orange-400"}`}
+        <Popover
+            backdrop="blur"
+        >
+            <Skeleton isLoaded={streak ? true : false} className="rounded-full " >
+                <PopoverTrigger>
+                    <Button variant="light" startContent={(
+                        <Icon 
+                            filled 
+                            color={`${streakHanging ? "neutral-600" : "orange-400"}`}
+                        >
+                            mode_heat
+                        </Icon>
+                    )} 
+                    className="flex items-center justify-center gap-2"
                     >
-                        mode_heat
-                    </Icon>
-                )} 
-                className="flex items-center justify-center gap-2"
-                >
-                    <div 
-                        className={`text-2xl font-semibold ${streakHanging ? "text-neutral-600" : "text-orange-400"}`}
-                    >
-                        {streak}
-                    </div>
-                </Button>                
-            </PopoverTrigger>
+                        <div 
+                            className={`text-2xl font-semibold ${streakHanging ? "text-neutral-600" : "text-orange-400"}`}
+                        >
+                            {streak}
+                        </div>
+                    
+                    </Button>
+                </PopoverTrigger>
+            </Skeleton>   
             <PopoverContent className=" p-0">
                 <Calendar 
                     aria-label="Streak Calendar"
