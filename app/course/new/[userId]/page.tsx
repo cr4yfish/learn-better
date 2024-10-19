@@ -1,6 +1,6 @@
 "use client";
 
-import EditCourseForm from "@/components/editCourse/EditCourseForm";
+import EditCourseCard from "@/components/editCourse/EditCourseCard";
 
 export default function NewCourse({ params: { userId }} : { params: { userId: string }}) {
 
@@ -17,7 +17,7 @@ export default function NewCourse({ params: { userId }} : { params: { userId: st
 
     return (
     <>
-        <EditCourseForm userId={userId} isNew={true}  />
+        <EditCourseCard userId={userId} isNew={true}  />
     </>
   );
 }
