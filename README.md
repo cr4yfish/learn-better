@@ -63,26 +63,26 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Rating Courses, Levels & Questions
 
 ### Beta Features
-- [ ] Redesign UI & Refactor Code
-    - [ ] Move as much as possible to Server Rendering
-    - [ ] Add animations
-    - [ ] Improve UI/UX
 - [ ] Data Features 1
     - [ ] Training mode on low confidence questions
     - [ ] Stats about users & learning
     - [ ] Weekly/Monthly streak/xp goals
     - [ ] Weekly rank ups
     - [ ] Achievements
+- [ ] Community Features 2
+    - [ ] Following other users / Friends
+    - [ ] Rating Courses, Levels & Questions
+    - [ ] Course Collaboration    
+- [ ] Redesign UI & Refactor Code
+    - [ ] Move as much as possible to Server Rendering
+    - [ ] Add animations
+    - [ ] Improve UI/UX
+- [ ] Buy a domain
 - [ ] Offline features
     - [ ] Making better use of PWA features
     - [ ] Better caching
     - [ ] Offline UI
     - [ ] Manual download of Courses?
-- [ ] Community Features 2
-    - [ ] Following other users / Friends
-    - [ ] Rating Courses, Levels & Questions
-    - [ ] Course Collaboration
-- [ ] Buy a domain
 
 ### Future Features
 - [ ] Importing Levels & Questions from other sources
