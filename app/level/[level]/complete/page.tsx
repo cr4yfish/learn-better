@@ -67,7 +67,6 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                     </span>
                     <span 
                         style={{
-                            WebkitTextStroke: "10px black"
                         }}
                         className="text-[128pt] m-0 font-black z-20 h-[200px]">{sessionState.currentStreakDays}</span>
                     <span className=" text-2xl font-bold">day streak</span>
