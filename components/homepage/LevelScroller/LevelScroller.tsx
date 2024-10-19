@@ -83,8 +83,6 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
     useEffect(() => {
         const handleScrollOutOfView = (entry: IntersectionObserverEntry) => {
             if (!entry.isIntersecting) {
-                const target = entry.target as HTMLElement;
-                const topic = topics.find((t) => t.id === target.dataset.id);
 
                 // topic that just moved out of screen
                 const outOfScreen = topics.find((t) => {

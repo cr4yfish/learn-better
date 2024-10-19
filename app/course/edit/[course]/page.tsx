@@ -65,7 +65,8 @@ export default function EditCourse({ params: { course }} : { params: { course: s
       created_at: new Date().toISOString(),
       title: "",
       description: "",
-      course: userCourse?.course
+      course: userCourse?.course,
+      order: courseSections.length
     }
     
     setCourseSections([...courseSections, newCourseSection]);

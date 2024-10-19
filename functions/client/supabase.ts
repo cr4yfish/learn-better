@@ -608,7 +608,13 @@ export async function getCourseSectionTopics(courseSectionID: string): Promise<T
             description
         ),
         order,
-        course_section
+        course_sections (
+            id,
+            title,
+            description,
+            order,
+            course
+        )
     `).eq("course_section", courseSectionID).order("order", { ascending: true });
     if(error) { throw error; }
     return data.map((db: any) => {
@@ -620,10 +626,11 @@ export async function getCourseSectionTopics(courseSectionID: string): Promise<T
             course: db.courses as any,
             order: db.order,
             course_section: {
-                id: db.course_section.id,
+                id: db.course_sections.id,
                 title: "",
                 description: "",
-                course: db.courses.id
+                course: db.courses.id,
+                order: db.course_sections.order
             }
         }
     });
@@ -656,7 +663,8 @@ export async function getTopic(topicId: string): Promise<Topic> {
         title: data.title,
         description: data.description,
         course: data.courses as any,
-        order: data.order
+        order: data.order,
+        course_section: data.course_sections as any
     }
 }
 
