@@ -18,6 +18,7 @@ function LeaderboardCard({ profile } : { profile: Profile }) {
             <CardBody className=" w-full flex flex-row justify-between items-center">
                 <User 
                     name={profile.username}
+                    avatarProps={{ src: profile.avatarLink }}
                 />
                 <span>{profile.total_xp} XP</span>
             </CardBody>
