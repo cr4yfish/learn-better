@@ -54,7 +54,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Creating course sections
     - [x] Editing course sections
     - [ ] Adjust other systems to use course sections
-        - [ ] Level Scroller
+        - [x] Level Scroller
         - [ ] Level Creation
 - [ ] Community Features 1
     - [ ] Image upload support
