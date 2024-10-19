@@ -75,7 +75,7 @@ export type Topic = {
     course: Course;
     order?: number;
     completed?: boolean; // only client side
-    course_section?: Course_Section;
+    course_section: Course_Section;
 }
 
 export type Course_Section = {
@@ -83,7 +83,7 @@ export type Course_Section = {
     created_at?: string; // timestampz
     title: string;
     description: string;
-    order?: number;
+    order: number;
     course: Course;
 }
 
