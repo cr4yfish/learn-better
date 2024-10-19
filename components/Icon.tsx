@@ -3,7 +3,7 @@ import React from "react";
 import "@material-symbols/font-400";
 
 export default function Icon(
-    { children, color, filled, upscale, downscale } : 
+    { children, color="inherit", filled, upscale, downscale } : 
     { children: React.ReactNode, color?: string, filled?: boolean, upscale?: boolean, downscale?: boolean }) {
     return (
         <span 
