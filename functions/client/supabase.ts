@@ -588,6 +588,34 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
     }));
 }
 
+export async function getCourseSectionTopics(courseSectionID: string): Promise<Topic[]> {
+    const { data, error } = await getClient().from("topics").select(`
+        id,
+        created_at,
+        title,
+        description,
+        courses (
+            id,
+            title,
+            abbreviation,
+            description
+        ),
+        order,
+        course_section
+    `).eq("course_section", courseSectionID).order("order", { ascending: true });
+    if(error) { throw error; }
+    return data.map((db: any) => {
+        return {
+            id: db.id,
+            created_at: db.created_at,
+            title: db.title,
+            description: db.description,
+            course: db.courses as any,
+            order: db.order
+        }
+    });
+}
+
 export async function getTopic(topicId: string): Promise<Topic> {
     const { data, error } = await getClient().from("topics").select(`
         id,
