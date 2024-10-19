@@ -130,7 +130,7 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
                 <h1 className=" font-bold text-3xl">{isLoadingTopic ? <Spinner /> : topic?.title}</h1>
             </div>
 
-            <Card>
+            <Card className="min-h-[300px]">
                 <CardHeader className="font-bold">General information</CardHeader>
                 <CardBody>
                     <div className="flex flex-col gap-1">
@@ -155,7 +155,8 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
                 <CardFooter className="flex flex-row gap-4 items-center">
                     <Button 
                         variant="faded" color="primary" 
-                        startContent={<Icon color="primary" filled>{isSaved ? "check_circle" : "save"}</Icon>} 
+                        className="text-primary"
+                        startContent={<Icon filled>{isSaved ? "check_circle" : "save"}</Icon>} 
                         onClick={handleUpdateTopic}
                         isLoading={isLoadingSave}
                         isDisabled={isLoadingDelete || isLoadingTopic}

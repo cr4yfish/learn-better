@@ -131,7 +131,7 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
 
                 <Button 
                     color="primary" 
-                    startContent={<Icon filled color="white">{integrity ? "check" : "save"}</Icon>} 
+                    startContent={<Icon filled  >{integrity ? "check" : "save"}</Icon>} 
                     variant="solid"
                     isLoading={isSaveLoading}
                     isDisabled={integrity || isDeleteLoading}
