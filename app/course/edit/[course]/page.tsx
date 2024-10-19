@@ -9,8 +9,8 @@ import { getCurrentUser, getUserCourse, getCourseSections, upsertCourseSection }
 import { Course_Section, User_Course } from "@/types/db";
 
 import { Button } from "@/components/Button";
-import EditCourseForm from "@/components/editCourse/EditCourseForm";
 import CourseSectionCard from "@/components/editCourse/CourseSectionCard";
+import EditCourseForm from "@/components/editCourse/EditCourseForm";
 import Icon from "@/components/Icon";
 
 
