@@ -845,6 +845,12 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
         // check if the streak can be extended
         const lastStreak = data[0] as any as Streak;
         const lastStreakTo = new Date(lastStreak.to as string & undefined);
+
+        // streak is ongoing, dont do anything
+        if(isSameDay(lastStreakTo, today)) {
+            return { streak: lastStreak, isExtended: false, isAdded: false };
+        }
+
         if(isSameDay(lastStreakTo, getDayBefore(today))) {
             // extend the streak
             const { data: db, error: extendError } = await getClient().from("streaks").update({ to: today }).eq("id", lastStreak.id).select();
