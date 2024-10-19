@@ -845,7 +845,7 @@ export async function extendOrAddStreak(userID: string, today: Date): Promise<{ 
         // check if the streak can be extended
         const lastStreak = data[0] as any as Streak;
         const lastStreakTo = new Date(lastStreak.to as string & undefined);
-        if(isSameDay(lastStreakTo, today)) {
+        if(isSameDay(lastStreakTo, getDayBefore(today))) {
             // extend the streak
             const { data: db, error: extendError } = await getClient().from("streaks").update({ to: today }).eq("id", lastStreak.id).select();
             if(extendError) { throw extendError; }
@@ -878,13 +878,18 @@ export async function getNextRank(currentRank: Rank): Promise<Rank> {
 }
 
 export async function tryRankUp(userID: string, xp: number, currentRank: Rank): Promise<{ rank: Rank, rankedUp: boolean }> {
-    const nextRank = await getNextRank(currentRank);
-    if(xp >= nextRank.xp_threshold) {
-        // rank up
-        const { error } = await getClient().from("profiles").update({ rank: nextRank.id }).eq("id", userID).select();
-        if(error) { throw error; }
-        return { rank: nextRank, rankedUp: true };
-    } else {
+    try {
+        const nextRank = await getNextRank(currentRank);
+        if(xp >= nextRank.xp_threshold) {
+            // rank up
+            const { error } = await getClient().from("profiles").update({ rank: nextRank.id }).eq("id", userID).select();
+            if(error) { throw error; }
+            return { rank: nextRank, rankedUp: true };
+        } else {
+            return { rank: currentRank, rankedUp: false };
+        }
+    } catch (e) {
+        console.error("Error trying to rank up:", e);
         return { rank: currentRank, rankedUp: false };
     }
 }
