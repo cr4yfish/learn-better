@@ -3,7 +3,7 @@
 
 import { getClient } from "./supabase";
 
-import { Topic, User_Topic } from "@/types/db";
+import { Topic, Topic_Vote, User_Topic } from "@/types/db";
 
 export async function getCourseTopics(courseId: string, from: number, limit: number): Promise<Topic[]> {
     const { data, error } = await getClient().from("topics").select(`
@@ -220,6 +220,31 @@ export async function addUsersTopics({
         accuracy: accuracy,
         xp: xp
     }]).select().single();
+    if(error) { throw error; }
+    return data;
+}
+
+export async function upvoteCourseTopic(topic: Topic, userId: string): Promise<Topic_Vote> {
+    const { data, error } = await getClient().from("topics_votes").upsert([{
+        topic: topic.id,
+        user: userId,
+        vote: true
+    }]).eq("user", userId).eq("topic", topic.id).select().single();
+
+    console.log(data, error)
+    if(error) { throw error; }
+
+    return data;
+}
+
+export async function getOwnTopicVote(topic: Topic, userId: string): Promise<Topic_Vote> {
+    const { data, error } = await getClient().from("topics_votes").select().eq("topic", topic.id).eq("user", userId).single();
+    if(error) { throw error; }
+    return data;
+}
+
+export async function getAllTopicVotes(topic: Topic): Promise<Topic_Vote[]> {
+    const { data, error } = await getClient().from("topics_votes").select().eq("topic", topic.id);
     if(error) { throw error; }
     return data;
 }

@@ -11,7 +11,7 @@ import Icon from "@/components/utils/Icon";
 import { SessionState } from "@/types/auth";
 import { User_Topic } from "@/types/db"
 import { getCurrentUser } from "@/functions/supabase/auth";
-import { getUserTopic } from "@/functions/supabase/topics";
+import { getOwnTopicVote, getUserTopic, upvoteCourseTopic } from "@/functions/supabase/topics";
 
 
 
@@ -23,6 +23,10 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
     const [rankUp, setRankUp] = useState(false);
     const searchParams = useSearchParams();
 
+    // vote
+    const [isVoted, setIsVoted] = useState(false);
+    const [isVoting, setIsVoting] = useState(false);
+
     useEffect(() => {
         setRankUp(searchParams.get("rankUp") == "true");
 
@@ -32,12 +36,33 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                 setSessionState(session);
                 const userTopic = await getUserTopic(session.user.id, level);
                 if(userTopic) setUserTopic(userTopic);
+
+                try {
+                    const topicVote = await getOwnTopicVote(userTopic.topic, session.user.id);
+                    if(topicVote) setIsVoted(topicVote.vote);
+                } catch(e) {
+                    console.error("Error fetching topic vote", e);
+                }   
+
                 setIsLoading(false);
             }
         }
 
         fetchSessionState();
     }, [level, searchParams]);
+
+    const handleUpvoteLevel = async () => {
+        if(userTopic.topic && sessionState.user?.id) {
+            setIsVoting(true);
+            console.log("Upvoting course topic", userTopic.topic);
+            const res = await upvoteCourseTopic(userTopic.topic, sessionState.user.id);
+            if(res) {
+                setIsVoted(true);
+                console.log("Upvoted course topic", res);
+            }
+        }
+        setIsVoting(false);
+    }
 
     return (
         <div className=" flex flex-col gap-8 px-4 py-6 min-h-screen justify-center pb-[33vh]">
@@ -81,14 +106,31 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
                     <span className="text-[16pt] ">New rank</span>
                 </div>
             )}
+
+            {  rankUp ? (step == 3) : (step == 2) && !isVoted && (
+                <div className="flex flex-col items-center justify-center gap-4">
+                    <span className="font-bold text-xl">Like the Level?</span>
+                    <div className="flex gap-4">
+                        <Button 
+                            color="primary" variant="shadow" 
+                            onClick={handleUpvoteLevel}
+                            isLoading={isVoting}
+                            isDisabled={isVoted}
+                            startContent={<Icon filled={isVoted}>favorite</Icon>}
+                        >
+                            {isVoted ? "Liked" : "Like"}
+                        </Button>
+                    </div>
+                </div>
+            )}
             
-            <div className=" w-full">
-                <ConditionalLink active={rankUp ? step == 2 : step == 1} href="/">
+            <div className="w-full">
+                <ConditionalLink active={rankUp ? (step == 3) : (isVoted ? (step == 1) : (step == 2))} href="/">
                     <Button 
                         fullWidth
                         onClick={() => setStep(step + 1)}
                         color="primary" 
-                        isDisabled={isLoading}
+                        isDisabled={isLoading || isVoting}
                         variant="shadow" 
                         endContent={<Icon filled>arrow_right_alt</Icon>}
                     >

@@ -204,3 +204,9 @@ export type Course_Vote = {
     course: Course;
     vote: boolean;
 }
+
+export type Topic_Vote = {
+    user: User;
+    topic: Topic;
+    vote: boolean;
+}
