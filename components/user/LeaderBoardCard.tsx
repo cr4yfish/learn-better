@@ -1,22 +1,26 @@
 
 import { Card, CardBody } from "@nextui-org/card";
-import { User } from "@nextui-org/user";
+import { Skeleton } from "@nextui-org/skeleton";
 
 import { Profile } from "@/types/db";
 
-export default function LeaderboardCard({ profile } : { profile: Profile }) {
+import Username from "./Username";
+
+export default function LeaderboardCard({ profile } : { profile: Profile | undefined }) {
 
     return (
         <>
-        <Card key={profile.id} className=" w-full" isPressable>
-            <CardBody className=" w-full flex flex-row justify-between items-center">
-                <User 
-                    name={profile.username}
-                    avatarProps={{ src: profile.avatarLink }}
-                />
-                <span>{profile.total_xp} XP</span>
-            </CardBody>
-        </Card>
+        <Skeleton
+            isLoaded={profile !== undefined}
+            className="rounded-lg"
+        >
+            <Card key={profile?.id} className=" w-full" isPressable>
+                <CardBody className=" w-full flex flex-row justify-between items-center">
+                    <Username initProfile={profile} />
+                    <span>{profile?.total_xp} XP</span>
+                </CardBody>
+            </Card>
+        </Skeleton>
         </>
     )
 }
