@@ -2,7 +2,7 @@
 
 import { getClient } from "./supabase";
 
-import { User_Course, Course, Course_Section } from "@/types/db";
+import { User_Course, Course, Course_Section, Course_Vote } from "@/types/db";
 
 export async function getUserCourses(userID: string): Promise<User_Course[]> {
     const { data, error } = await getClient().from("users_courses").select(`
@@ -19,13 +19,16 @@ export async function getUserCourses(userID: string): Promise<User_Course[]> {
                 description
             ),
             title,
-            is_official
+            is_official,
+            courses_votes (
+                vote
+            )
         ),
         joined_at,
         is_admin,
         is_moderator,
         is_collaborator
-    `).eq("user", userID);
+    `).eq("user", userID).order("joined_at", { ascending: false });
     if(error) { throw error; }
     
     return data.map((db: any) => {
@@ -38,7 +41,8 @@ export async function getUserCourses(userID: string): Promise<User_Course[]> {
                 id: db.courses.id,
                 institution: db.courses.institutions,
                 title: db.courses.title,
-                is_official: db.courses.is_official
+                is_official: db.courses.is_official,
+                votes: (db.courses.courses_votes as {vote: boolean}[]).length
             },
             joined_at: db.joined_at,
             is_admin: db.is_admin,
@@ -121,7 +125,10 @@ export async function getCourses({
                 description
             ),
             title,
-            is_official
+            is_official,
+            courses_votes (
+                vote
+            )
         `)
         .order("created_at", { ascending: false })
         .range(from, from + limit - 1);
@@ -136,7 +143,9 @@ export async function getCourses({
             id: db.id,
             institution: db.institutions,
             title: db.title,
-            is_official: db.is_official
+            is_official: db.is_official,
+            votes: (db.courses_votes as {vote: boolean}[]).length
+            
         }
     })
 }
@@ -262,12 +271,43 @@ export async function joinCourse(courseID: string, userID: string, options?: { i
         joined_at: db.joined_at,
         is_admin: db.is_admin,
         is_moderator: db.is_moderator,
-        is_collaborator: db.is_collaborator
+        is_collaborator: db.is_collaborator,
     }
 }
 
 export async function leaveCourse(courseID: string, userID: string) {
     const { data, error } = await getClient().from("users_courses").delete().eq("user", userID).eq("course", courseID).select();
+    if(error) { throw error; }
+    return data;
+}
+
+export async function upvoteCourse(courseID: string, userID: string): Promise<Course_Vote> {
+    const { data, error } = await getClient().from("courses_votes").upsert({
+        user: userID,
+        course: courseID,
+        vote: true,
+    }).eq("user", userID).eq("course", courseID).select().single();
+    if(error) { throw error; }
+    return data;
+}
+
+export async function getOwnCourseVote(courseID: string, userID: string): Promise<Course_Vote | null> {
+    try {
+        const { data, error } = await getClient().from("courses_votes").select().eq("user", userID).eq("course", courseID).single();
+        if(error) { throw error; }
+        return data;
+    } catch (e : any) {
+        if(e.code !== "PGRST116") {
+            console.error("Error getting own course vote:", e)
+        }
+        ;
+        return null;
+    }
+
+}
+
+export async function getAllCourseVotes(courseID: string): Promise<Course_Vote[]> {
+    const { data, error } = await getClient().from("courses_votes").select().eq("course", courseID);
     if(error) { throw error; }
     return data;
 }

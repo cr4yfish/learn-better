@@ -59,8 +59,11 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Community Features 1
     - [ ] ~~Image upload support~~
     - [ ] ~~Adding more optional info fields~~
-    - [ ] Viewing other user profiles
-    - [ ] Rating Courses, Levels & Questions
+    - [x] Viewing other user profiles
+    - [ ] Rating System
+        - [x] Courses
+        - [ ] Levels 
+        - [ ] ~~Questions~~
 
 ### Beta Features
 - [ ] Data Features 1

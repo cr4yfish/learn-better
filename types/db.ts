@@ -97,6 +97,7 @@ export type Course = {
     is_official: boolean;
     is_public?: boolean;
     institution?: Institution;
+    votes?: number;
 }
 
 export type Institution = {
@@ -195,4 +196,11 @@ export type User_Course = {
     is_admin: boolean;
     is_moderator: boolean;
     is_collaborator: boolean;
+    upvote?: boolean;
+}
+
+export type Course_Vote = {
+    user: User;
+    course: Course;
+    vote: boolean;
 }
