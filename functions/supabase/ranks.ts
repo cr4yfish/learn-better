@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getSession, getProfile } from "./auth";
 import { getClient } from "./supabase";
-import { Profile, Rank } from "@/types/db";
+import { Rank } from "@/types/db";
 
 
 export async function getRanks(): Promise<Rank[]> {
@@ -50,13 +51,3 @@ export async function getCurrentUserRank(): Promise<Rank> {
 }
 
 
-export async function getProfilesInRank(rankID?: string): Promise<Profile[]> {
-    let localRankID = rankID;
-    if(!localRankID) {
-        localRankID = (await getCurrentUserRank()).id;
-    }
-
-    const { data, error } = await getClient().from("profiles").select().eq("rank", localRankID).order("total_xp", { ascending: false });
-    if(error) { throw error; }
-    return data;
-}
