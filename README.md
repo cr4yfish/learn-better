@@ -79,7 +79,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Redesign UI & Refactor Code
     - [ ] Move as much as possible to Server Rendering
     - [ ] Add animations
-    - [ ] Improve UI/UX
+    - [ ] Improve UI/UX - is very utilitarian right now
 - [ ] Buy a domain
 - [ ] Offline features
     - [ ] Making better use of PWA features
