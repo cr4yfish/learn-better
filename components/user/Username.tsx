@@ -35,25 +35,25 @@ export default function Username({ initProfile, userId } : { initProfile?: Profi
         <>
         <Skeleton
             isLoaded={!isLoading}
-            className="flex items-center"
+            className="flex items-center rounded-lg"
         >
             <User
                 onClick={onOpen}
-                name={profile.username}
-                avatarProps={{ src: profile.avatarLink }}
+                name={profile?.username}
+                avatarProps={{ src: profile?.avatarLink }}
             />
         </Skeleton>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
-                <ModalHeader>{profile.username}</ModalHeader>
+                <ModalHeader>{profile?.username}</ModalHeader>
                 <ModalBody>
-                    <span>Rank: {profile.rank.title}</span>
+                    <span>Rank: {profile?.rank?.title}</span>
                     <span>{profile.total_xp} XP</span>
                 </ModalBody>
                 <ModalFooter>
                     <ConditionalLink
                         active={!isLoading}
-                        href={`/user/${profile.id}`}
+                        href={`/user/${profile?.id}`}
                     >
                         <Button
                             variant="flat"
