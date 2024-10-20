@@ -6,7 +6,6 @@ import { User as UserCard } from "@nextui-org/user";
 import { Image } from "@nextui-org/image";
 import { Skeleton } from "@nextui-org/skeleton";
 
-
 import { SessionState } from "@/types/auth";
 
 import Navigation from "@/components/utils/Navigation";
@@ -18,12 +17,14 @@ export default function User() {
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);
 
     useEffect(() => {
-        // get profile
+        // get current user
         getCurrentUser().then(res => {
             if(res === null) return;
             setSessionState(res);
         })
+
     }, [])
+
 
     return (
     <>
