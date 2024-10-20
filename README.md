@@ -56,7 +56,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Adjust other systems to use course sections
         - [x] Level Scroller
         - [x] Level Creation
-- [ ] Community Features 1
+- [x] Community Features 1
     - [ ] ~~Image upload support~~
     - [ ] ~~Adding more optional info fields~~
     - [x] Viewing other user profiles
