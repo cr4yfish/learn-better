@@ -85,7 +85,7 @@ export default function Courses() {
             </Swiper>
 
             <h2 className=" font-bold">Your courses</h2>
-            <ScrollShadow className="flex flex-col gap-5 max-h-[50vh] overflow-y-scroll">
+            <ScrollShadow className="flex flex-col gap-5 max-h-[50vh] min-h-full overflow-y-auto">
                 {sessionState?.courses?.map((userCourse) => (
                     <CourseCard 
                         key={userCourse.course.id} 

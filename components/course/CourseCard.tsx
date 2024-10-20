@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Button } from "@/components/utils/Button";
-import { Chip } from "@nextui-org/chip";
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";  
 
+import { Button } from "@/components/utils/Button";
 import Icon from "../utils/Icon";
 import { Course, User_Course } from "@/types/db";
 import { joinCourse, leaveCourse } from "@/functions/supabase/courses";
@@ -13,15 +13,15 @@ import { joinCourse, leaveCourse } from "@/functions/supabase/courses";
 
 
 export default function CourseCard ({ 
-    course, userCourses, isSmall=false, userID, setUserCourses, noInteraction=false
+    course, userCourses, isSmall=false, userID, setUserCourses
 } : { 
     course: Course, userCourses?: User_Course[], isSmall?: boolean, userID?: string,
     setUserCourses?: (courses: User_Course[]) => void,
-    noInteraction?: boolean
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
     const handleJoinCourse = async (course: Course) => {
         if(!userID  || !setUserCourses) return;
@@ -34,15 +34,20 @@ export default function CourseCard ({
         }
        
         setIsLoading(false);
+        onClose();
     }
 
     const handleLeaveCourse = async (course: Course) => {
         if(!userID  || !setUserCourses) return;
         setIsLoading(true);
-        const res = await leaveCourse(course.id, userID);
-        if(userCourses && res) {
-            setUserCourses(userCourses.filter((userCourse) => userCourse.course.id !== course.id));
-            setIsJoined(false);
+
+        const confirm = window.confirm("Are you sure you want to leave this course?");
+        if(confirm) {
+            const res = await leaveCourse(course.id, userID);
+            if(userCourses && res) {
+                setUserCourses(userCourses.filter((userCourse) => userCourse.course.id !== course.id));
+                setIsJoined(false);
+            }
         }
         setIsLoading(false);
     }
@@ -55,15 +60,27 @@ export default function CourseCard ({
 
     return (
     <>
-        <Card className={`min-h-48 ${isSmall && "min-h-32 max-h-32"} `}>
-            <CardHeader className="m-0 pb-0 font-bold">{course.abbreviation}</CardHeader>
-            <CardBody className="flex flex-col pb-0">
+        <Card 
+            isPressable onClick={onOpen} 
+            className={`h-32 ${isSmall && "h-24 w-24"} `}
+            classNames={{
+                base: "overflow-y-hidden",
+            }}
+        >
+            <CardHeader className="m-0 pb-0 font-bold overflow-y-hidden">{course.abbreviation}</CardHeader>
+            <CardBody className="flex flex-col pb-0 overflow-y-hidden">
                 { !isSmall && <span className=" text-tiny font-semibold">{course.title}</span>}
-                {course.institution && <Chip size="sm" >{course.institution?.abbreviation}</Chip>}
                {!isSmall &&  <span>{course.description}</span>}
             </CardBody>
-            {!noInteraction && (
-                <CardFooter className="flex w-full items-center justify-between">
+        </Card>    
+        <Modal isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange}>
+            <ModalContent>
+                <ModalHeader>{course?.title}</ModalHeader>
+                <ModalBody>
+                    <p>{course?.description}</p>
+                </ModalBody>
+                <ModalFooter>
+                    <Button isDisabled={isLoading} onClick={onClose} color="warning" variant="light">Close</Button>
                     { isJoined ?
                         <Button 
                             variant="light" 
@@ -71,7 +88,7 @@ export default function CourseCard ({
                             onClick={() => handleLeaveCourse(course)}
                             isLoading={isLoading}
                         >
-                            Leave
+                            Leave Course
                         </Button>
                         :
                         <Button 
@@ -80,7 +97,7 @@ export default function CourseCard ({
                             onClick={()=> handleJoinCourse(course)}
                             isLoading={isLoading}
                         >
-                            Join
+                            Join Course
                         </Button>
                     }
                     { isAdmin && !isSmall &&
@@ -94,9 +111,9 @@ export default function CourseCard ({
                             </Button>
                         </Link>
                     }
-                </CardFooter>
-            )}
-        </Card>    
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
     </>
     )
 }
