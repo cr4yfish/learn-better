@@ -130,8 +130,10 @@ export async function getTopic(topicId: string): Promise<Topic> {
 
 export async function upsertCourseTopic(topic: Topic): Promise<{ id: string }> {
     const { data, error } = await getClient().from("topics").upsert([{
-        ...topic,
+        title: topic.title,
+        description: topic.description,
         course: topic.course.id,
+        course_section: topic.course_section.id
     }]).select();
 
     if(error) { throw error; }
