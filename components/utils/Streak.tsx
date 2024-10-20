@@ -75,6 +75,10 @@ export default function Streak({ streak, streakHanging, userId } : { streak: num
                             data-[unavailable=true]:text-primary-foreground 
                             data-[unavailable=true]:bg-primary 
                             data-[unavailable=true]:no-underline
+                            data-[selected=true]:${ streakHanging ? "bg-transparent" : "bg-primary"}
+                            data-[selected=true]:${ streakHanging ? "text-neutral-600" : "text-primary-foreground"}
+                            data-[selected=true]:border
+                            data-[selected=true]:border-primary
                         `
                     }}
                 />
