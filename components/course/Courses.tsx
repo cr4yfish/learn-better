@@ -11,9 +11,10 @@ import CourseCard from "./CourseCard";
 import ConditionalLink from "../utils/ConditionalLink";
 import CourseSearch from "./CourseSearch";
 
-import { getCourses, getCurrentUser } from "@/functions/client/supabase";
 import { Course, User_Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
+import { getCourses } from "@/functions/supabase/courses";
+import { getCurrentUser } from "@/functions/supabase/auth";
 
 
 

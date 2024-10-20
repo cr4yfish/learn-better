@@ -6,13 +6,13 @@ import { User as UserCard } from "@nextui-org/user";
 import { Image } from "@nextui-org/image";
 import { Skeleton } from "@nextui-org/skeleton";
 
-import { getCurrentUser } from "@/functions/client/supabase";
 
 import { SessionState } from "@/types/auth";
 
 import Navigation from "@/components/utils/Navigation";
 import LoginButton from "@/components/user/LoginButton"
 import EditProfileCard from "@/components/user/EditProfileCard";
+import { getCurrentUser } from "@/functions/supabase/auth";
 
 export default function User() {
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);

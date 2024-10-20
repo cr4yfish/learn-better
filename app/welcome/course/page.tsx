@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 
 import CourseSearch from "@/components/course/CourseSearch";
 import { SessionState } from "@/types/auth";
-import { getCurrentUser, updateCurrentCourse } from "@/functions/client/supabase";
+import { getCurrentUser } from "@/functions/supabase/auth";
+import { updateCurrentCourse } from "@/functions/supabase/courses";
 
 export default function SelectCourse() {
     const [sessionState, setSessionState] = useState<SessionState | null>({} as SessionState);

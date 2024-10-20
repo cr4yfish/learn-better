@@ -8,8 +8,9 @@ import { Input } from "@nextui-org/input";
 
 import Icon from "../utils/Icon";
 import { Course_Section, Topic } from "@/types/db";
-import { upsertCourseSection, deleteCourseSection, getCourseSectionTopics, upsertCourseTopic } from "@/functions/client/supabase";
 import { ReactSortable } from "react-sortablejs";
+import { upsertCourseSection, deleteCourseSection } from "@/functions/supabase/courseSections";
+import { upsertCourseTopic, getCourseSectionTopics } from "@/functions/supabase/topics";
 
 
 export default function CourseSectionCard(

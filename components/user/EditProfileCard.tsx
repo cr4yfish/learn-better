@@ -5,9 +5,9 @@ import {Skeleton} from "@nextui-org/skeleton";
 
 import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
-import { upsertProfile } from "@/functions/client/supabase";
 import { Profile } from "@/types/db";
 import Icon from "../utils/Icon";
+import { upsertProfile } from "@/functions/supabase/auth";
 
 export default function EditProfileCard({ sessionState } : { sessionState: SessionState }) {
     const [userProfile, setUserProfile] = useState<Profile | undefined>(sessionState.profile);

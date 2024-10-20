@@ -5,7 +5,6 @@ import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter
 
 import { User_Course } from "@/types/db";
 
-import { getCurrentUser, upsertSettings } from "@/functions/client/supabase";
 
 import { Button } from "@/components/utils/Button";
 import LevelScroller from "@/components/levelScroller/LevelScroller";
@@ -14,6 +13,8 @@ import Header from "@/components/utils/Header";
 import CourseSelectSwiper from "@/components/course/CourseSelectSwiper";
 import { SessionState } from "@/types/auth";
 import Link from "next/link";
+import { getCurrentUser } from "@/functions/supabase/auth";
+import { upsertSettings } from "@/functions/supabase/settings";
 
 
 export default function Home() {

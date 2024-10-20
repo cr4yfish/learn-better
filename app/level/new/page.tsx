@@ -9,8 +9,8 @@ import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import CourseAutocomplete from "@/components/course/CourseAutocomplete";
 import { Course, Course_Section, Topic } from "@/types/db";
-import { upsertCourseTopic } from "@/functions/client/supabase";
 import CourseSectionSelect from "@/components/courseSection/CourseSectionAutocomplete";
+import { upsertCourseTopic } from "@/functions/supabase/topics";
 
 
 export default function NewLevel() {

@@ -10,8 +10,8 @@ import { LevelState } from "@/types/client";
 import { QuestionState, OptionState } from "@/types/client";
 import { Button } from "@/components/utils/Button";
 import Option from "./Option";
+import { addUserQuestion } from "@/functions/supabase/questions";
 
-import { addUserQuestion } from "@/functions/client/supabase";
 
 export default function Question({
     question, setLevelState, session

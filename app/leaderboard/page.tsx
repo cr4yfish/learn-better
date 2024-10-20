@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 
 import { Profile } from "@/types/db";
-import { getCurrentUser, getProfilesInRank } from "@/functions/client/supabase";
 
 import { Spinner } from "@nextui-org/spinner";
 import { SessionState } from "@/types/auth";
 
 import Navigation from "@/components/utils/Navigation";
 import LeaderboardCard from "@/components/user/LeaderBoardCard";
+import { getCurrentUser } from "@/functions/supabase/auth";
+import { getProfilesInRank } from "@/functions/supabase/ranks";
 
 export default function Leaderboard() {
     const [profiles, setProfiles] = useState<Profile[]>([]);

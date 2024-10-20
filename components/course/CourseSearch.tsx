@@ -7,7 +7,7 @@ import Icon from "../utils/Icon"
 import CourseCard from "./CourseCard"
 import { SessionState } from "@/types/auth"
 import { Course, User_Course } from "@/types/db"
-import { searchCourses } from "@/functions/client/supabase"
+import { searchCourses } from "@/functions/supabase/courses"
 
 export default function CourseSearch({ sessionState, setSessionState } : { sessionState: SessionState | null, setSessionState: React.Dispatch<React.SetStateAction<SessionState | null>> }) {
     const [searchQuery, setSearchQuery] = useState("")

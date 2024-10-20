@@ -5,13 +5,16 @@ import { useState, useEffect } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
-import { getCurrentUser, getUserCourse, getCourseSections, upsertCourseSection } from "@/functions/client/supabase";
+
 import { Course_Section, User_Course } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
 import EditCourseCard from "@/components/course/EditCourseCard";
 import CourseSectionCard from "@/components/courseSection/CourseSectionCard";
 import Icon from "@/components/utils/Icon";
+import { getCurrentUser } from "@/functions/supabase/auth";
+import { getUserCourse } from "@/functions/supabase/courses";
+import { getCourseSections, upsertCourseSection } from "@/functions/supabase/courseSections";
 
 
 export default function EditCourse({ params: { course }} : { params: { course: string }}) {

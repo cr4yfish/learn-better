@@ -7,7 +7,7 @@ import { Chip } from "@nextui-org/chip";
 
 import Icon from "../utils/Icon";
 import { Course, User_Course } from "@/types/db";
-import { joinCourse, leaveCourse } from "@/functions/client/supabase";
+import { joinCourse, leaveCourse } from "@/functions/supabase/courses";
 
 
 

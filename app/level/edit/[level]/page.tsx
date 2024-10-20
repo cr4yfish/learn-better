@@ -9,7 +9,6 @@ import { Modal, ModalContent, ModalBody, ModalFooter, useDisclosure, ModalHeader
 import { Select, SelectItem, SelectSection } from "@nextui-org/select";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
-import { deleteCourseTopic, getQuestions, getTopic, upsertCourseTopic } from "@/functions/client/supabase";
 import { Question, Question_Type, Topic } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
@@ -17,6 +16,8 @@ import Icon from "@/components/utils/Icon";
 import EditQuestion from "@/components/level/question/EditQuestion";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Spinner } from "@nextui-org/spinner";
+import { getQuestions } from "@/functions/supabase/questions";
+import { getTopic, upsertCourseTopic, deleteCourseTopic } from "@/functions/supabase/topics";
 
 
 export default function EditLevel({ params: { level } }: { params: { level: string } }) {

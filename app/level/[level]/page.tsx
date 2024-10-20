@@ -9,11 +9,15 @@ import Icon from "@/components/utils/Icon";
 import QuestionHeader from "@/components/level/question/QuestionHeader";
 import Question from "@/components/level/question/Question"
 
-import { addUsersTopics, updateTotalXP, extendOrAddStreak, getCurrentUser, getQuestions, tryRankUp } from "@/functions/client/supabase";
 
 import { Question as QuestionType } from "@/types/db";
 import { LevelState } from "@/types/client";
 import { SessionState } from "@/types/auth";
+import { updateTotalXP, getCurrentUser } from "@/functions/supabase/auth";
+import { getQuestions } from "@/functions/supabase/questions";
+import { tryRankUp } from "@/functions/supabase/ranks";
+import { extendOrAddStreak } from "@/functions/supabase/streaks";
+import { addUsersTopics } from "@/functions/supabase/topics";
 
 
 export default function Level({ params } : { params: { level: string }}) {

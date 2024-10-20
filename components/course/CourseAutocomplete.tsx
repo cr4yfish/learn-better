@@ -4,8 +4,8 @@ import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import { useAsyncList } from "@react-stately/data";
 
 import { Course } from "@/types/db";
+import { searchCourses } from "@/functions/supabase/courses";
 
-import { searchCourses } from "@/functions/client/supabase";
 
 export default function CourseAutocomplete({ setCourse } : { setCourse: (course: Course) => void }) {
 

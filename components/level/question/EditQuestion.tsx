@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/input"
 ;
 import { Question, Question_Type, Topic } from "@/types/db";
 import Icon from "@/components/utils/Icon";
-import { deleteQuestion, upsertQuestion } from "@/functions/client/supabase";
+import { upsertQuestion, deleteQuestion } from "@/functions/supabase/questions";
 
 export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key:  keyof Question, value: string & string[] & Topic & Question_Type) => void , removeQuestion: (question: Question) => void  }) {
     const [integrity, setIntegrity] = useState(true);

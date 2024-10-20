@@ -8,9 +8,9 @@ import { Modal, ModalContent, ModalBody, ModalFooter, ModalHeader, useDisclosure
 import { Input } from "@nextui-org/input"
 import { Checkbox } from "@nextui-org/checkbox"
 
-import { userLogin, getSession, userLogOut, getProfile, userSignUp } from "@/functions/client/supabase";
 
 import { SessionState } from "@/types/auth";
+import { userSignUp, userLogin, getProfile, getSession, userLogOut } from "@/functions/supabase/auth";
 
 export default function LoginButton({ sessionState, setSessionState } : { sessionState: SessionState, setSessionState: React.Dispatch<React.SetStateAction<SessionState>> }) {
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();

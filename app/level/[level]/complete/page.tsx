@@ -8,9 +8,10 @@ import LevelComplete from "@/components/level/LevelComplete";
 import ConditionalLink from "@/components/utils/ConditionalLink";
 import Icon from "@/components/utils/Icon";
 
-import { getCurrentUser, getUserTopic } from "@/functions/client/supabase"
 import { SessionState } from "@/types/auth";
 import { User_Topic } from "@/types/db"
+import { getCurrentUser } from "@/functions/supabase/auth";
+import { getUserTopic } from "@/functions/supabase/topics";
 
 
 
