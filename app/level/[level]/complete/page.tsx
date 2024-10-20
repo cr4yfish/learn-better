@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { Button } from "@/components/Button";
-import LevelComplete from "@/components/LevelComplete";
-import ConditionalLink from "@/components/ConditionalLink";
-import Icon from "@/components/Icon";
+import { Button } from "@/components/utils/Button";
+import LevelComplete from "@/components/level/LevelComplete";
+import ConditionalLink from "@/components/utils/ConditionalLink";
+import Icon from "@/components/utils/Icon";
 
 import { getCurrentUser, getUserTopic } from "@/functions/client/supabase"
 import { SessionState } from "@/types/auth";

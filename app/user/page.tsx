@@ -10,9 +10,9 @@ import { getCurrentUser } from "@/functions/client/supabase";
 
 import { SessionState } from "@/types/auth";
 
-import Navigation from "@/components/homepage/Navigation";
-import LoginButton from "@/components/LoginButton"
-import EditProfileCard from "@/components/editProfileCard";
+import Navigation from "@/components/utils/Navigation";
+import LoginButton from "@/components/user/LoginButton"
+import EditProfileCard from "@/components/user/EditProfileCard";
 
 export default function User() {
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-import CourseSearch from "@/components/community/CourseSearch";
+import CourseSearch from "@/components/course/CourseSearch";
 import { SessionState } from "@/types/auth";
 import { getCurrentUser, updateCurrentCourse } from "@/functions/client/supabase";
 

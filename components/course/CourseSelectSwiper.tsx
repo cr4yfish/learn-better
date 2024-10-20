@@ -6,7 +6,7 @@ import { Swiper as SwiperType } from 'swiper/types';
 import CourseButton from './CourseButton';
 import { User_Course } from '@/types/db';
 
-export default function CourseSelect({ 
+export default function CourseSelectSwiper({ 
     userCourses, currentUserCourse, setCurrentUserCourse } : 
     { 
         userCourses: User_Course[], currentUserCourse: User_Course, 

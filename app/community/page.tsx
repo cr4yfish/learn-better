@@ -1,7 +1,7 @@
 "use client";
 
-import Navigation from "@/components/homepage/Navigation";
-import Courses from "@/components/community/Courses";
+import Navigation from "@/components/utils/Navigation";
+import Courses from "@/components/course/Courses";
 
 
 export default function Community() {

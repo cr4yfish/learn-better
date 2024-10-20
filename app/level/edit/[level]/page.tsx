@@ -12,9 +12,9 @@ import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import { deleteCourseTopic, getQuestions, getTopic, upsertCourseTopic } from "@/functions/client/supabase";
 import { Question, Question_Type, Topic } from "@/types/db";
 
-import { Button } from "@/components/Button";
-import Icon from "@/components/Icon";
-import EditQuestion from "@/components/editLevel/EditQuestion";
+import { Button } from "@/components/utils/Button";
+import Icon from "@/components/utils/Icon";
+import EditQuestion from "@/components/level/question/EditQuestion";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Spinner } from "@nextui-org/spinner";
 

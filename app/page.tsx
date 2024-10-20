@@ -7,11 +7,11 @@ import { User_Course } from "@/types/db";
 
 import { getCurrentUser, upsertSettings } from "@/functions/client/supabase";
 
-import { Button } from "@/components/Button";
-import LevelScroller from "@/components/homepage/LevelScroller/LevelScroller";
-import Navigation from "@/components/homepage/Navigation";
-import Header from "@/components/homepage/Header";
-import CourseSelect from "@/components/homepage/CourseSelect";
+import { Button } from "@/components/utils/Button";
+import LevelScroller from "@/components/levelScroller/LevelScroller";
+import Navigation from "@/components/utils/Navigation";
+import Header from "@/components/utils/Header";
+import CourseSelectSwiper from "@/components/course/CourseSelectSwiper";
 import { SessionState } from "@/types/auth";
 import Link from "next/link";
 
@@ -69,7 +69,7 @@ export default function Home() {
       <ModalContent>
           <ModalHeader>Your Courses</ModalHeader>
           <ModalBody>
-              <CourseSelect 
+              <CourseSelectSwiper 
                 userCourses={sessionState.courses} 
                 currentUserCourse={currentUserCourse}
                 setCurrentUserCourse={handleCourseChange} 

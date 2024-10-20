@@ -7,7 +7,7 @@ import { Course } from "@/types/db";
 
 import { searchCourses } from "@/functions/client/supabase";
 
-export default function CourseSelect({ setCourse } : { setCourse: (course: Course) => void }) {
+export default function CourseAutocomplete({ setCourse } : { setCourse: (course: Course) => void }) {
 
     const list = useAsyncList<Course>({
         async load({filterText}) {

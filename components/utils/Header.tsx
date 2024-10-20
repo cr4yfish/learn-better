@@ -3,8 +3,8 @@
 import React from "react";
 import { Button } from "@nextui-org/button"
 
-import Streak from "../Streak"
-import Xp from "../Xp"
+import Streak from "../utils/Streak"
+import Xp from "../utils/Xp"
 import { Streak as StreakType, User_Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 import { getDayBefore, isSameDay } from "@/functions/helpers";

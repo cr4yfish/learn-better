@@ -1,7 +1,7 @@
 import Link from "next/link"
 import React from "react"
 
-import Icon from "../Icon"
+import Icon from "../utils/Icon"
 
 type Links = "Home" | "Training" | "Community" | "Profile" | "Leaderboard"
 

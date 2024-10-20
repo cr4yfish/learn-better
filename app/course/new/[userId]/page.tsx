@@ -1,6 +1,6 @@
 "use client";
 
-import EditCourseCard from "@/components/editCourse/EditCourseCard";
+import EditCourseCard from "@/components/course/EditCourseCard";
 
 export default function NewCourse({ params: { userId }} : { params: { userId: string }}) {
 

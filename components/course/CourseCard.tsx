@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/utils/Button";
 import { Chip } from "@nextui-org/chip";
 
-import Icon from "../Icon";
+import Icon from "../utils/Icon";
 import { Course, User_Course } from "@/types/db";
 import { joinCourse, leaveCourse } from "@/functions/client/supabase";
 

@@ -8,10 +8,10 @@ import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { getCurrentUser, getUserCourse, getCourseSections, upsertCourseSection } from "@/functions/client/supabase";
 import { Course_Section, User_Course } from "@/types/db";
 
-import { Button } from "@/components/Button";
-import EditCourseCard from "@/components/editCourse/EditCourseCard";
-import CourseSectionCard from "@/components/editCourse/CourseSectionCard";
-import Icon from "@/components/Icon";
+import { Button } from "@/components/utils/Button";
+import EditCourseCard from "@/components/course/EditCourseCard";
+import CourseSectionCard from "@/components/courseSection/CourseSectionCard";
+import Icon from "@/components/utils/Icon";
 
 
 export default function EditCourse({ params: { course }} : { params: { course: string }}) {

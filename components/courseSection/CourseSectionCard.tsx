@@ -6,7 +6,7 @@ import { Card, CardHeader, CardFooter, CardBody } from "@nextui-org/card";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { Input } from "@nextui-org/input";
 
-import Icon from "../Icon";
+import Icon from "../utils/Icon";
 import { Course_Section, Topic } from "@/types/db";
 import { upsertCourseSection, deleteCourseSection, getCourseSectionTopics, upsertCourseTopic } from "@/functions/client/supabase";
 import { ReactSortable } from "react-sortablejs";

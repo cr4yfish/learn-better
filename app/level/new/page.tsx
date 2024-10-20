@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Input } from "@nextui-org/input";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/utils/Button";
 
-import Icon from "@/components/Icon";
-import CourseSelect from "@/components/addLevel/CourseSelect";
+import Icon from "@/components/utils/Icon";
+import CourseAutocomplete from "@/components/course/CourseAutocomplete";
 import { Course, Course_Section, Topic } from "@/types/db";
 import { upsertCourseTopic } from "@/functions/client/supabase";
-import CourseSectionSelect from "@/components/addLevel/CourseSectionSelect";
+import CourseSectionSelect from "@/components/courseSection/CourseSectionAutocomplete";
 
 
 export default function NewLevel() {
@@ -84,7 +84,7 @@ export default function NewLevel() {
                 <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-2" >
                     <div className="flex flex-col gap-2">
                     <h2 className="font-bold text-lg" >Which course does the level belong to?</h2>
-                        <CourseSelect setCourse={(course) => handleUpdateTopicField("course", course)} />
+                        <CourseAutocomplete setCourse={(course) => handleUpdateTopicField("course", course)} />
                         <CourseSectionSelect 
                             course={newTopic.course} 
                             setCourseSection={(courseSection) => handleUpdateTopicField("course_section", courseSection)} 

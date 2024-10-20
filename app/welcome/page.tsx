@@ -1,6 +1,6 @@
 "use client";
 
-import LoginButton from "@/components/LoginButton"
+import LoginButton from "@/components/user/LoginButton"
 import { SessionState } from "@/types/auth";
 import { useEffect, useState } from "react";
 

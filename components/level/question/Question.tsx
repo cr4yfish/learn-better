@@ -8,7 +8,7 @@ import { Question as QuestionType } from "@/types/db";
 import { SessionState } from "@/types/auth";
 import { LevelState } from "@/types/client";
 import { QuestionState, OptionState } from "@/types/client";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/utils/Button";
 import Option from "./Option";
 
 import { addUserQuestion } from "@/functions/client/supabase";

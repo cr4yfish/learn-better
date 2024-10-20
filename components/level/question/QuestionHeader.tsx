@@ -1,12 +1,12 @@
 
 import Link from "next/link";
 import { Progress } from "@nextui-org/progress";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/utils/Button";
 
-import Icon from "../Icon";
-import Xp from "../Xp";
+import Icon from "../../utils/Icon";
+import Xp from "../../utils/Xp";
 
-export default function Header({ progress, xp, numQuestions } : { progress: number, xp: number, numQuestions: number }) {
+export default function QuestionHeader({ progress, xp, numQuestions } : { progress: number, xp: number, numQuestions: number }) {
 
     return (
         <>

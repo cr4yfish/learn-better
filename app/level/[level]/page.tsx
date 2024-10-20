@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useStopwatch } from "react-use-precision-timer";
 
-import { Button } from "@/components/Button";
-import Icon from "@/components/Icon";
-import Header from "@/components/question/Header"
-import Question from "@/components/question/Question"
+import { Button } from "@/components/utils/Button";
+import Icon from "@/components/utils/Icon";
+import QuestionHeader from "@/components/level/question/QuestionHeader";
+import Question from "@/components/level/question/Question"
 
 import { addUsersTopics, updateTotalXP, extendOrAddStreak, getCurrentUser, getQuestions, tryRankUp } from "@/functions/client/supabase";
 
@@ -112,7 +112,7 @@ export default function Level({ params } : { params: { level: string }}) {
 
     return (
         <div className="px-4 py-6 flex flex-col gap-4 h-full min-h-full ">
-            <Header progress={levelState.progress} numQuestions={levelState.totalQuestions} xp={levelState.xp} />
+            <QuestionHeader progress={levelState.progress} numQuestions={levelState.totalQuestions} xp={levelState.xp} />
            
             <div className="flex flex-col justify-between h-full min-h-full gap-12">
                 {questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions && (

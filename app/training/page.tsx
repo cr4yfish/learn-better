@@ -1,4 +1,4 @@
-import Navigation from "@/components/homepage/Navigation";
+import Navigation from "@/components/utils/Navigation"
 
 
 export default function Training() {

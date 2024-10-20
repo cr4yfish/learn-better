@@ -2,7 +2,7 @@
 
 import { Card, CardBody } from "@nextui-org/card"
 
-import Icon from "./Icon"
+import Icon from "../utils/Icon"
 
 import { User_Topic } from "@/types/db"
 import { Spinner } from "@nextui-org/spinner"

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import { Button } from "@/components/Button";
+import { Button } from "@/components/utils/Button";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input"
 
 ;
 import { Question, Question_Type, Topic } from "@/types/db";
-import Icon from "../Icon";
+import Icon from "@/components/utils/Icon";
 import { deleteQuestion, upsertQuestion } from "@/functions/client/supabase";
 
 export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key:  keyof Question, value: string & string[] & Topic & Question_Type) => void , removeQuestion: (question: Question) => void  }) {

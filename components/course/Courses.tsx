@@ -5,10 +5,10 @@ import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
 
-import { Button } from "../Button";
-import Icon from "../Icon";
+import { Button } from "../utils/Button";
+import Icon from "../utils/Icon";
 import CourseCard from "./CourseCard";
-import ConditionalLink from "../ConditionalLink";
+import ConditionalLink from "../utils/ConditionalLink";
 import CourseSearch from "./CourseSearch";
 
 import { getCourses, getCurrentUser } from "@/functions/client/supabase";

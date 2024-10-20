@@ -7,7 +7,7 @@ import { Course, Course_Section } from "@/types/db";
 
 import { searchCourseSections } from "@/functions/client/supabase";
 
-export default function CourseSectionSelect({ setCourseSection, course } : { course: Course, setCourseSection: (courseSection: Course_Section) => void }) {
+export default function CourseSectionAutocomplete({ setCourseSection, course } : { course: Course, setCourseSection: (courseSection: Course_Section) => void }) {
 
     useEffect(() => {
         if(course && course.id !== "") {

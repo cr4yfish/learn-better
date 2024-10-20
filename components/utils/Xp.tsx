@@ -1,7 +1,7 @@
 import { Skeleton } from "@nextui-org/skeleton";
 import { Button } from "@nextui-org/button";
 
-import Icon from "../components/Icon"
+import Icon from "./Icon"
 
 export default function Xp({ xp } : { xp?: number }) {
 

@@ -9,8 +9,8 @@ import { Skeleton } from "@nextui-org/skeleton";
 import { upsertCourse, joinCourse } from "@/functions/client/supabase";
 import { Course } from "@/types/db";
 
-import Icon from "../Icon";
-import { Button } from "@/components/Button";
+import Icon from "../utils/Icon";
+import { Button } from "@/components/utils/Button";
 
 export default function EditCourseCard({ userId, isNew, course } : { userId: string | undefined, isNew: boolean, course?: Course | undefined }) {
     const [newCourse, setNewCourse] = useState<Course>(course ?? {} as Course);

@@ -9,8 +9,8 @@ import Link from "next/link";
 import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
 import { getCourseTopics } from "@/functions/client/supabase"
-import Icon from "@/components/Icon";
-import { Button } from "@/components/Button";
+import Icon from "@/components/utils/Icon";
+import { Button } from "@/components/utils/Button";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {
     const offsets = [];
