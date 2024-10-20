@@ -60,9 +60,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] ~~Image upload support~~
     - [ ] ~~Adding more optional info fields~~
     - [x] Viewing other user profiles
-    - [ ] Rating System
+    - [x] Rating System
         - [x] Courses
-        - [ ] Levels 
+        - [x] Levels 
         - [ ] ~~Questions~~
 
 ### Beta Features
