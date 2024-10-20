@@ -37,7 +37,7 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
         }
 
         fetchSessionState();
-    }, [level])
+    }, [level, searchParams]);
 
     return (
         <div className=" flex flex-col gap-8 px-4 py-6 min-h-screen justify-center pb-[33vh]">
