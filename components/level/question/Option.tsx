@@ -27,7 +27,7 @@ export default function Option(
             `}
         >
             <CardBody className="flex flex-row items-center justify-start gap-2">
-                <Icon filled={state == "selected"}>check_circle</Icon>
+                <Icon filled={state !== "unselected"}>check_circle</Icon>
                 <span>{children}</span>
             </CardBody>
         </Card>
