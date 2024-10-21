@@ -7,7 +7,24 @@ import { Course, Course_Section } from "@/types/db";
 import { searchCourseSections } from "@/functions/supabase/courses";
 
 
-export default function CourseSectionAutocomplete({ setCourseSection, course } : { course: Course, setCourseSection: (courseSection: Course_Section) => void }) {
+export default function CourseSectionAutocomplete({ setCourseSection, course } : { course: Course | null, setCourseSection: (courseSection: Course_Section) => void }) {
+    
+    const list = useAsyncList<Course_Section>({
+        async load({filterText}) {
+            if(course) {
+                const res = await searchCourseSections(filterText || "", course);
+
+                return {
+                    items: res,
+                }
+            }
+            return {
+                items: [] as Course_Section[]
+            }
+            
+
+        }
+    })
 
     useEffect(() => {
         if(course && course.id !== "") {
@@ -15,15 +32,6 @@ export default function CourseSectionAutocomplete({ setCourseSection, course } :
         }
     }, [course])
 
-    const list = useAsyncList<Course_Section>({
-        async load({filterText}) {
-            const res = await searchCourseSections(filterText || "", course);
-
-            return {
-                items: res,
-            }
-        }
-    })
 
     return (
         <Autocomplete
