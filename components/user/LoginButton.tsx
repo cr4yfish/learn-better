@@ -65,7 +65,6 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
                 }
             }
         } catch (error) {
-            console.log("LoginButtonError:", error);
             if (error instanceof Error && error.message.includes("Invalid login credentials")) {
                 alert("Invalid login credentials");
             }

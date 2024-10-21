@@ -58,7 +58,6 @@ export default function CourseSectionCard(
     const handleDeleteCourseSection = async (section: Course_Section) => {
     setIsCourseSectionDeleteLoading(true);
     if(window.confirm("Are you sure you want to delete this section?")) {
-        console.log(section)
         const res = await deleteCourseSection(section.id);
         if(res) {
         // remove from state

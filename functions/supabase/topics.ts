@@ -233,7 +233,6 @@ export async function upvoteCourseTopic(topic: Topic, userId: string): Promise<T
         vote: true
     }]).eq("user", userId).eq("topic", topic.id).select().single();
 
-    console.log(data, error)
     if(error) { throw error; }
 
     return data;

@@ -54,11 +54,9 @@ export default function LevelCompleteScreen({ params: { level }} : { params: { l
     const handleUpvoteLevel = async () => {
         if(userTopic.topic && sessionState.user?.id) {
             setIsVoting(true);
-            console.log("Upvoting course topic", userTopic.topic);
             const res = await upvoteCourseTopic(userTopic.topic, sessionState.user.id);
             if(res) {
                 setIsVoted(true);
-                console.log("Upvoted course topic", res);
             }
         }
         setIsVoting(false);

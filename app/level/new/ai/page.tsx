@@ -66,8 +66,6 @@ export default function CreateLevelWithAI() {
             console.error("Missing object, session or course");
             return;
         };
-
-        console.log("Adding content to course", object);
         
         setIsAddingLoading(true);
 

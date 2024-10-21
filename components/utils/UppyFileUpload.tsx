@@ -35,7 +35,6 @@ export default function UppyFileUpload({ session, label, setFileNameCalback } : 
     })
 
     useUppyEvent(uppy, "upload-success", async (file, res) => {
-        console.log(`Upload successful: ${JSON.stringify(file), JSON.stringify(res)}`);
         if(!file?.name) {
             console.error("No file name");
             return;

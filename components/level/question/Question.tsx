@@ -39,7 +39,6 @@ export default function Question({
         api: "/api/ai/questionHelper",
         initialInput: "",
         onFinish: () => {
-            console.log("Finished explaining answer", messages)
             setIsExplained(true)
         }
     });
@@ -172,11 +171,6 @@ export default function Question({
             correct: "initial"
         }))
     }, [question.answer_correct])
-
-    useEffect(() => {
-        console.log("Question State", questionState)
-        console.log("Level State", levelState)
-    }, [questionState, levelState])
 
     return (
         <>
