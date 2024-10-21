@@ -22,6 +22,8 @@ import { upsertCourseTopic } from "@/functions/supabase/topics";
 import { SessionState } from "@/types/auth";
 import { Course, Course_Section, Question, Topic } from "@/types/db";
 import { upsertQuestion } from "@/functions/supabase/questions";
+import CourseSectionAutocomplete from "@/components/courseSection/CourseSectionAutocomplete";
+import Link from "next/link";
 
 
 export default function CreateLevelWithAI() {
@@ -29,6 +31,7 @@ export default function CreateLevelWithAI() {
     const [apiKey, setApiKey] = useState<string | null>(null);
     const [filename, setFilename] = useState<string | null>(null);
     const [course, setCourse] = useState<Course | null>(null);
+    const [courseSection, setCourseSection] = useState<Course_Section | null>(null);
     const [numLevels, setNumLevels] = useState<number>(1);
 
     const [isAddingLoading, setIsAddingLoading] = useState<boolean>(false);
@@ -40,7 +43,9 @@ export default function CreateLevelWithAI() {
         headers: {
             "X-api-key": apiKey ?? "",
             "X-doc-name": filename ?? "",
-            "X-num-levels": numLevels?.toString() ?? ""
+            "X-num-levels": numLevels?.toString() ?? "",
+            "X-course-section-title": courseSection?.title ?? "",
+            "X-course-section-description": courseSection?.description ?? "",
         },
         onFinish: async () => {
             await deleteObject({ filename: filename!, path: "", bucketName: "documents" });
@@ -67,24 +72,27 @@ export default function CreateLevelWithAI() {
         setIsAddingLoading(true);
 
         object.forEach(async (section) => {
-            if(!section || !section.title || !section.description || !section.order ||
-                !section.levels || section.levels.length == 0
-            ) return;
 
-            const newCourseSection: Course_Section = {
-                id: uuidv4(),
-                course: course,
-                title: section.title,
-                description: section.description,
-                order: section.order
+            const newCourseSection: Course_Section = {} as Course_Section;
+
+            if(courseSection == null) {
+                if(!section || !section.title || !section.description || !section.order ||
+                    !section.levels || section.levels.length == 0
+                ) return;
+
+                newCourseSection.id = uuidv4();
+                newCourseSection.course = course;
+                newCourseSection.title = section.title;
+                newCourseSection.description = section.description;
+                newCourseSection.order = section.order;
+
+                await upsertCourseSection(newCourseSection);
             }
-
-            await upsertCourseSection(newCourseSection);
 
             // toggle for first uploaded section for safety
             if(!isAdded) setIsAdded(true);
 
-            section.levels?.forEach(async (level) => {
+            section?.levels?.forEach(async (level) => {
                 if(!level || !level.title || !level.description || !level.questions || level.questions.length == 0) return;
                 
                 const newLevel: Topic = {
@@ -92,7 +100,7 @@ export default function CreateLevelWithAI() {
                     title: level.title,
                     description: level.description,
                     course: course,
-                    course_section: newCourseSection
+                    course_section: courseSection ? courseSection : newCourseSection
                 }
 
                 const res = await upsertCourseTopic(newLevel);
@@ -126,6 +134,9 @@ export default function CreateLevelWithAI() {
                 }
             })
         })
+
+        setIsAddingLoading(false);
+        setIsAdded(true);
     }
 
 
@@ -134,21 +145,27 @@ export default function CreateLevelWithAI() {
     return (
         <>
         <div className="relative flex flex-col px-4 py-6 gap-2 max-h-screen overflow-hidden">
-
-            <div className="absolute z-50 top-[1rem] max-w-[100vw] flex items-center justify-center h-[410px]">
+            <div className="w-full flex items-start">
+                <Link href={"/"}><Button startContent={<Icon filled>arrow_back</Icon>} variant="light">Back</Button></Link>
+            </div>
+            <div className="z-50 flex items-center justify-center ">
                 <Card shadow="lg" className="relative flex w-full flex-col items-center gap-4 h-full">
                     <CardHeader className="flex flex-col justify-start items-start pb-0">
                         <h1 className=" font-bold text-2xl">Generate new levels with AI</h1>
                         <p>Use AI to create multiple new levels from a PDF</p>
                     </CardHeader>
-                    <CardBody className="flex flex-col gap-2 pt-2 pb-0">
-                        <Input 
+                    <CardBody className="flex flex-col gap-2 pt-0 pb-0">
+                        {false && <Input 
                             label="Your Gemini API Key" 
                             value={apiKey ?? ""} 
                             type="password"
                             onValueChange={(value) => setApiKey(value)} 
-                        />
+                        />}
                         <CourseAutocomplete setCourse={(course) => setCourse(course)} />
+                        <CourseSectionAutocomplete 
+                            setCourseSection={(courseSection) => setCourseSection(courseSection)} 
+                            course={course}
+                        />
                         <Input 
                             label="Number of Levels" 
                             type="number" 
@@ -157,13 +174,13 @@ export default function CreateLevelWithAI() {
                             value={numLevels.toString()} 
                             onValueChange={(value) => setNumLevels(parseInt(value))} 
                         />
-                        <UppyFileUpload session={sessionState} label="Upload PDF" setFileNameCalback={(filename) => setFilename(filename)} />
+                        <UppyFileUpload session={sessionState} label="Upload source PDF" setFileNameCalback={(filename) => setFilename(filename)} />
                     </CardBody>
                     <CardFooter className="flex flex-row items-center gap-4">
                         <Button 
                             isDisabled={!sessionState || !filename || isAddingLoading || !course} 
                             isLoading={isLoading} 
-                            onClick={() => submit("")} 
+                            onClick={() => {submit(""); setIsAdded(false)}} 
                             color="primary"
                             variant={"shadow"} 
                             startContent={<Icon filled>auto_awesome</Icon>}
@@ -178,7 +195,7 @@ export default function CreateLevelWithAI() {
                                 isDisabled={!sessionState || !filename || isLoading}
                                 onClick={handleAddContentToCourse}
                             >
-                                Add content to course
+                                {isAdded ? "Saved Levels" : "Add new Levels"}
                             </Button>
                             }
                     </CardFooter>
@@ -186,7 +203,7 @@ export default function CreateLevelWithAI() {
             </div>
 
 
-            <div className="flex flex-col gap-4 pt-[410px] h-full overflow-y-auto">
+            <div className="flex flex-col gap-4  h-full overflow-y-auto">
                 {object?.map((section, sectionIndex) => (
                     <div key={sectionIndex} className="flex flex-col gap-2 px-2 py-2 rounded">
                         <span className=" font-bold text-lg">{section?.title}</span>
