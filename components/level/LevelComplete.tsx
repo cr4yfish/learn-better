@@ -43,7 +43,7 @@ export default function LevelComplete({ userTopic, isLoading } : { userTopic: Us
                     {isLoading ? <Spinner color="danger" size="sm" /> :
                     <div className="flex items-center gap-1">
                         <Icon color="danger" filled>crisis_alert</Icon>
-                        {userTopic.accuracy}%
+                        {Math.round(userTopic.accuracy)}%
                     </div>}
                 </CardBody>
             </Card>
