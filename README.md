@@ -115,7 +115,7 @@ Right now I prefer the first option since it might also help pay for server cost
 - [x] Creating Levels & Questions from Document uploads using AI (PDF only right now)?
 - [ ] Creating Levels & Questions from Pictures of Documents?
 - [ ] AI Helper for creating questions & levels (mostly for writing help)
-- [ ] AI Helper for answering questions
+- [x] AI Helper for answering questions
 
 ## Open Source & Contributions
 This project is 100% open source. 
