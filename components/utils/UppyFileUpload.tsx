@@ -34,7 +34,7 @@ export default function UppyFileUpload({ session, label, setFileNameCalback } : 
         file.meta = { ...file.meta, ...metadata};
     })
 
-    useUppyEvent(uppy, "upload-success", async (file, res) => {
+    useUppyEvent(uppy, "upload-success", async (file) => {
         if(!file?.name) {
             console.error("No file name");
             return;
