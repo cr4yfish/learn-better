@@ -16,7 +16,7 @@ import Icon from "@/components/utils/Icon";
 import { multipleLevelSchema } from "@/functions/ai/schemas";
 import { getCurrentUser } from "@/functions/supabase/auth";
 import { deleteObject } from "@/functions/supabase/storage";
-import { getCourseSections, upsertCourseSection } from "@/functions/supabase/courseSections";
+import { upsertCourseSection } from "@/functions/supabase/courseSections";
 import { upsertCourseTopic } from "@/functions/supabase/topics";
 
 import { SessionState } from "@/types/auth";

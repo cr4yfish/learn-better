@@ -12,10 +12,7 @@ export async function POST(req: Request) {
     console.log("AI:",apiKey, docName, context);
 
     if(apiKey === null || docName === null || apiKey.length == 0 || docName.length == 0) {
-        return {
-            status: 400,
-            body: "Missing required headers"
-        }
+        return new Response("Missing API key or doc name", {status: 400});
     }
 
     const result = await createLevelFromPDF({
