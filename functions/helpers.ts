@@ -46,3 +46,13 @@ export function fortnite(date: Date): Date {
     fortnite.setDate(date.getDate() + 2);
     return fortnite;
 }
+
+
+// Fisher-Yates (Knuth) Shuffle algorithm
+export function shuffleArray<T>(array: T[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}

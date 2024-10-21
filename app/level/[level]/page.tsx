@@ -18,6 +18,7 @@ import { getQuestions } from "@/functions/supabase/questions";
 import { tryRankUp } from "@/functions/supabase/ranks";
 import { extendOrAddStreak } from "@/functions/supabase/streaks";
 import { addUsersTopics } from "@/functions/supabase/topics";
+import { shuffleArray } from "@/functions/helpers";
 
 
 export default function Level({ params } : { params: { level: string }}) {
@@ -99,10 +100,11 @@ export default function Level({ params } : { params: { level: string }}) {
         }
 
         fetchQuestions().then(res => {
-            setQuestions(res);
+            const randomizedQuestions = shuffleArray(res);
+            setQuestions(randomizedQuestions);
             setLevelState((prevState) => ({
                 ...prevState,
-                totalQuestions: res.length
+                totalQuestipons: res.length
             }));
         });
  
@@ -116,7 +118,12 @@ export default function Level({ params } : { params: { level: string }}) {
 
     return (
         <div className="px-4 py-6 flex flex-col gap-4 h-full min-h-full ">
-            <QuestionHeader progress={levelState.progress} numQuestions={levelState.totalQuestions} xp={levelState.xp} />
+            <QuestionHeader 
+                progress={levelState.progress} 
+                numQuestions={levelState.totalQuestions} 
+                xp={levelState.xp} 
+                show={questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions}
+            />
            
             <div className="flex flex-col justify-between h-full min-h-full gap-12">
                 {questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions && (
