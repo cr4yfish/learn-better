@@ -34,7 +34,7 @@ export default function Question({
     })
     const stopwatch = useStopwatch();
 
-    const { messages, handleSubmit, setInput, isLoading: isMistralLoading } = useChat({
+    const { messages, handleSubmit, setInput, isLoading: isMistralLoading, setMessages } = useChat({
         keepLastMessageOnError: true,
         api: "/api/ai/questionHelper",
         initialInput: "",
@@ -170,6 +170,8 @@ export default function Question({
             selected: "",
             correct: "initial"
         }))
+
+        setMessages([])
     }, [question.answer_correct])
 
     return (
