@@ -22,7 +22,7 @@ The main reason for this project is that I would love to have an App like Duolin
 * NextUI
 * Vercel AI SDK
 * Gemini
-* Mistral
+* Mistral/NVIDIA Nemo
 
 ## Roadmap
 I tried ordering stuff in a logical order, but I might still jump around a bit.
