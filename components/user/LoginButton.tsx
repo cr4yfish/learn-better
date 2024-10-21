@@ -20,50 +20,58 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
      
-        const form = e.currentTarget as HTMLFormElement;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        
-        if(data.email === "" || data.password === "" || (isSignUp && data.username === "")) {
-            alert("Please fill in all fields");
-            return;
-        }
-        
-        setIsLoading(true);
-
-        if(isSignUp) {
-
-            const res = await userSignUp(data.email as string, data.password as string, data.username as string);
-
-            if(res && res.profile && res.authResponse.data) {
-                setSessionState({
-                    ...sessionState,
-                    user: res.authResponse.data.user ?? undefined, 
-                    profile: res.profile, 
-                    session: res.authResponse.data.session, 
-                    isLoggedIn: true,
-                    settings: res.settings
-                });
-                onClose();
+        try {
+            const form = e.currentTarget as HTMLFormElement;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            if(data.email === "" || data.password === "" || (isSignUp && data.username === "")) {
+                alert("Please fill in all fields");
+                return;
             }
+            
+            setIsLoading(true);
 
-        } else {
+            if(isSignUp) {
 
-            const res = await userLogin(data.email as string, data.password as string);
+                const res = await userSignUp(data.email as string, data.password as string, data.username as string);
 
-            if(res.success) {
-                
-                const profile = await getProfile(res.user.id as string);
-                const { data: sessionData } = await getSession();
-
-                if(profile && sessionData.session) {
-                    setSessionState({...sessionState, user: res.user, profile: profile, session: sessionData.session, isLoggedIn: true});
+                if(res && res.profile && res.authResponse.data) {
+                    setSessionState({
+                        ...sessionState,
+                        user: res.authResponse.data.user ?? undefined, 
+                        profile: res.profile, 
+                        session: res.authResponse.data.session, 
+                        isLoggedIn: true,
+                        settings: res.settings
+                    });
+                    onClose();
                 }
 
-                onClose();
+            } else {
+
+                const res = await userLogin(data.email as string, data.password as string);
+
+                if(res.success) {
+                    
+                    const profile = await getProfile(res.user.id as string);
+                    const { data: sessionData } = await getSession();
+
+                    if(profile && sessionData.session) {
+                        setSessionState({...sessionState, user: res.user, profile: profile, session: sessionData.session, isLoggedIn: true});
+                    }
+
+                    onClose();
+                }
+            }
+        } catch (error) {
+            console.log("LoginButtonError:", error);
+            if (error instanceof Error && error.message.includes("Invalid login credentials")) {
+                alert("Invalid login credentials");
             }
         }
         setIsLoading(false);
+    
     }
 
     const handleLogout = async () => {
