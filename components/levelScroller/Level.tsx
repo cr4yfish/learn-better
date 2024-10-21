@@ -17,6 +17,7 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
             style={{
                 transform: `translateX(${offset}rem)`,
             }}
+            className="flex flex-col items-center"
         >
         <Popover 
             showArrow
