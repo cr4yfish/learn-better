@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
 
 import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
 import Icon from "@/components/utils/Icon";
+import CourseSectionBanner from "./CourseSectionBanner";
 import { Button } from "@/components/utils/Button";
 import { getCourseTopics } from "@/functions/supabase/topics";
 
@@ -151,22 +151,14 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
         setIsLoading(false);
     }
 
-    const CourseSectionBanner = ({ courseSection } : { courseSection: Course_Section | null}) => (
-        courseSection &&
-        <Card className=" top-0 w-full max-w-[960px] z-10 bg-fuchsia-900/55 backdrop-blur">
-            <CardHeader className=" font-bold pb-0">{courseSection.title}</CardHeader>
-            <CardBody>{courseSection.description}</CardBody>
-        </Card>
-    );
-
     return (
     <>
-        <div className=" w-full h-fit absolute flex justify-center items-center px-6">
+        {false &&<div className=" w-full h-fit absolute flex justify-center items-center px-6">
             <CourseSectionBanner courseSection={currentCourseSection} />
-        </div>
+        </div>}
         
         <InfiniteScroll 
-            className="flex flex-col items-center gap-2 w-full h-full max-h-screen overflow-y-scroll pb-80 pt-28"
+            className="flex flex-col items-center gap-4 w-full h-full max-h-screen overflow-y-scroll pb-80"
             pageStart={1}
             loadMore={() => canLoadMore && handleLoadMore()}
             hasMore={canLoadMore}
@@ -175,10 +167,13 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
         >
                     {topics.map((topic, index) => (
                         <div key={topic.id} ref={(el) => { levelRefs.current[index] = el; }} data-id={topic.id}>
+                            {(index == 0 || topic.course_section.id !== topics[index-1]?.course_section.id) && (
+                                <div className=" w-full px-4 mb-4 mt-8"><CourseSectionBanner courseSection={topic.course_section} /></div>
+                            )}
                             <Level 
                                 topic={topic} 
                                 active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
-                                offset={offsets[index]}
+                                offset={0}
                                 isAdmin={isAdmin}
                             />
                         </div>            
@@ -215,12 +210,13 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
                                     Add a new level
                                 </Button>
                             </Link>
+                            <span className="text-tiny">or</span>
                             <Link href={"/level/new/ai"}>
                                 <Button
                                     color="primary"
                                     startContent={<Icon color="fuchsia-950" filled>auto_awesome</Icon>}
                                 >
-                                    Create Level with AI
+                                    Create levels with AI
                                 </Button>
                             </Link>
                         </div>
