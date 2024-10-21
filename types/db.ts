@@ -75,6 +75,7 @@ export type Topic = {
     course: Course;
     order?: number;
     completed?: boolean; // only client side
+    accuracy?: number; // only client side
     course_section: Course_Section;
 }
 

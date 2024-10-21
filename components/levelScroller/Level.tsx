@@ -41,7 +41,18 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
             </PopoverTrigger>
             <PopoverContent>
                 <div className="flex flex-col gap-2 p-4">
-                    <h2 className="text-lg font-semibold">{topic.title}</h2>
+                    <div className=" w-full flex items-center justify-between">
+                        <h2 className="text-lg font-semibold">{topic.title}</h2>
+                        {topic.completed && topic.accuracy && (topic.accuracy > 0) && 
+                            <Button 
+                                color="secondary"
+                                endContent={<Icon filled>hotel_class</Icon>}
+                            >
+                                {topic.accuracy < 50 ? "1" : topic.accuracy > 90 ? "3" : "2"}
+                            </Button>
+                        }
+                    </div>
+                    
                     <p className="text-sm">{!active ? "Unlock all levels above to unlock this" : topic.description}</p>
                     <div className="flex flex-row gap-1 items-center w-full">
                         <ConditionalLink active={active} href={`/level/${topic.id}`}>

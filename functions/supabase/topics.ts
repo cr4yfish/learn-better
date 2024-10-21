@@ -18,7 +18,8 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             description
         ),
         users_topics (
-            completed
+            completed,
+            accuracy
         ),
         order,
         course_sections (
@@ -42,7 +43,8 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
             course: db.courses,
             course_section: db.course_sections,
             order: db.order,
-            completed: db.users_topics[0]?.completed ?? false
+            completed: db.users_topics[0]?.completed ?? false,
+            accuracy: db.users_topics[0]?.accuracy ?? 0
         }
     }))
 
