@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useChat } from "ai/react";
 import { useStopwatch } from "react-use-precision-timer";
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import { v4 as uuidv4 } from "uuid";
@@ -11,6 +11,7 @@ import { QuestionState, OptionState } from "@/types/client";
 import { Button } from "@/components/utils/Button";
 import Option from "./Option";
 import { addUserQuestion } from "@/functions/supabase/questions";
+import Icon from "@/components/utils/Icon";
 
 
 export default function Question({
@@ -28,7 +29,22 @@ export default function Question({
         correct: "initial"
     })
     const stopwatch = useStopwatch();
+
+    const { messages, handleSubmit, setInput, isLoading: isMistralLoading } = useChat({
+        keepLastMessageOnError: true,
+        api: "/api/ai/questionHelper",
+        initialInput: "",
+        onFinish: () => setIsExplained(true)
+    });
+    const [isExplained, setIsExplained] = useState(false);
     
+    useEffect(() => {
+        setInput(`Please explain why the correct answer and why my answer is wrong. The Question Title: ${question.title}. The Question Description: ${question.question}. The Correct Answer: ${question.answer_correct}. All the Answer Options: ${question.answer_options.join(", ")}. The wrong Answer I chose: ${questionState.selected}`)
+    }, [
+            question.title, question.question, question.answer_options,
+            question.answer_correct, questionState.selected, setInput
+        ])
+
     const handleCheckAnswer = async () => {
 
         if(!session) {
@@ -67,7 +83,7 @@ export default function Question({
         setLevelState((prevState) => ({
             ...prevState,
             progress: prevState.progress + 1,
-            xp: xp,
+            xp: prevState.xp + xp,
             correctQuestions: completed ? ++prevState.correctQuestions : prevState.correctQuestions
         }))
 
@@ -113,8 +129,8 @@ export default function Question({
         <>
         <div className="flex flex-col prose dark:prose-invert gap-6">
             <div className="flex flex-col gap-1">
-                <h1 className="font-bold m-0">{question.title}</h1>
-                <p className="m-0">{question.question}</p>
+                <p className=" m-0">{question.title}</p>
+                <h2 className="m-0 font-bold">{question.question}</h2>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -146,10 +162,30 @@ export default function Question({
             <ModalContent>
                 <ModalHeader>{questionState.correct == "correct" ? "Correct!" : "Wrong!"}</ModalHeader>
                 <ModalBody>
-                    {questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}
+                    <span>{questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}</span>
+                    {messages.map(message => (
+                        <div key={message.id}>
+                            {message.role == "assistant" && (
+                                <div className="flex flex-col gap-1 prose dark:prose-invert">
+                                    <span className="mb-0 font-medium">Explanation</span>
+                                    <p className="mt-0">{message.content}</p>
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </ModalBody>
-                <ModalFooter>
-                    <Button isLoading={isLoading} className="w-full" color="primary" onClick={handleNextQuestion}>Next Question</Button>
+                <ModalFooter className="flex items-center justify-between gap-2">
+                    <form onSubmit={handleSubmit}>
+                        <Button 
+                            isLoading={isMistralLoading} 
+                            isDisabled={isExplained} type="submit" 
+                            color="secondary" variant="flat" 
+                            startContent={<Icon filled>auto_awesome</Icon>}
+                        >
+                            Explain answer
+                        </Button>
+                    </form>
+                    <Button isLoading={isLoading} color="primary" onClick={handleNextQuestion}>Next Question</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

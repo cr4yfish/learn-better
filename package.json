@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^0.0.52",
+    "@ai-sdk/mistral": "^0.0.44",
     "@ai-sdk/openai": "^0.0.68",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@langchain/community": "^0.3.7",
