@@ -33,8 +33,10 @@ export default function Level({ params } : { params: { level: string }}) {
         xp: 0,
         currentQuestionIndex: 0,
         seconds: 0,
-        rankUp: false
+        rankUp: false,
+        questions: questions.map(question => ({ id: question.id, completed: false })),
     });
+
     const [isLoading, setIsLoading] = useState(true);
 
     const stopwatch = useStopwatch();
@@ -104,7 +106,8 @@ export default function Level({ params } : { params: { level: string }}) {
             setQuestions(randomizedQuestions);
             setLevelState((prevState) => ({
                 ...prevState,
-                totalQuestions: randomizedQuestions.length
+                totalQuestions: randomizedQuestions.length,
+                questions: randomizedQuestions.map(question => ({ id: question.id, completed: false }))
             }));
         });
  
@@ -131,6 +134,8 @@ export default function Level({ params } : { params: { level: string }}) {
                         question={questions[levelState.currentQuestionIndex]} 
                         setLevelState={setLevelState}
                         session={session}
+                        levelState={levelState}
+                        questions={questions}
                     />
                 )}
                 {levelState.answeredQuestions > 0 && levelState.answeredQuestions == levelState.totalQuestions && (

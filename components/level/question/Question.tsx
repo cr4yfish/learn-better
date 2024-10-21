@@ -17,13 +17,15 @@ import { shuffleArray } from "@/functions/helpers";
 
 
 export default function Question({
-    question, setLevelState, session
+    question, setLevelState, session, levelState, questions
 } : {
     question: QuestionType,
     setLevelState: React.Dispatch<React.SetStateAction<LevelState>>,
-    session?: SessionState
+    session?: SessionState,
+    levelState: LevelState,
+    questions: QuestionType[]
 }) {
-    const { onOpen, onOpenChange, isOpen} = useDisclosure()
+    const { onOpen, onOpenChange, isOpen, onClose } = useDisclosure()
     const [isLoading, setIsLoading] = useState(false)
     const [questionState, setQuestionState] = useState<QuestionState>({
         options: question.answer_options,
@@ -84,12 +86,15 @@ export default function Question({
         })
 
         stopwatch.stop(); // reset the timer
-
+        
         setLevelState((prevState) => ({
             ...prevState,
             progress: prevState.progress + 1,
+            totalQuestions: completed ? prevState.totalQuestions : ++prevState.totalQuestions,
             xp: prevState.xp + xp,
-            correctQuestions: completed ? ++prevState.correctQuestions : prevState.correctQuestions
+            correctQuestions: completed ? ++prevState.correctQuestions : prevState.correctQuestions,
+            questions: prevState.questions.map(q => q.id == question.id ? { id: q.id, completed: completed } : q),
+            answeredQuestions: ++prevState.answeredQuestions,
         }))
 
         onOpen()
@@ -113,11 +118,32 @@ export default function Question({
 
     const handleNextQuestion = () => {
         setIsLoading(true);
+        
+        // get next question
+        const nextQuestion = questions.at(levelState.currentQuestionIndex + 1);
+
+        // check for completion, otherwise just increment the current question index
+        // end of questions is handled by the parent component
+        if(!nextQuestion) {
+            // check for completion
+            const firstUncompleted = levelState.questions.find(q => !q.completed);
+            if(firstUncompleted) {
+                // set the current question index to the first uncompleted question
+                setLevelState((prevState) => ({
+                    ...prevState,
+                    currentQuestionIndex: questions.indexOf(questions.find(q => q.id == firstUncompleted.id) as QuestionType),
+                }))
+                setIsLoading(false);
+                onClose();
+                return;
+            }
+        } 
+
         setLevelState((prevState) => ({
             ...prevState,
             currentQuestionIndex: ++prevState.currentQuestionIndex,
-            answeredQuestions: ++prevState.answeredQuestions,
         }))
+        onClose();
         setIsLoading(false);
     }
 
@@ -137,6 +163,20 @@ export default function Question({
             options: randomOptions
         }))
     }, [question.answer_options])
+
+    useEffect(() => {
+        // reset the question state when the question changes
+        setQuestionState((prevState) => ({
+            ...prevState,
+            selected: "",
+            correct: "initial"
+        }))
+    }, [question.answer_correct])
+
+    useEffect(() => {
+        console.log("Question State", questionState)
+        console.log("Level State", levelState)
+    }, [questionState, levelState])
 
     return (
         <>

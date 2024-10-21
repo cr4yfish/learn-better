@@ -8,6 +8,10 @@ export type LevelState = {
     currentQuestionIndex: number,
     seconds: number,
     rankUp: boolean,
+    questions: {
+        id: string;
+        completed: boolean;
+    }[]
 }
 
 export type QuestionState = {
