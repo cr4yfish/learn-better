@@ -29,8 +29,8 @@ export default function CourseSectionAutocomplete({ setCourseSection, course } :
         <Autocomplete
             className="max-w-xs"
             variant="bordered"
-            label="Pick a Course"
-            placeholder="Select a Course"
+            label="Pick a Course Section"
+            placeholder="Select a Course Section"
             isDisabled={!course || course.id === ""}
             required
             isRequired

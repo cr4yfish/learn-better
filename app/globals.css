@@ -30,3 +30,13 @@ body {
 .material-symbols-filled {
   font-variation-settings: "FILL" 1;
 }
+
+.uppy-Dashboard-inner, .uppy-Dashboard-inner * {
+  background: transparent !important;
+  color: var(--foreground) !important;
+  border: none !important;
+}
+
+.uppy-Dashboard-AddFiles-info {
+  display: none !important;
+}

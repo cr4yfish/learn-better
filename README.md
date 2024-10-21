@@ -106,7 +106,7 @@ These features will be locked either behind a payment plan or by letting users p
 Since it's open source the 2nd option will be available anyway for tech-users.
 Right now I prefer the first option since it might also help pay for server cost.
 
-- [ ] Creating Levels & Questions from Document uploads using AI (PDF, Word, etc)?
+- [x] Creating Levels & Questions from Document uploads using AI (PDF only right now)?
 - [ ] Creating Levels & Questions from Pictures of Documents?
 - [ ] AI Helper for creating questions & levels (mostly for writing help)
 - [ ] AI Helper for answering questions

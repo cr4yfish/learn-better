@@ -12,6 +12,7 @@ import Navigation from "@/components/utils/Navigation";
 import LoginButton from "@/components/user/LoginButton"
 import EditProfileCard from "@/components/user/EditProfileCard";
 import { getCurrentUser } from "@/functions/supabase/auth";
+import EditSettingsCard from "@/components/user/EditSettingsCard";
 
 export default function User() {
     const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);
@@ -70,6 +71,7 @@ export default function User() {
         </div>
 
         <EditProfileCard sessionState={sessionState} />
+        <EditSettingsCard sessionState={sessionState} />
 
 
     </div>

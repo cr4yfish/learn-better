@@ -205,17 +205,26 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
             )}
             {!canLoadMore && topics.length > 0 && (
                 <div className="flex flex-col gap-2">
-                <span>You reached the end.</span>
-                {isAdmin && (
-                    <Link href={"/level/new"}>
-                        <Button 
-                            color="primary" 
-                            startContent={<Icon color="fuchsia-950" filled>add</Icon>} 
-                        >
-                            Add a new level
-                        </Button>
-                    </Link>   
-                )}
+                    {isAdmin && (
+                        <div className="flex flex-col gap-2 items-center justify-center">
+                            <Link href={"/level/new"}>
+                                <Button 
+                                    color="primary" 
+                                    startContent={<Icon color="fuchsia-950" filled>add</Icon>} 
+                                >
+                                    Add a new level
+                                </Button>
+                            </Link>
+                            <Link href={"/level/new/ai"}>
+                                <Button
+                                    color="primary"
+                                    startContent={<Icon color="fuchsia-950" filled>auto_awesome</Icon>}
+                                >
+                                    Create Level with AI
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             )}
             

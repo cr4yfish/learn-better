@@ -138,6 +138,7 @@ export type Settings = {
     theme: string;
     color: string;
     current_course: Course;
+    gemini_api_key?: string;
 }
 
 export type User_Question = {

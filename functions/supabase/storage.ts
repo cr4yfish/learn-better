@@ -8,15 +8,15 @@ import { getClient } from "./supabase";
  * Download object either by providing filename and path or the full path
  * @param params 
  */
-export async function downloadObject(params: { filename: string, path: string }): Promise<any>;
-export async function downloadObject(params: { fullPath: string }): Promise<any>;
+export async function downloadObject(params: { filename: string, path: string, bucketName: string }): Promise<Blob>;
+export async function downloadObject(params: { fullPath: string, bucketName: string }): Promise<Blob>;
 
 /**
  * Download object either by providing filename and path or the full path
  * @param params 
  * @returns 
  */
-export async function downloadObject(params: { filename?: string, path?: string, fullPath?: string }): Promise<Blob> {
+export async function downloadObject(params: { filename?: string, path?: string, fullPath?: string, bucketName: string }): Promise<Blob> {
     let fullPath = params.fullPath;
     if (!fullPath && params.filename && params.path) {
         fullPath = params.path + params.filename;
@@ -24,9 +24,24 @@ export async function downloadObject(params: { filename?: string, path?: string,
     if (!fullPath) {
         throw new Error("Invalid parameters");
     }
-    const { data, error } = await getClient().storage.from("objects").download(fullPath);
+    const { data, error } = await getClient().storage.from(params.bucketName).download(fullPath);
     if(error) { throw error; }
     return data;
+}
+
+export async function deleteObject(params: { filename: string, path: string, bucketName: string }): Promise<void>;
+export async function deleteObject(params: { fullPath: string, bucketName: string }): Promise<void>;
+
+export async function deleteObject(params: { filename?: string, path?: string, fullPath?: string, bucketName: string }): Promise<void> {
+    let fullPath = params.fullPath;
+    if (!fullPath && params.filename) {
+        fullPath = params.path + params.filename;
+    }
+    if (!fullPath) {
+        throw new Error("Invalid parameters");
+    }
+    const { error } = await getClient().storage.from(params.bucketName).remove([fullPath]);
+    if(error) { throw error; }
 }
 
 /**

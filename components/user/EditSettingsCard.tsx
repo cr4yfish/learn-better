@@ -1,3 +1,5 @@
+
+
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
@@ -5,25 +7,28 @@ import {Skeleton} from "@nextui-org/skeleton";
 
 import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
-import { Profile } from "@/types/db";
+import {  Settings } from "@/types/db";
 import Icon from "../utils/Icon";
-import { upsertProfile } from "@/functions/supabase/auth";
+import { upsertSettings } from "@/functions/supabase/settings";
 
-export default function EditProfileCard({ sessionState } : { sessionState: SessionState }) {
-    const [userProfile, setUserProfile] = useState<Profile | undefined>(sessionState.profile);
+export default function EditSettingsCard({ sessionState } : { sessionState: SessionState }) {
+    const [settings, setSettings] = useState<Settings | undefined>(sessionState.settings);
     const [isSaveLoading, setIsSaveLoading] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
-        setUserProfile(sessionState.profile);
+        setSettings(sessionState.settings);
     }, [sessionState])
 
-    const handleSaveProfile = async () => {
-        if(!userProfile) return;
+    const handleSaveSettings = async () => {
+        if(!settings) return;
 
         setIsSaveLoading(true);
         setIsSaved(false);
-        const res = await upsertProfile(userProfile);
+        const res = await upsertSettings({
+            ...settings,
+            user: sessionState.user
+        });
         if(res) {
             setIsSaved(true);
         }
@@ -33,18 +38,19 @@ export default function EditProfileCard({ sessionState } : { sessionState: Sessi
     return (
         <>
         <Card>
-            <CardHeader className=" font-bold">Edit Profile</CardHeader>
+            <CardHeader className=" font-bold">Settings</CardHeader>
             <CardBody>
 
                 <Skeleton
-                    isLoaded={!!userProfile}
+                    isLoaded={!!settings}
                     className=" rounded-xl"
                 >
                     <Input 
-                        value={userProfile?.username} 
-                        label="Username" 
-                        endContent={<div className="h-full flex items-center justify-center"><Icon filled >person</Icon></div>} 
-                        onChange={e => userProfile && setUserProfile({...userProfile, username: e.target.value})}
+                        value={settings?.gemini_api_key} 
+                        label="Gemini API Key" 
+                        type="password"
+                        endContent={<div className=" h-full flex items-center justify-center"><Icon filled >key</Icon></div>} 
+                        onChange={e => settings && setSettings({...settings, gemini_api_key: e.target.value})}
                     />
                 </Skeleton>
             </CardBody>
@@ -52,9 +58,9 @@ export default function EditProfileCard({ sessionState } : { sessionState: Sessi
                 <div className="flex flex-col gap-1">
                     <Button
                         isLoading={isSaveLoading}
-                        isDisabled={!userProfile}
+                        isDisabled={!settings}
                         color="primary"
-                        onClick={handleSaveProfile}
+                        onClick={handleSaveSettings}
                     >
                         {isSaved ? "Saved" : "Save"}
                     </Button>

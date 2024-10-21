@@ -24,7 +24,8 @@ export async function getSettings(userID: string): Promise<Settings> {
         updated_at,
         theme,
         color,
-        courses (*)    
+        courses (*),
+        gemini_api_key
     `).eq("user", userID);
     if(error) { throw error; }
 
