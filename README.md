@@ -15,7 +15,13 @@ The point being that you can learn anything you want, and you can help others le
 
 The main reason for this project is that I would love to have an App like Duolingo but for university subjects, and since I'd have to create a nice way of adding content to it anyway, I thought why not make it a platform for everyone to use, I thought why not make it a platform for everyone to use - so here we are.
 
-## 
+## Stack
+* Next.js
+* Supabase
+* TailwindCSS
+* NextUI
+* Vercel AI SDK
+* Gemini
 
 ## Roadmap
 I tried ordering stuff in a logical order, but I might still jump around a bit.
