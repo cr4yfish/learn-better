@@ -104,7 +104,7 @@ export default function Level({ params } : { params: { level: string }}) {
             setQuestions(randomizedQuestions);
             setLevelState((prevState) => ({
                 ...prevState,
-                totalQuestipons: res.length
+                totalQuestions: randomizedQuestions.length
             }));
         });
  
@@ -128,7 +128,6 @@ export default function Level({ params } : { params: { level: string }}) {
             <div className="flex flex-col justify-between h-full min-h-full gap-12">
                 {questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions && (
                     <Question 
-                        key={questions[levelState.currentQuestionIndex].id} 
                         question={questions[levelState.currentQuestionIndex]} 
                         setLevelState={setLevelState}
                         session={session}

@@ -115,7 +115,7 @@ export default function Question({
         setIsLoading(true);
         setLevelState((prevState) => ({
             ...prevState,
-            currentQuestionIndex: prevState.currentQuestionIndex + 1,
+            currentQuestionIndex: ++prevState.currentQuestionIndex,
             answeredQuestions: ++prevState.answeredQuestions,
         }))
         setIsLoading(false);
@@ -130,6 +130,14 @@ export default function Question({
         }
     }, [stopwatch])
 
+    useEffect(() => {
+        const randomOptions = shuffleArray(question.answer_options)
+        setQuestionState((prevState) => ({
+            ...prevState,
+            options: randomOptions
+        }))
+    }, [question.answer_options])
+
     return (
         <>
         <div className="flex flex-col prose dark:prose-invert gap-6">
@@ -140,7 +148,7 @@ export default function Question({
 
             <div className="flex flex-col gap-2">
                 <span className=" text-tiny">{question?.type?.description}</span>
-                {shuffleArray(question.answer_options).map((option: string, index: number) => (
+                {question.answer_options.map((option: string, index: number) => (
                     <Option 
                         state={getOptionState(questionState, option)}
                         setQuestionState={() => setQuestionState({...questionState, selected: option})}
