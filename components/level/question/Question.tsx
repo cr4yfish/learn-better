@@ -3,6 +3,7 @@ import { useChat } from "ai/react";
 import { useStopwatch } from "react-use-precision-timer";
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import { v4 as uuidv4 } from "uuid";
+import Markdown from "react-markdown";
 
 import { Question as QuestionType } from "@/types/db";
 import { SessionState } from "@/types/auth";
@@ -34,7 +35,10 @@ export default function Question({
         keepLastMessageOnError: true,
         api: "/api/ai/questionHelper",
         initialInput: "",
-        onFinish: () => setIsExplained(true)
+        onFinish: () => {
+            console.log("Finished explaining answer", messages)
+            setIsExplained(true)
+        }
     });
     const [isExplained, setIsExplained] = useState(false);
     
@@ -166,9 +170,9 @@ export default function Question({
                     {messages.map(message => (
                         <div key={message.id}>
                             {message.role == "assistant" && (
-                                <div className="flex flex-col gap-1 prose dark:prose-invert">
+                                <div className="flex flex-col gap-1 prose dark:prose-invert prose-p:mt-0">
                                     <span className="mb-0 font-medium">Explanation</span>
-                                    <p className="mt-0">{message.content}</p>
+                                    <Markdown>{message.content}</Markdown>
                                 </div>
                             )}
                         </div>

@@ -71,8 +71,8 @@ export async function explainAnswer({
     const mistral = createMistral({ apiKey: apiKey });
 
     const result = await streamText({
-        model: mistral("open-mistral-7b"),
-        system: "You are a helpful teacher, explaining why the correct answer is correct and why the incorrect answer by the user is incorrect. You can only answer in 1-2 short sentences.",
+        model: mistral("open-mistral-nemo"),
+        system: "You are a helpful teacher, explaining why the correct answer is correct and why the incorrect answer by the user is incorrect. You can only answer in 1-2 short sentences. Answer in Markdown format only.",
         messages: convertToCoreMessages(messages)
     })
 
