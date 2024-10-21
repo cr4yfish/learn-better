@@ -72,6 +72,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
         - [x] Levels 
         - [ ] ~~Questions~~
 - [x] AI Helper for answering questions (free for now)
+- [x] Recurring questions in levels when questions are answered wrong
 - [ ] Data Features 1
     - [ ] Training mode on low confidence questions
     - [ ] Stats about users & learning
