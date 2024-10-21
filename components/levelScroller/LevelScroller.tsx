@@ -73,6 +73,7 @@ async function loadMoreTopics({
 export default function LevelScroller({ currentUserCourse } : { currentUserCourse: User_Course }) {
     const [topics, setTopics] = useState<Topic[]>([])
     const [currentCourseSection, setCurrentCourseSection] = useState<Course_Section | null>(null)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [offsets, setOffsets] = useState<number[]>([])
     const [canLoadMore, setCanLoadMore] = useState(true)
     const [cursor, setCursor] = useState<number>(0)
