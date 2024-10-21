@@ -13,6 +13,7 @@ import { Button } from "@/components/utils/Button";
 import Option from "./Option";
 import { addUserQuestion } from "@/functions/supabase/questions";
 import Icon from "@/components/utils/Icon";
+import { shuffleArray } from "@/functions/helpers";
 
 
 export default function Question({
@@ -139,7 +140,7 @@ export default function Question({
 
             <div className="flex flex-col gap-2">
                 <span className=" text-tiny">{question?.type?.description}</span>
-                {question.answer_options.map((option: string, index: number) => (
+                {shuffleArray(question.answer_options).map((option: string, index: number) => (
                     <Option 
                         state={getOptionState(questionState, option)}
                         setQuestionState={() => setQuestionState({...questionState, selected: option})}
@@ -147,7 +148,7 @@ export default function Question({
                         active={questionState.correct == "initial"}
                         >
                         {option}
-                        </Option>
+                    </Option>
                 ))}
                 
             </div>
