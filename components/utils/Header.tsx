@@ -49,7 +49,7 @@ export default function Header({
                     streakHanging={sessionState.currentStreak ? checkStreakHanging(sessionState.currentStreak) : false}
                     userId={sessionState.user?.id}
                 />
-                <Xp xp={sessionState.profile?.total_xp} />
+                <Xp xp={sessionState.profile?.total_xp} isLoaded={sessionState.profile?.total_xp ? true : false} />
             </div>
         </div>
  

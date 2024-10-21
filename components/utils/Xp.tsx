@@ -3,11 +3,11 @@ import { Button } from "@nextui-org/button";
 
 import Icon from "./Icon"
 
-export default function Xp({ xp } : { xp?: number }) {
+export default function Xp({ xp, isLoaded } : { xp?: number, isLoaded: boolean }) {
 
     return (
         <>
-        <Skeleton isLoaded={xp ? true : false} className="rounded-full">
+        <Skeleton isLoaded={isLoaded} className="rounded-full">
             <Button 
                 variant="light"
                 startContent={<Icon filled color="green-500" >hotel_class</Icon>}
