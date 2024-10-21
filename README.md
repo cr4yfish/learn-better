@@ -71,28 +71,34 @@ Features marked with a question mark are not yet decided on, and might be droppe
         - [x] Courses
         - [x] Levels 
         - [ ] ~~Questions~~
-
-### Beta Features
+- [x] AI Helper for answering questions (free for now)
 - [ ] Data Features 1
     - [ ] Training mode on low confidence questions
     - [ ] Stats about users & learning
     - [ ] Weekly/Monthly streak/xp goals
     - [ ] Weekly rank ups
     - [ ] Achievements
+- [ ] PWA features
+    - [ ] App installation popup
+    - [ ] Notifications
+    - [ ] Better caching
+    - [ ] Offline Mode
+    - [ ] Manual download of Courses?
+
+### Beta Features
+- [ ] Redesign UI & Refactor Code
+    - [ ] Improve UI/UX - it's very utilitarian right now
+    - [ ] Add animations
+    - [ ] Move as much as possible to Server Rendering
+- [ ] Buy a domain
+
+## Userbase Features
+I will only implement these features if there are any users or interest to justify it.
+
 - [ ] Community Features 2
     - [ ] Following other users / Friends
     - [ ] Rating Courses, Levels & Questions
-    - [ ] Course Collaboration    
-- [ ] Redesign UI & Refactor Code
-    - [ ] Move as much as possible to Server Rendering
-    - [ ] Add animations
-    - [ ] Improve UI/UX - is very utilitarian right now
-- [ ] Buy a domain
-- [ ] Offline features
-    - [ ] Making better use of PWA features
-    - [ ] Better caching
-    - [ ] Offline UI
-    - [ ] Manual download of Courses?
+    - [ ] Course Collaboration   
 
 ### Future Features
 - [ ] Importing Levels & Questions from other sources
@@ -114,9 +120,8 @@ Since it's open source the 2nd option will be available anyway for tech-users.
 Right now I prefer the first option since it might also help pay for server cost.
 
 - [x] Creating Levels & Questions from Document uploads using AI (PDF only right now)?
-- [ ] Creating Levels & Questions from Pictures of Documents?
-- [ ] AI Helper for creating questions & levels (mostly for writing help)
-- [x] AI Helper for answering questions
+- [ ] ~~Creating Levels & Questions from Pictures of Documents?~~ <- Pretty expensive
+- [ ] ~~AI Helper for creating questions & levels (mostly for writing help)~~ Just use the first feature
 
 ## Open Source & Contributions
 This project is 100% open source. 
