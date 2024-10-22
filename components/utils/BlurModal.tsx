@@ -67,7 +67,7 @@ export default function BlurModal({
                         <div ref={contentRef} className="h-full min-h-max w-full flex flex-col overflow-visible">
                             {settings.hasHeader && <ModalHeader>{header}</ModalHeader>}
                             {settings.hasBody && <ModalBody>{body}</ModalBody>}
-                            {settings.hasFooter && <ModalFooter>{footer}</ModalFooter>}
+                            {settings.hasFooter && <ModalFooter className=" max-sm:pb-8 ">{footer}</ModalFooter>}
                         </div>
                     </NoiseContent>
                 </Noise>

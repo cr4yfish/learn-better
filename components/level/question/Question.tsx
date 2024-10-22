@@ -234,7 +234,7 @@ export default function Question({
                 </div>
             }
             footer={
-                <div className="flex items-center justify-between gap-2 pb-8">
+                <div className="flex items-center justify-between gap-2">
                     <form onSubmit={handleSubmit}>
                         <Button 
                             isLoading={isMistralLoading} 
