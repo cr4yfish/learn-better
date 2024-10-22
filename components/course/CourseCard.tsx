@@ -97,7 +97,7 @@ export default function CourseCard ({
     <>
         <Card
             isPressable onClick={() => setIsModalOpen(true)} 
-            className={`h-32 ${isSmall && "h-24 w-24"} `}
+            className={`h-32 ${isSmall && "h-30 w-24"} `}
             classNames={{
                 base: "overflow-y-hidden bg-content1/60 backdrop-blur",
             }}
@@ -119,12 +119,18 @@ export default function CourseCard ({
             <CardBody className="flex flex-col pb-4 overflow-y-hidden">
                 {!isSmall && <span className=" text-tiny font-semibold">{course.title}</span>}
                 {!isSmall && <span>{course.description}</span>}
+                {isSmall &&
+                    <div className="flex flex-col gap-2">
+                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>TBD</Chip>
+                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>TBD</Chip>
+                    </div>
+                }
             </CardBody>
             {!isSmall &&
                 <CardFooter>
                     <div className="flex items-center justify-between gap-4">
-                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" endContent={<Icon filled downscale>people</Icon>}>TBD</Chip>
-                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" endContent={<Icon filled downscale>favorite</Icon>}>TBD</Chip>
+                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>TBD</Chip>
+                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>TBD</Chip>
                     </div>
                 </CardFooter>
             }
