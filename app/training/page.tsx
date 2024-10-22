@@ -3,7 +3,7 @@
 import Navigation from "@/components/utils/Navigation"
 
 
-export default function Training() {
+export default async function Training() {
     
     return (
         <>
