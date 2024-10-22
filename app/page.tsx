@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Modal, ModalHeader, ModalBody, ModalContent, useDisclosure, ModalFooter } from "@nextui-org/modal";
 
 import { User_Course } from "@/types/db";
 
@@ -9,6 +8,7 @@ import { User_Course } from "@/types/db";
 import { Button } from "@/components/utils/Button";
 import LevelScroller from "@/components/levelScroller/LevelScroller";
 import Navigation from "@/components/utils/Navigation";
+import BlurModal from "@/components/utils/BlurModal";
 import Header from "@/components/utils/Header";
 import CourseSelectSwiper from "@/components/course/CourseSelectSwiper";
 import { SessionState } from "@/types/auth";
@@ -20,7 +20,7 @@ import { upsertSettings } from "@/functions/supabase/settings";
 export default function Home() {
   const [currentUserCourse, setCurrentUserCourse] = useState<User_Course>({} as User_Course)
   const [sessionState, setSessionState] = useState<SessionState>({} as SessionState)
-  const { onOpen, onOpenChange, isOpen } = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const fetchSessionState = async () => {
     const res = await getCurrentUser()
@@ -55,36 +55,32 @@ export default function Home() {
   return (
     <>
     <main className="flex flex-col justify-between items-center w-full min-h-full h-full ">
-      <Header currentUserCourse={currentUserCourse} onOpen={onOpen} sessionState={sessionState} />
+      <Header currentUserCourse={currentUserCourse} onOpen={() => setIsModalOpen(true)} sessionState={sessionState} />
       <div className="relative w-full h-full">
         <LevelScroller currentUserCourse={currentUserCourse} />
       </div>
     </main>
     <Navigation activeTitle="Home" />
 
-    <Modal 
-        backdrop="blur"
-        classNames={{
-          base: "bg-content1/50 backdrop-blur-xl",
-          body: "bg-transparent"
-        }}
-        isOpen={isOpen} 
-        onOpenChange={onOpenChange}
-    >
-      <ModalContent>
-          <ModalHeader>Your Courses</ModalHeader>
-          <ModalBody>
-              <CourseSelectSwiper 
-                userCourses={sessionState.courses} 
-                currentUserCourse={currentUserCourse}
-                setCurrentUserCourse={handleCourseChange} 
-              />
-          </ModalBody>
-          <ModalFooter>
-            <Link href={"/community"}><Button color="secondary" variant="flat">View all courses</Button></Link>
-          </ModalFooter>
-      </ModalContent>
-    </Modal>
+    <BlurModal 
+      isOpen={isModalOpen}
+      updateOpen={setIsModalOpen}
+      settings={{
+        hasHeader: true,
+        hasBody: true,
+        hasFooter: true,
+      }}
+      header={<>Your Courses</>}
+      body={             
+        <CourseSelectSwiper 
+          userCourses={sessionState.courses} 
+          currentUserCourse={currentUserCourse}
+          setCurrentUserCourse={handleCourseChange} 
+        />
+      }
+      footer={<Link href={"/community"}><Button color="secondary" variant="flat">View all courses</Button></Link>}
+    />
+    
     </>
   );
 }

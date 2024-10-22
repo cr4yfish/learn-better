@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useChat } from "ai/react";
 import { useStopwatch } from "react-use-precision-timer";
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import { v4 as uuidv4 } from "uuid";
 import Markdown from "react-markdown";
 
@@ -11,6 +10,7 @@ import { LevelState } from "@/types/client";
 import { QuestionState, OptionState } from "@/types/client";
 import { Button } from "@/components/utils/Button";
 import Option from "./Option";
+import BlurModal from "@/components/utils/BlurModal";
 import { addUserQuestion } from "@/functions/supabase/questions";
 import Icon from "@/components/utils/Icon";
 import { shuffleArray } from "@/functions/helpers";
@@ -25,7 +25,7 @@ export default function Question({
     levelState: LevelState,
     questions: QuestionType[]
 }) {
-    const { onOpen, onOpenChange, isOpen, onClose } = useDisclosure()
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const [questionState, setQuestionState] = useState<QuestionState>({
         options: question.answer_options,
@@ -96,7 +96,7 @@ export default function Question({
             answeredQuestions: ++prevState.answeredQuestions,
         }))
 
-        onOpen()
+        setIsModalOpen(true)
         setIsLoading(false)
     }
 
@@ -133,7 +133,7 @@ export default function Question({
                     currentQuestionIndex: questions.indexOf(questions.find(q => q.id == firstUncompleted.id) as QuestionType),
                 }))
                 setIsLoading(false);
-                onClose();
+                setIsModalOpen(false);
                 return;
             }
         } 
@@ -142,7 +142,7 @@ export default function Question({
             ...prevState,
             currentQuestionIndex: ++prevState.currentQuestionIndex,
         }))
-        onClose();
+        setIsModalOpen(false);
         setIsLoading(false);
     }
 
@@ -207,10 +207,19 @@ export default function Question({
             </Button>
         </div>
 
-        <Modal hideCloseButton isDismissable={false} isKeyboardDismissDisabled isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent>
-                <ModalHeader>{questionState.correct == "correct" ? "Correct!" : "Wrong!"}</ModalHeader>
-                <ModalBody>
+        <BlurModal
+            isOpen={isModalOpen}
+            updateOpen={setIsModalOpen} 
+            settings={{
+                hasHeader: true,
+                hasBody: true,
+                hasFooter: true,
+                isDismissable: false,
+                hideCloseButton: true,
+            }}
+            header={questionState.correct == "correct" ? "Correct!" : "Wrong!"}
+            body={
+                <>
                     <span>{questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}</span>
                     {messages.map(message => (
                         <div key={message.id}>
@@ -222,8 +231,10 @@ export default function Question({
                             )}
                         </div>
                     ))}
-                </ModalBody>
-                <ModalFooter className="flex items-center justify-between gap-2 pb-8">
+                </>
+            }
+            footer={
+                <div className="flex items-center justify-between gap-2 pb-8">
                     <form onSubmit={handleSubmit}>
                         <Button 
                             isLoading={isMistralLoading} 
@@ -235,9 +246,11 @@ export default function Question({
                         </Button>
                     </form>
                     <Button isLoading={isLoading} color="primary" onClick={handleNextQuestion}>Next Question</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                </div>
+            }
+        />
+
+
         </>
     )
 }

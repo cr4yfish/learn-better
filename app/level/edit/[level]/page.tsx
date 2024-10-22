@@ -5,7 +5,6 @@ import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 
 import { Input } from "@nextui-org/input";
-import { Modal, ModalContent, ModalBody, ModalFooter, useDisclosure, ModalHeader } from "@nextui-org/modal";
 import { Select, SelectItem, SelectSection } from "@nextui-org/select";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
@@ -13,6 +12,7 @@ import { Question, Question_Type, Topic } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
+import BlurModal from "@/components/utils/BlurModal";
 import EditQuestion from "@/components/level/question/EditQuestion";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Spinner } from "@nextui-org/spinner";
@@ -26,8 +26,7 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
-
-    const { onOpen, onClose, isOpen, onOpenChange } = useDisclosure();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [isAddingQuestionLoading, setIsAddingQuestionLoading] = useState(false);
     const [newQuestion, setNewQuestion] = useState<Question>({} as Question);
@@ -96,7 +95,7 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
         })
 
         setIsAddingQuestionLoading(false);
-        onClose();
+        setIsModalOpen(false);
     }
 
     const handleUpdateTopic = async () => {
@@ -197,7 +196,7 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
                     <Button
                         startContent={<Icon filled>add</Icon>}
                         color="primary"
-                        onClick={onOpen}
+                        onClick={() => setIsModalOpen(true)}
                         isLoading={isLoadingQuestions}
                     >
                         {questions.length == 0 ? "Add a question" : "Add another question"}
@@ -208,13 +207,17 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
 
         </div>
 
-        <Modal
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-        >
-            <ModalContent>
-                <ModalHeader>Add a new question</ModalHeader>
-                <ModalBody>
+        <BlurModal 
+            isOpen={isModalOpen}
+            updateOpen={setIsModalOpen}
+            settings={{
+                hasHeader: true,
+                hasBody: true,
+                hasFooter: true,
+            }}
+            header={<>Add a new question</>}
+            body={
+                <>
                     <div className="flex flex-col gap-1">
                         <h2 className="font-bold">General information</h2>
                         <Select
@@ -249,13 +252,17 @@ export default function EditLevel({ params: { level } }: { params: { level: stri
                             onValueChange={(value) => updateNewQuestionValue("question", value)}
                         />
                     </div>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="warning" variant="light" onClick={onClose} isDisabled={isAddingQuestionLoading} >Cancel</Button>
+                </>
+            }
+            footer={
+                <>
+                    <Button color="warning" variant="light" onClick={() => setIsModalOpen(false)} isDisabled={isAddingQuestionLoading} >Cancel</Button>
                     <Button color="primary" variant="shadow" onClick={() => addQuestion(newQuestion)} isLoading={isAddingQuestionLoading} >Add</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                </>
+            }
+        />
+
+
         </>
     )
 }

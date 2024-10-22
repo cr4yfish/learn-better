@@ -11,17 +11,17 @@ import Tus from "@uppy/tus";
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 
-import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/modal";
 
 
 import { SessionState } from "@/types/auth";
 import { getAnonkey, getSupabaseStorageURL } from "@/functions/supabase/auth";
 import Icon from "./Icon";
 import { Button } from "./Button";
+import BlurModal from "./BlurModal";
 
 export default function UppyFileUpload({ session, label, setFileNameCalback } : { session: SessionState | null, label?: string, setFileNameCalback?: (fileName: string) => void }) {
 
-    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const [uppy] = useState<Uppy>(() => new Uppy());
 
@@ -39,7 +39,7 @@ export default function UppyFileUpload({ session, label, setFileNameCalback } : 
             console.error("No file name");
             return;
         }
-        onClose();
+        setIsModalOpen(false);
         if(setFileNameCalback) setFileNameCalback(file.name);
     });
 
@@ -72,23 +72,25 @@ export default function UppyFileUpload({ session, label, setFileNameCalback } : 
                 size='md' 
                 className='mr-2 text-primary-600 dark:text-primary' 
                 variant="flat"
-                onClick={onOpen}
+                onClick={() => setIsModalOpen(true)}
             >
                 {label && <span>{label}</span>} 
                 <Icon>upload</Icon>
             </Button>
         </motion.div>
-        <Modal
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-        >
-            <ModalContent>
-                <ModalHeader>Upload Files</ModalHeader>
-                <ModalBody>
-                    <Dashboard uppy={uppy} className="" />
-                </ModalBody>
-            </ModalContent>
-        </Modal>
+
+        <BlurModal
+            isOpen={isModalOpen}    
+            updateOpen={setIsModalOpen} 
+            settings={{
+                hasHeader: true,
+                hasBody: true,
+                hasFooter: false
+            }}  
+            header="Upload Files"
+            body={<Dashboard uppy={uppy} className="" />}
+        />
+
         </>
     )
 }

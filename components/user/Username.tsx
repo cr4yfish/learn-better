@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import { Skeleton } from "@nextui-org/skeleton";
 import { User } from "@nextui-org/user";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 
 import { Profile } from "@/types/db";
+import BlurModal from "../utils/BlurModal";
 import { getProfileById } from "@/functions/supabase/user";
 import { Button } from "../utils/Button";
 import ConditionalLink from "../utils/ConditionalLink";
@@ -16,7 +16,7 @@ import ConditionalLink from "../utils/ConditionalLink";
 export default function Username({ initProfile, userId } : { initProfile?: Profile, userId?: string }) {
     const [profile, setProfile] = useState<Profile>(initProfile ?? {} as Profile);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if(!profile && userId) {
@@ -38,19 +38,29 @@ export default function Username({ initProfile, userId } : { initProfile?: Profi
             className="flex items-center rounded-lg"
         >
             <User
-                onClick={onOpen}
+                onClick={() => setIsModalOpen(true)}
                 name={profile?.username}
                 avatarProps={{ src: profile?.avatarLink }}
             />
         </Skeleton>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent>
-                <ModalHeader>{profile?.username}</ModalHeader>
-                <ModalBody>
+
+        <BlurModal 
+            isOpen={isModalOpen}
+            updateOpen={setIsModalOpen}
+            settings={{
+                hasHeader: false,
+                hasBody: true,
+                hasFooter: true,
+            }}
+            header={profile?.username}
+            body={
+                <>
                     <span>Rank: {profile?.rank?.title}</span>
                     <span>{profile.total_xp} XP</span>
-                </ModalBody>
-                <ModalFooter>
+                </>
+            }
+            footer={
+                <>
                     <ConditionalLink
                         active={!isLoading}
                         href={`/user/${profile?.id}`}
@@ -63,9 +73,10 @@ export default function Username({ initProfile, userId } : { initProfile?: Profi
                             View Profile
                         </Button>
                     </ConditionalLink>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                </>
+            }
+        />
+
         </>
     )
 }

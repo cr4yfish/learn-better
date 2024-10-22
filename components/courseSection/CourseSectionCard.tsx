@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { Card, CardHeader, CardFooter, CardBody } from "@nextui-org/card";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { Input } from "@nextui-org/input";
 
 import Icon from "../utils/Icon";
+import BlurModal from "../utils/BlurModal";
 import { Course_Section, Topic } from "@/types/db";
 import { ReactSortable } from "react-sortablejs";
 import { upsertCourseSection, deleteCourseSection } from "@/functions/supabase/courseSections";
@@ -24,7 +24,7 @@ export default function CourseSectionCard(
     const [editingSection, setEditingSection] = useState<Course_Section>(courseSection);
     const [isEditingLoading, setIsEditingLoading] = useState(false);
     const [isCourseSectionDeleteLoading, setIsCourseSectionDeleteLoading] = useState(false);
-    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
     const [topics, setTopics] = useState<Topic[]>([]);
     const [isOrderMode, setIsOrderMode] = useState(false);
@@ -32,7 +32,7 @@ export default function CourseSectionCard(
 
     const handleEditCourseSection = (section: Course_Section) => {
         setEditingSection(section); 
-        onOpen();
+        setIsModalOpen(true);
     }
     
     const handleSaveCourseSection = async () => {
@@ -50,7 +50,7 @@ export default function CourseSectionCard(
             setCourseSections([...courseSections, editingSection]);	
         }
         }
-        onOpenChange();
+        setIsModalOpen(!isModalOpen);
         setIsEditingLoading(false);
     }
     }
@@ -103,11 +103,11 @@ export default function CourseSectionCard(
             }
         }
 
-        if(isOpen && topics.length == 0) {
+        if(isModalOpen && topics.length == 0) {
             fetchCourseTopics();
         }
 
-    }, [isOpen, courseSection.id, topics.length])
+    }, [isModalOpen, courseSection.id, topics.length])
 
     return (
     <>
@@ -137,14 +137,18 @@ export default function CourseSectionCard(
             </CardFooter>
         </Card>
 
-        <Modal
-        size="full"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        >
-            <ModalContent>
-                <ModalHeader>{editingSection?.title || "New Course Section"}</ModalHeader>
-                <ModalBody>
+        <BlurModal 
+            isOpen={isModalOpen}
+            updateOpen={setIsModalOpen}
+            settings={{
+                hasHeader: true,
+                hasBody: true,
+                hasFooter: true,
+                size:"full",
+            }}
+            header={editingSection?.title || "New Course Section"}
+            body={
+                <>
                     <Input 
                         label="Title" 
                         isRequired 
@@ -210,13 +214,13 @@ export default function CourseSectionCard(
                         ))}
                         </ReactSortable>
                     )}
-
-
-                </ModalBody>
-                <ModalFooter>
+                </>
+            }
+            footer={
+                <>
                     <Button 
                         color="warning" variant="flat" 
-                        isDisabled={isEditingLoading || loadingOrder} onClick={onClose}
+                        isDisabled={isEditingLoading || loadingOrder} onClick={() => setIsModalOpen(false)}
                     >Cancel</Button>
                     <Button 
                         color="primary" variant="solid" 
@@ -224,9 +228,10 @@ export default function CourseSectionCard(
                         isDisabled={loadingOrder}
                         onClick={handleSaveCourseSection}
                     >Save</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                </>
+            }
+        />
+
     </>
     )
 }
