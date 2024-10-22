@@ -129,16 +129,16 @@ export default function CourseCard ({
             }}
             updateOpen={setIsModalOpen}
             header={
-            <div className="w-full flex items-center justify-between pr-4">
-                <span className="font-bold">{course?.abbreviation}</span>
-                <Button 
-                    onClick={() => handleUpvoteCourse(course)} 
-                    isLoading={isVoting} 
-                    variant="flat" color="danger" isIconOnly
-                >
-                        <Icon filled={isUpvoted}>favorite</Icon>
-                </Button>
-            </div>
+                <div className="w-full flex items-center justify-between pr-4">
+                    <span className="font-bold">{course?.abbreviation}</span>
+                    <Button 
+                        onClick={() => handleUpvoteCourse(course)} 
+                        isLoading={isVoting} 
+                        variant="flat" color="danger" isIconOnly
+                    >
+                            <Icon filled={isUpvoted}>favorite</Icon>
+                    </Button>
+                </div>
             }
             body={
             <>

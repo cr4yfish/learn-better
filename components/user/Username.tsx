@@ -48,11 +48,11 @@ export default function Username({ initProfile, userId } : { initProfile?: Profi
             isOpen={isModalOpen}
             updateOpen={setIsModalOpen}
             settings={{
-                hasHeader: false,
+                hasHeader: true,
                 hasBody: true,
                 hasFooter: true,
             }}
-            header={profile?.username}
+            header={<>{profile?.username}</>}
             body={
                 <>
                     <span>Rank: {profile?.rank?.title}</span>

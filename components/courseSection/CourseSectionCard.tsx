@@ -146,7 +146,7 @@ export default function CourseSectionCard(
                 hasFooter: true,
                 size:"full",
             }}
-            header={editingSection?.title || "New Course Section"}
+            header={<>{editingSection?.title || "New Course Section"}</>}
             body={
                 <>
                     <Input 

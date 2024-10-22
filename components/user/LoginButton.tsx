@@ -100,7 +100,7 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
                 hasFooter: true,
                 size: "lg"
             }}
-            header={<div  className="flex flex-col gap-1">{isSignUp ? "Sign up" : "Log in" }</div>}
+            header={<div className="flex flex-col gap-1">{isSignUp ? "Sign up" : "Log in" }</div>}
             body={<form id="loginForm" onSubmit={handleSubmit} className="flex flex-col gap-2">
                 <Input label="Email" type="email" name="email" />
                 <Input label="Password" type="password" name="password" />

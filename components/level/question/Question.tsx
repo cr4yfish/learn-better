@@ -217,7 +217,7 @@ export default function Question({
                 isDismissable: false,
                 hideCloseButton: true,
             }}
-            header={questionState.correct == "correct" ? "Correct!" : "Wrong!"}
+            header={<>{questionState.correct == "correct" ? "Correct!" : "Wrong!"}</>}
             body={
                 <>
                     <span>{questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}</span>
