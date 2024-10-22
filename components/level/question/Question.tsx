@@ -223,7 +223,7 @@ export default function Question({
                         </div>
                     ))}
                 </ModalBody>
-                <ModalFooter className="flex items-center justify-between gap-2">
+                <ModalFooter className="flex items-center justify-between gap-2 pb-8">
                     <form onSubmit={handleSubmit}>
                         <Button 
                             isLoading={isMistralLoading} 
