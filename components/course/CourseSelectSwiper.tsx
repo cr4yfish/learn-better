@@ -26,14 +26,14 @@ export default function CourseSelectSwiper({
         >
             <Swiper
                 spaceBetween={25}
-                slidesPerView={3}
+                slidesPerView={2}
                 loop={false}
                 simulateTouch
                 onSwiper={setSwiper}
                 className=' w-full h-full max-w-full overflow-x-scroll'
             >
                 {[currentUserCourse, ...userCourses.filter((uc) => uc.course.id !== currentUserCourse.course.id )].map((userCourse) => (
-                    <SwiperSlide className=' w-fit min-h-full' key={userCourse.course.id}>
+                    <SwiperSlide className=' min-h-full' key={userCourse.course.id}>
                         <CourseButton 
                             onPress={() => setCurrentUserCourse(userCourse)} 
                             course={userCourse.course}
