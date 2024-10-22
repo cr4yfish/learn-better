@@ -35,7 +35,7 @@ export default function Header({
         <div className="flex flex-col justify-center items-center w-full p-6">
             <div className="flex flex-row items-center justify-evenly flex-nowrap gap-5 backdrop-blur w-full">
                 <Button 
-                    variant="bordered" color="primary"
+                    variant="flat" color="secondary"
                     className="font-black" 
                     onClick={() => {
                         onOpen();
