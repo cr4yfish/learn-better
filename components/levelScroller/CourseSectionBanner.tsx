@@ -11,7 +11,7 @@ export default function CourseSectionBanner(
 
     return (
         courseSection &&
-        <Card className="top-0 w-full max-w-[960px] z-10 bg-fuchsia-900/55 backdrop-blur">
+        <Card className="top-0 w-full max-w-[960px] z-10 bg-transparent bg-gradient-to-tr from-fuchsia-800/20 to-fuchsia-500/15  backdrop-blur">
             <CardHeader className=" font-bold pb-0">{courseSection.title}</CardHeader>
             <CardBody>{courseSection.description}</CardBody>
         </Card>
