@@ -20,6 +20,14 @@ The point being that you can learn anything you want, and you can help others le
 
 The main reason for this project is that I would love to have an App like Duolingo but for university subjects, and since I'd have to create a nice way of adding content to it anyway, I thought why not make it a platform for everyone to use, I thought why not make it a platform for everyone to use - so here we are.
 
+## Hero Features
+- Create & Share Courses, Levels & Questions
+- AI Helper for answering questions
+- AI Course Sections & Levels creation from source documents (PDF)
+- Leaderboard with Rank System
+- Streak and XP System
+- Level Scroller with Progression System and Sections
+
 ## Stack
 * Next.js
 * Supabase
@@ -108,10 +116,12 @@ I will only implement these features if there are any users or interest to justi
 
 ### Future Features
 - [ ] Importing Levels & Questions from other sources
-    - [ ] Anki decks   
+    - [ ] Anki decks
+    - [ ] Study Drive Scraper 👀
 - [ ] Security features
     - [ ] Cloudflare
     - [ ] Captcha for user sign ups
+    - [ ] Add Email Verification
 - [ ] Privacy Settings
     - [ ] Private Courses
     - [ ] Private User Profiles
