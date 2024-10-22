@@ -73,7 +73,7 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
 
     return (
         <>
-        <div className="flex flex-col px-4 py-6 gap-4">
+        <div className="flex flex-col px-4 py-6 pt-0 gap-4">
             <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg"><h1 className="font-bold text-4xl">{isNew ? "New course" : course?.title}</h1></Skeleton>
             
             <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg">

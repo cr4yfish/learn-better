@@ -77,7 +77,10 @@ export default function EditCourse({ params: { course }} : { params: { course: s
 
   return (
     <>
-    <div className="px-4 py-6 overflow-y-auto h-full flex flex-col gap-4">
+    <div className="px-4 py-6 overflow-y-auto h-full flex flex-col max-h-screen">
+      <div>
+        <Button variant="light" startContent={<Icon filled>arrow_back</Icon>}>Back</Button>
+      </div>
       <EditCourseCard 
         userId={userCourse?.user?.id} 
         isNew={false} 
