@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-
+import Link from "next/link";
 
 import { Course_Section, User_Course } from "@/types/db";
 
@@ -79,7 +79,10 @@ export default function EditCourse({ params: { course }} : { params: { course: s
     <>
     <div className="px-4 py-6 overflow-y-auto h-full flex flex-col max-h-screen">
       <div>
-        <Button variant="light" startContent={<Icon filled>arrow_back</Icon>}>Back</Button>
+        <Link href="/">
+          <Button variant="light" startContent={<Icon filled>arrow_back</Icon>}>Back</Button>
+        </Link>
+        
       </div>
       <EditCourseCard 
         userId={userCourse?.user?.id} 
