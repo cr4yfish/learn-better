@@ -75,7 +75,6 @@ async function loadMoreTopics({
 
 async function courseToUserCourse(course: Course): Promise<User_Course> {
     const res = await getUserCourse(course.id);
-    console.log("user course:", res);
     return res;
 }
 

@@ -31,7 +31,6 @@ export default function HeaderCourseSelect({ sessionState } : { sessionState: Se
     }
 
     useEffect(() => {
-        console.log("Session State:",sessionState)
         setCurrentCourse(sessionState.settings.current_course)
     }, [sessionState, setCurrentCourse])
 

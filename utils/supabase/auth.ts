@@ -167,7 +167,6 @@ export async function getCurrentUser(): Promise<SessionState | null> {
         const { data: { session } } = await getSession();
 
         if(!session?.user?.id) {
-            console.log("No session data");
             return null;
         }
 
