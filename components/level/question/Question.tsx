@@ -219,19 +219,19 @@ export default function Question({
             }}
             header={<>{questionState.correct == "correct" ? "Correct!" : "Wrong!"}</>}
             body={
-                <>
+                <div className=" min-h-full">
                     <span>{questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}</span>
                     {messages.map(message => (
                         <div key={message.id}>
                             {message.role == "assistant" && (
-                                <div className="flex flex-col gap-1 prose dark:prose-invert prose-p:mt-0">
+                                <div className="flex flex-col gap-1 h-fit prose dark:prose-invert prose-p:mt-0">
                                     <span className="mb-0 font-medium">Explanation</span>
                                     <Markdown>{message.content}</Markdown>
                                 </div>
                             )}
                         </div>
                     ))}
-                </>
+                </div>
             }
             footer={
                 <div className="flex items-center justify-between gap-2 pb-8">

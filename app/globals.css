@@ -33,3 +33,42 @@
 .uppy-Dashboard-AddFiles-info {
   display: none !important;
 }
+
+.noise {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+  position: relative;
+  min-height: max-content;
+}
+
+.noise > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  min-height: max-content !important;
+}
+
+.noise canvas {
+  z-index: -2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  height: 100vh;
+}
+
+.noise > div > div {
+  flex: 1;
+  position: relative;
+  height: 100% !important;
+  min-height: max-content !important;
+}
+
+.noise-content {
+  height: 100% !important;
+  min-height: max-content !important;
+}

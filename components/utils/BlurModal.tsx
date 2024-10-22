@@ -1,8 +1,9 @@
 "use client";
 
 import { Modal, ModalHeader, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/modal"
-import React, { useEffect } from "react";
-
+import React, { useEffect, useRef } from "react";
+import { Noise, NoiseContent } from "react-noise";
+import "react-noise/css";
 
 export default function BlurModal({
     settings, header, body, footer, isOpen, updateOpen
@@ -23,6 +24,7 @@ export default function BlurModal({
     updateOpen: (isOpen: boolean) => void,
 }) {
     const { isOpen: internalIsOpen, onOpen: internalOnOpen, onClose: internalOnClose, onOpenChange } = useDisclosure()
+    const contentRef = useRef<HTMLDivElement>(null);
 
     if(settings.hasHeader && !header) {
         throw new Error("You enabled Header but provided no content for it.")
@@ -37,6 +39,7 @@ export default function BlurModal({
     useEffect(() => {
         if(isOpen) {
             internalOnOpen();
+            console.log("Startup")
         } else {
             internalOnClose();
         }
@@ -54,15 +57,22 @@ export default function BlurModal({
             onOpenChange={onOpenChange}
             backdrop="blur"
             classNames={{
-              base: "bg-content1/50 backdrop-blur-xl",
-              body: "bg-transparent"
+                base: "bg-content1/50 backdrop-blur-xl",
+                body: "bg-transparent"
             }}
         >
             <ModalContent>
-                {settings.hasHeader && <ModalHeader>{header}</ModalHeader>}
-                {settings.hasBody && <ModalBody>{body}</ModalBody>}
-                {settings.hasFooter && <ModalFooter>{footer}</ModalFooter>}
+                <Noise opacity={0} className="w-full noise h-fit relative min-h-max" >
+                    <NoiseContent className="w-full noise-content h-full justify-normal min-h-max ">
+                        <div ref={contentRef} className="h-full min-h-max w-full flex flex-col overflow-visible">
+                            {settings.hasHeader && <ModalHeader>{header}</ModalHeader>}
+                            {settings.hasBody && <ModalBody>{body}</ModalBody>}
+                            {settings.hasFooter && <ModalFooter>{footer}</ModalFooter>}
+                        </div>
+                    </NoiseContent>
+                </Noise>
             </ModalContent>
         </Modal>
+        
     )
 }
