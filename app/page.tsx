@@ -64,6 +64,10 @@ export default function Home() {
 
     <Modal 
         backdrop="blur"
+        classNames={{
+          base: "bg-content1/50 backdrop-blur-xl",
+          body: "bg-transparent"
+        }}
         isOpen={isOpen} 
         onOpenChange={onOpenChange}
     >
@@ -77,7 +81,7 @@ export default function Home() {
               />
           </ModalBody>
           <ModalFooter>
-            <Link href={"/community"}><Button>View all courses</Button></Link>
+            <Link href={"/community"}><Button color="secondary" variant="flat">View all courses</Button></Link>
           </ModalFooter>
       </ModalContent>
     </Modal>

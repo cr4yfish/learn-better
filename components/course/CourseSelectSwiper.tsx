@@ -22,7 +22,7 @@ export default function CourseSelectSwiper({
     
     return (
         <div
-            className='w-full max-h-96 max-w-full py-4 backdrop-blur relative overflow-auto'
+            className='w-full max-h-96 max-w-full py-4 relative overflow-auto'
         >
             <Swiper
                 spaceBetween={25}
