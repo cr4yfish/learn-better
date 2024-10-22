@@ -10,7 +10,10 @@ import Level from "./Level"
 import Icon from "@/components/utils/Icon";
 import CourseSectionBanner from "./CourseSectionBanner";
 import { Button } from "@/components/utils/Button";
-import { getCourseTopics } from "@/functions/supabase/topics";
+import { getCourseTopics } from "@/utils/supabase/topics";
+
+import { useCurrentCourse } from "@/hooks/SharedUserCourse";
+import { getUserCourse } from "@/utils/supabase/courses";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {
     const offsets = [];
@@ -70,7 +73,13 @@ async function loadMoreTopics({
     }
 }
 
-export default function LevelScroller({ currentUserCourse } : { currentUserCourse: User_Course }) {
+async function courseToUserCourse(course: Course): Promise<User_Course> {
+    const res = await getUserCourse(course.id);
+    console.log("user course:", res);
+    return res;
+}
+
+export default function LevelScroller() {
     const [topics, setTopics] = useState<Topic[]>([])
     const [currentCourseSection, setCurrentCourseSection] = useState<Course_Section | null>(null)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -80,6 +89,16 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
     const [isLoading, setIsLoading] = useState(false)
     const [isAdmin, setIsAdmin] = useState(false)
     const levelRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    const { currentCourse } = useCurrentCourse();
+    const [currentUserCourse, setCurrentUserCourse] = useState<User_Course | null>(null);
+
+    useEffect(() => {
+        if(currentCourse == null) { return; }
+        courseToUserCourse(currentCourse).then((res) => {
+            setCurrentUserCourse(res);
+        });
+    }, [currentCourse])
 
     useEffect(() => {
         const handleScrollOutOfView = (entry: IntersectionObserverEntry) => {
@@ -124,16 +143,17 @@ export default function LevelScroller({ currentUserCourse } : { currentUserCours
         setOffsets([]);
         setCursor(0);
         setCanLoadMore(true);
-        setIsAdmin(currentUserCourse.is_collaborator || currentUserCourse.is_admin || currentUserCourse.is_moderator);
+
+        setIsAdmin((currentUserCourse?.is_collaborator || currentUserCourse?.is_admin || currentUserCourse?.is_moderator) ?? false);
         
     }, [currentUserCourse]);
 
     const handleLoadMore = async () => {
-        if(isLoading || !canLoadMore) { return; } // this line can be called very often, so leave it short
+        if(isLoading || !canLoadMore || !currentCourse) { return; } // this line can be called very often, so leave it short
         setIsLoading(true);
 
         const result = await loadMoreTopics({
-            cursor, currentCourse: currentUserCourse.course, topics, limit: 20
+            cursor, currentCourse: currentCourse, topics, limit: 20
         });
 
         if ('error' in result) {

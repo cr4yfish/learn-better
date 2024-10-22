@@ -3,7 +3,7 @@ import { Chip } from "@nextui-org/chip";
 
 import { Course } from "@/types/db";
 
-export default function CourseButton({ course, active, onPress } : { course: Course, active: boolean, onPress: () => void }) {
+export default function CourseButton({ course, active, onPress } : { course: Course | undefined, active: boolean, onPress: () => void }) {
      
     return (
         <>
@@ -12,10 +12,10 @@ export default function CourseButton({ course, active, onPress } : { course: Cou
             onPress={onPress}
             className={` w-full min-h-full border border-default1 ${active ? 'border-primary' : 'bg-default'} text-white`}
         >
-            <CardHeader className="font-bold pb-0">{course.abbreviation}</CardHeader>
+            <CardHeader className="font-bold pb-0">{course?.abbreviation}</CardHeader>
             <CardBody className=" pt-1">
-                {course.institution && <Chip size="sm" >{course.institution?.abbreviation}</Chip>}
-                <span>{course.description}</span>
+                {course?.institution && <Chip size="sm" >{course?.institution?.abbreviation}</Chip>}
+                <span>{course?.description}</span>
             </CardBody>
         </Card>
         </>

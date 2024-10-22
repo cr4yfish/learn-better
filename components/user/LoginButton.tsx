@@ -9,10 +9,13 @@ import { Checkbox } from "@nextui-org/checkbox"
 
 
 import { SessionState } from "@/types/auth";
-import { userSignUp, userLogin, getProfile, getSession, userLogOut } from "@/functions/supabase/auth";
+import { userSignUp, userLogin, getProfile, getSession, userLogOut } from "@/utils/supabase/auth";
 import BlurModal from "../utils/BlurModal";
 
-export default function LoginButton({ sessionState, setSessionState } : { sessionState: SessionState, setSessionState: React.Dispatch<React.SetStateAction<SessionState>> }) {
+export default function LoginButton(
+    { sessionState, setSessionState, isRedirecting=false } : 
+    { sessionState?: SessionState, setSessionState?: React.Dispatch<React.SetStateAction<SessionState>>, isRedirecting?: boolean }) 
+    {
     const [isLoading, setIsLoading] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +39,7 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
 
                 const res = await userSignUp(data.email as string, data.password as string, data.username as string);
 
-                if(res && res.profile && res.authResponse.data) {
+                if(res && res.profile && res.authResponse.data && setSessionState && sessionState) {
                     setSessionState({
                         ...sessionState,
                         user: res.authResponse.data.user ?? undefined, 
@@ -45,6 +48,9 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
                         isLoggedIn: true,
                         settings: res.settings
                     });
+                    if(isRedirecting) {
+                        window.location.href = "/";
+                    }
                     //setIsModalOpen(false); Why close?
                 }
 
@@ -57,10 +63,12 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
                     const profile = await getProfile(res.user.id as string);
                     const { data: sessionData } = await getSession();
 
-                    if(profile && sessionData.session) {
+                    if(profile && sessionData.session && setSessionState && sessionState) {
                         setSessionState({...sessionState, user: res.user, profile: profile, session: sessionData.session, isLoggedIn: true});
                     }
-
+                    if(isRedirecting) {
+                        window.location.href = "/";
+                    }
                     setIsModalOpen(true);
                 }
             }
@@ -81,14 +89,17 @@ export default function LoginButton({ sessionState, setSessionState } : { sessio
             console.error("LoginButtonError:",res);
         }
         
-        setSessionState({...sessionState, user: undefined, profile: undefined, session: null, isLoggedIn: false});
+        if(setSessionState && sessionState) {
+            setSessionState({...sessionState, user: undefined, profile: undefined, session: null, isLoggedIn: false});
+        }
+        
 
         setIsLoading(false);
     }
 
     return (
         <>
-        {!sessionState.isLoggedIn ? <Button color="primary" variant="shadow" onClick={() => setIsModalOpen(true)}>Login</Button>
+        {!sessionState?.isLoggedIn ? <Button color="primary" variant="shadow" onClick={() => setIsModalOpen(true)}>Login</Button>
         : <Button color="danger" variant="shadow" onClick={handleLogout}>Logout</Button>     }
 
         <BlurModal 

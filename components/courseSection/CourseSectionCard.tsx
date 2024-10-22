@@ -9,8 +9,8 @@ import Icon from "../utils/Icon";
 import BlurModal from "../utils/BlurModal";
 import { Course_Section, Topic } from "@/types/db";
 import { ReactSortable } from "react-sortablejs";
-import { upsertCourseSection, deleteCourseSection } from "@/functions/supabase/courseSections";
-import { upsertCourseTopic, getCourseSectionTopics } from "@/functions/supabase/topics";
+import { upsertCourseSection, deleteCourseSection } from "@/utils/supabase/courseSections";
+import { upsertCourseTopic, getCourseSectionTopics } from "@/utils/supabase/topics";
 
 
 export default function CourseSectionCard(

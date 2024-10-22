@@ -11,7 +11,7 @@ import { QuestionState, OptionState } from "@/types/client";
 import { Button } from "@/components/utils/Button";
 import Option from "./Option";
 import BlurModal from "@/components/utils/BlurModal";
-import { addUserQuestion } from "@/functions/supabase/questions";
+import { addUserQuestion } from "@/utils/supabase/questions";
 import Icon from "@/components/utils/Icon";
 import { shuffleArray } from "@/functions/helpers";
 

@@ -14,7 +14,7 @@ import '@uppy/dashboard/dist/style.min.css';
 
 
 import { SessionState } from "@/types/auth";
-import { getAnonkey, getSupabaseStorageURL } from "@/functions/supabase/auth";
+import { getAnonkey, getSupabaseStorageURL } from "@/functions/helpers";
 import Icon from "./Icon";
 import { Button } from "./Button";
 import BlurModal from "./BlurModal";

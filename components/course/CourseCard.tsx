@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -7,7 +9,7 @@ import { Button } from "@/components/utils/Button";
 import Icon from "../utils/Icon";
 import BlurModal from "../utils/BlurModal";
 import { Course, User_Course } from "@/types/db";
-import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/functions/supabase/courses";
+import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/utils/supabase/courses";
 import { Chip } from "@nextui-org/chip";
 
 

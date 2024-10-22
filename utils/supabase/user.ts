@@ -1,7 +1,9 @@
+"use server";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { getCurrentUserRank } from "./ranks";
-import { getClient } from "./supabase";
+import { createClient as getClient } from "./server/server";
 import { Profile, Rank } from "@/types/db";
 
 export async function getProfileById(userId: string): Promise<Profile> {

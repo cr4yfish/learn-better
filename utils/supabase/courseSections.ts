@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { getClient } from "./supabase";
+import { getClient } from "./client";
 
 import { Course_Section } from "@/types/db";
 
@@ -9,7 +9,7 @@ import { Course_Section } from "@/types/db";
 export async function upsertCourseSection(courseSection: Course_Section): Promise<{ id: string }> {
     const { data, error } = await getClient().from("course_sections").upsert([{
         ...courseSection,
-        course: courseSection.course.id
+        course: courseSection?.course?.id
     }]).select().single();
     if(error) { throw error; }
     return { id: data.id };

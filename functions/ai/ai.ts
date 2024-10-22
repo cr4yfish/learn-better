@@ -4,7 +4,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createMistral } from "@ai-sdk/mistral";
 import { convertToCoreMessages, Message, streamObject, streamText } from "ai"; 
-import { downloadObject } from "../supabase/storage";
+import { downloadObject } from "../../utils/supabase/storage";
 import { multipleLevelSchema } from "./schemas";
 
 export async function createLevelFromPDF(

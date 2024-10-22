@@ -16,6 +16,7 @@ const Button = React.forwardRef(({
     isIconOnly,
     fullWidth,
     radius,
+    formAction
 
 } : {
     children: React.ReactNode,
@@ -32,6 +33,7 @@ const Button = React.forwardRef(({
     isIconOnly?: boolean,
     fullWidth?: boolean,
     radius?: "none" | "sm" | "md" | "lg" | "full" | undefined,
+    formAction?: string | ((formData: FormData) => void | Promise<void>) | undefined
 }, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
     return (
@@ -50,6 +52,7 @@ const Button = React.forwardRef(({
             fullWidth={fullWidth}
             radius={radius}
             ref={ref}
+            formAction={formAction}
         >
             {children}
         </NextUIButton>

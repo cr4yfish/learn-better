@@ -1,31 +1,22 @@
-"use client";
+"use server";
 
 
-import { useEffect, useState } from "react";
 import { User as UserCard } from "@nextui-org/user";
 import { Image } from "@nextui-org/image";
-import { Skeleton } from "@nextui-org/skeleton";
-
-import { SessionState } from "@/types/auth";
 
 import Navigation from "@/components/utils/Navigation";
-import LoginButton from "@/components/user/LoginButton"
 import EditProfileCard from "@/components/user/EditProfileCard";
-import { getCurrentUser } from "@/functions/supabase/auth";
+import { getCurrentUser } from "@/utils/supabase/auth";
 import EditSettingsCard from "@/components/user/EditSettingsCard";
+import { redirect } from "next/navigation";
 
-export default function User() {
-    const [sessionState, setSessionState] = useState<SessionState>({} as SessionState);
+export default async function User() {;
 
-    useEffect(() => {
-        // get current user
-        getCurrentUser().then(res => {
-            if(res === null) return;
-            setSessionState(res);
-        })
+    const session = await getCurrentUser();
 
-    }, [])
-
+    if(!session) {
+        redirect("/auth");
+    }
 
     return (
     <>
@@ -34,44 +25,34 @@ export default function User() {
         <div className="relative flex items-center w-full h-[160px] overflow-hidden">
             <div className=" absolute opacity-50">
                 <Image 
-                    src={sessionState.profile?.bannerLink} 
+                    src={session.profile?.bannerLink} 
                     width={500} 
                     alt="" 
                 />
 
             </div>
-
-            <Skeleton 
-                isLoaded={!!sessionState.profile}
-                className="rounded-full"
-            >
-                <UserCard 
-                    className="relative z-10 mx-4"
-                    name={sessionState.profile?.username} 
-                    description={(
-                        <span>{sessionState.profile?.total_xp} XP</span>
-                    )}
-                    avatarProps={{
-                        src: sessionState.profile?.avatarLink
-                    }} 
-                />
-            </Skeleton>
+  
+            <UserCard 
+                className="relative z-10 mx-4"
+                name={session.profile?.username} 
+                description={(
+                    <span>{session.profile?.total_xp} XP</span>
+                )}
+                avatarProps={{
+                    src: session.profile?.avatarLink
+                }} 
+            />
         </div>
 
 
         <div className="flex flex-col items-start gap-4 w-full">
-            <Skeleton
-                isLoaded={!!sessionState.profile}
-                className=" rounded-lg w-full py-2"
-            >
-                <h1 className="text-xl font-bold">Hi, {sessionState.profile?.username}</h1>
-            </Skeleton>
-            
-            <LoginButton sessionState={sessionState} setSessionState={setSessionState} />
+
+            <h1 className="text-xl font-bold">Hi, {session.profile?.username}</h1>
+        
         </div>
 
-        <EditProfileCard sessionState={sessionState} />
-        <EditSettingsCard sessionState={sessionState} />
+        <EditProfileCard sessionState={session} />
+        <EditSettingsCard sessionState={session} />
 
 
     </div>

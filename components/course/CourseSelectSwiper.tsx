@@ -4,13 +4,13 @@ import "swiper/css";
 import { Swiper as SwiperType } from 'swiper/types';
 
 import CourseButton from './CourseButton';
-import { User_Course } from '@/types/db';
+import { Course } from '@/types/db';
 
 export default function CourseSelectSwiper({ 
-    userCourses, currentUserCourse, setCurrentUserCourse } : 
+    courses, currentCourse, setCurrentCourse } : 
     { 
-        userCourses: User_Course[], currentUserCourse: User_Course, 
-        setCurrentUserCourse: (userCourse: User_Course) => void,
+        courses: Course[], currentCourse: Course | undefined, 
+        setCurrentCourse: (course: Course) => void,
     }) {
     const [swiper, setSwiper] = useState<SwiperType | undefined>();
 
@@ -18,7 +18,7 @@ export default function CourseSelectSwiper({
     // current slide moves to first slide
     useEffect(() => {
         if(swiper) { swiper?.slideTo(0) }
-    }, [swiper, currentUserCourse])
+    }, [swiper, currentCourse])
     
     return (
         <div
@@ -32,12 +32,12 @@ export default function CourseSelectSwiper({
                 onSwiper={setSwiper}
                 className=' w-full h-full max-w-full overflow-x-scroll'
             >
-                {[currentUserCourse, ...userCourses.filter((uc) => uc.course.id !== currentUserCourse.course.id )].map((userCourse) => (
-                    <SwiperSlide className=' min-h-full' key={userCourse.course.id}>
+                {[currentCourse, ...courses.filter((course) => course.id !== currentCourse?.id )].map((course) => (
+                    <SwiperSlide className=' min-h-full' key={course?.id}>
                         <CourseButton 
-                            onPress={() => setCurrentUserCourse(userCourse)} 
-                            course={userCourse.course}
-                            active={userCourse.course.id === currentUserCourse.course.id} 
+                            onPress={() => course && setCurrentCourse(course)} 
+                            course={course}
+                            active={course?.id === currentCourse?.id} 
                         />
                     </SwiperSlide>
                 ))}

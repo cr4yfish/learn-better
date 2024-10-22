@@ -4,7 +4,7 @@ import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import { useAsyncList } from "@react-stately/data";
 
 import { Course, Course_Section } from "@/types/db";
-import { searchCourseSections } from "@/functions/supabase/courses";
+import { searchCourseSections } from "@/utils/supabase/courses";
 
 
 export default function CourseSectionAutocomplete({ setCourseSection, course } : { course: Course | null, setCourseSection: (courseSection: Course_Section) => void }) {

@@ -1,6 +1,8 @@
+"use server"
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getSession, getProfile } from "./auth";
-import { getClient } from "./supabase";
+import { createClient as getClient } from "./server/server";
 import { Rank } from "@/types/db";
 
 

@@ -10,7 +10,7 @@ import { Course } from "@/types/db";
 
 import Icon from "../utils/Icon";
 import { Button } from "@/components/utils/Button";
-import { upsertCourse, joinCourse } from "@/functions/supabase/courses";
+import { upsertCourse, joinCourse } from "@/utils/supabase/courses";
 
 export default function EditCourseCard({ userId, isNew, course } : { userId: string | undefined, isNew: boolean, course?: Course | undefined }) {
     const [newCourse, setNewCourse] = useState<Course>(course ?? {} as Course);

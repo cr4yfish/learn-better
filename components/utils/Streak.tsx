@@ -9,7 +9,7 @@ import { today, getLocalTimeZone, parseDate, isToday } from "@internationalized/
 
 import { Streak as StreakType} from "@/types/db";
 import Icon from "./Icon";
-import { getStreaks } from "@/functions/supabase/streaks";
+import { getStreaks } from "@/utils/supabase/streaks";
 
 export default function Streak({ streak, streakHanging, userId } : { streak: number | undefined, streakHanging: boolean | undefined, userId: string | undefined }) {
     const [streaks, setStreaks] = useState<StreakType[]>([]);

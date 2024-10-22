@@ -39,7 +39,6 @@ export default function BlurModal({
     useEffect(() => {
         if(isOpen) {
             internalOnOpen();
-            console.log("Startup")
         } else {
             internalOnClose();
         }

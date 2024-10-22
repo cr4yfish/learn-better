@@ -1,6 +1,8 @@
+"use server";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { getClient } from "./supabase";
+import { createClient as getClient } from "./server/server";
 
 import { Course, Settings } from "@/types/db";
 

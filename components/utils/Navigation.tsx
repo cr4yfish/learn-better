@@ -1,3 +1,5 @@
+"use server";
+
 import Link from "next/link"
 import React from "react"
 
@@ -21,7 +23,7 @@ const LinkComponent = ({ href, icon, activeTitle, title } : { href: string, icon
     )
 }
 
-export default function Navigation({ activeTitle } : { activeTitle: Links }) {
+export default async function Navigation({ activeTitle } : { activeTitle: Links }) {
 
     return (
         <>

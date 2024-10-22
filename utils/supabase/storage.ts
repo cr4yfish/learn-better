@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FileObject } from "@supabase/storage-js";
 
-import { getClient } from "./supabase";
+import { getClient } from "./client";
 
 
 /**

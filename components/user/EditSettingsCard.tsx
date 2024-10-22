@@ -1,4 +1,4 @@
-
+"use client";
 
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
@@ -9,7 +9,7 @@ import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
 import {  Settings } from "@/types/db";
 import Icon from "../utils/Icon";
-import { upsertSettings } from "@/functions/supabase/settings";
+import { upsertSettings } from "@/utils/supabase/settings";
 
 export default function EditSettingsCard({ sessionState } : { sessionState: SessionState }) {
     const [settings, setSettings] = useState<Settings | undefined>(sessionState.settings);

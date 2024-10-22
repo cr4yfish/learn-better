@@ -1,8 +1,9 @@
+"use server";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { getDayBefore, isSameDay } from "../helpers";
-import { getClient } from "./supabase";
-
+import { getDayBefore, isSameDay } from "../../functions/helpers";
+import { createClient as getClient } from "./server/server";
 
 import { Streak } from "@/types/db";
 

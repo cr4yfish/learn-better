@@ -50,6 +50,7 @@
     "@nextui-org/use-infinite-scroll": "^2.1.5",
     "@nextui-org/user": "^2.0.34",
     "@react-stately/data": "^3.11.7",
+    "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "@tailwindcss/typography": "^0.5.15",
     "@uppy/core": "^4.2.2",

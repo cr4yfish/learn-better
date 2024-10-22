@@ -56,3 +56,15 @@ export function shuffleArray<T>(array: T[]) {
     }
     return array;
 }
+
+export function getAnonkey(): string {
+    return process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+}
+
+export function getSupabaseURL(): string {
+    return process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+}
+
+export function getSupabaseStorageURL(): string {
+    return process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL as string;
+}

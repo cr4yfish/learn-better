@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
@@ -7,7 +9,7 @@ import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
 import { Profile } from "@/types/db";
 import Icon from "../utils/Icon";
-import { upsertProfile } from "@/functions/supabase/auth";
+import { upsertProfile } from "@/utils/supabase/auth";
 
 export default function EditProfileCard({ sessionState } : { sessionState: SessionState }) {
     const [userProfile, setUserProfile] = useState<Profile | undefined>(sessionState.profile);

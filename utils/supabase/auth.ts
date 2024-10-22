@@ -1,12 +1,14 @@
+"use server";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { User, AuthResponse } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
 
 
-import { getClient } from "./supabase";
+import { createClient as getClient } from "./server/server";
 import { getUserCourses } from "./courses";
 import { getCurrentStreak } from "./streaks";
-import { getObjectPublicURL } from "./storage";
 import { getSettings } from "./settings";
 
 
@@ -15,6 +17,10 @@ import { SessionState } from "@/types/auth";
 
 export async function getSession() {
     return await getClient().auth.getSession();
+}
+
+export async function getUser() {
+    return await getClient().auth.getUser();
 }
 
 export async function isLoggedIn() {
@@ -128,8 +134,8 @@ export async function getProfile(id: string): Promise<Profile> {
 
     // get links
     try {
-        if(profile.avatar) profile.avatarLink = await getObjectPublicURL({ id: profile.avatar, bucket: "avatars" });
-        if(profile.banner) profile.bannerLink = await getObjectPublicURL({ id: profile.banner, bucket: "banners" });   
+        //if(profile.avatar) profile.avatarLink = await getObjectPublicURL({ id: profile.avatar, bucket: "avatars" });
+        //if(profile.banner) profile.bannerLink = await getObjectPublicURL({ id: profile.banner, bucket: "banners" });   
     } catch (error) {
         console.error("Error getting profile links:", error);
     }
@@ -154,30 +160,21 @@ export async function getProfiles(): Promise<Profile[]> {
     return data;
 }
 
-export function getAnonkey(): string {
-    return process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
-}
-
-export function getSupabaseURL(): string {
-    return process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-}
-
-export function getSupabaseStorageURL(): string {
-    return process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL as string;
-}
-
 export async function getCurrentUser(): Promise<SessionState | null> {
+    
     try {
-        const session = await getSession();
+        //const { data: { user } } = await getUser();
+        const { data: { session } } = await getSession();
 
-        if(!session.data.session) {
+        if(!session?.user?.id) {
+            console.log("No session data");
             return null;
         }
 
-        const profile = await getProfile(session.data.session?.user.id as string);
-        const settings = await getSettings(session.data.session?.user.id as string);
-        const courses = await getUserCourses(session.data.session?.user.id as string);
-        const currentStreak = await getCurrentStreak(session.data.session?.user.id as string, new Date());
+        const profile = await getProfile(session?.user?.id as string);
+        const settings = await getSettings(session?.user.id as string);
+        const courses = await getUserCourses(session?.user.id as string);
+        const currentStreak = await getCurrentStreak(session?.user.id as string, new Date());
         let currentStreakDays = 0;
 
         if(currentStreak) {
@@ -187,9 +184,10 @@ export async function getCurrentUser(): Promise<SessionState | null> {
             currentStreakDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
         }
 
+        revalidatePath("/api/user/current");
         return {
-            session: session.data.session,
-            user: session.data.session?.user,
+            session: session,
+            user: session?.user,
             profile: profile,
             isLoggedIn: true,
             pendingAuth: false,

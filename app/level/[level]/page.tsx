@@ -1,166 +1,60 @@
-"use client";
+"use server";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useStopwatch } from "react-use-precision-timer";
+import { getCurrentUser } from "@/utils/supabase/auth";
+import { redirect } from "next/navigation";
+import { getTopic } from "@/utils/supabase/topics";
 
-import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
-import QuestionHeader from "@/components/level/question/QuestionHeader";
-import Question from "@/components/level/question/Question"
-
-
-import { Question as QuestionType } from "@/types/db";
-import { LevelState } from "@/types/client";
-import { SessionState } from "@/types/auth";
-import { updateTotalXP, getCurrentUser } from "@/functions/supabase/auth";
-import { getQuestions } from "@/functions/supabase/questions";
-import { tryRankUp } from "@/functions/supabase/ranks";
-import { extendOrAddStreak } from "@/functions/supabase/streaks";
-import { addUsersTopics } from "@/functions/supabase/topics";
+import LevelMain from "@/components/level/LevelMain";
+import { getQuestions } from "@/utils/supabase/questions";
 import { shuffleArray } from "@/functions/helpers";
+import { LevelState } from "@/types/client";
 
+export default async function Level({ params } : { params: { level: string }}) {
 
-export default function Level({ params } : { params: { level: string }}) {
+    const session = await getCurrentUser();
 
-    const [questions, setQuestions] = useState<QuestionType[]>([]);
-    const [session, setSession] = useState<SessionState>();
-    const [levelState, setLevelState] = useState<LevelState>({
+    if(!session) {
+        redirect("/auth");
+    }
+
+    const topic = await getTopic(params.level);
+
+    if(!topic) {
+        redirect("/404");
+    }
+
+    const questions = await getQuestions(topic.id);
+
+    if(!questions) {
+        redirect("/404");
+    }
+
+    const randomizedQuestions = shuffleArray(questions);
+
+    const initLevelState: LevelState = {
         progress: 0,
         answeredQuestions: 0,
         correctQuestions: 0,
-        totalQuestions: 1,
+        totalQuestions: randomizedQuestions.length,
         xp: 0,
         currentQuestionIndex: 0,
         seconds: 0,
         rankUp: false,
-        questions: questions.map(question => ({ id: question.id, completed: false })),
-    });
-
-    const [isLoading, setIsLoading] = useState(true);
-
-    const stopwatch = useStopwatch();
-
-    useEffect(() => {
-        stopwatch.start();
-
-        // cleanup
-        return () => {
-            stopwatch.stop();
-        }
-    }, [stopwatch])
-
-    const addUserTopic = async () => {
-        if(!session || !session?.user?.id || !session.profile) return;
-        stopwatch.pause();
-        setIsLoading(true);
-
-        const newTopic = {
-            userID: session.user.id,
-            topicID: params.level,
-            completed: true,
-            seconds: Math.round(stopwatch.getElapsedRunningTime()/1000),
-            accuracy: levelState.correctQuestions/levelState.answeredQuestions * 100,
-            xp: levelState.xp         
-        }
-        stopwatch.stop();
-
-        setLevelState((prevState) => ({
-            ...prevState,
-            seconds: newTopic.seconds
-        }))
-
-        await addUsersTopics(newTopic)  
-        await updateTotalXP(session.user.id, session.profile?.total_xp + levelState.xp);
-        await extendOrAddStreak(session.user.id, new Date());
-        const { rankedUp } = await tryRankUp(session.user.id, session.profile?.total_xp + newTopic.xp, session.profile?.rank);
-
-        if(rankedUp) {
-            setLevelState((prevState) => ({
-                ...prevState,
-                rankUp: true
-            }))
-        }
-        setIsLoading(false);
-    
-        
+        questions: randomizedQuestions.map(question => ({ id: question.id, completed: false })),
     }
-
-    useEffect(() => {
-        try {
-            getCurrentUser().then(res => {
-                if(res == null) return;
-                setSession(res);
-            });
-        } catch (error) {
-            console.error(error);
-        }
-
-        async function fetchQuestions(): Promise<QuestionType[]> {
-            const res = await getQuestions(params.level);
-            return res;
-        }
-
-        fetchQuestions().then(res => {
-            const randomizedQuestions = shuffleArray(res);
-            setQuestions(randomizedQuestions);
-            setLevelState((prevState) => ({
-                ...prevState,
-                totalQuestions: randomizedQuestions.length,
-                questions: randomizedQuestions.map(question => ({ id: question.id, completed: false }))
-            }));
-        });
- 
-    }, [])
-
-    useEffect(() => {
-        if(levelState.answeredQuestions == levelState.totalQuestions) {
-            addUserTopic();
-        }
-    }, [levelState.answeredQuestions])
 
     return (
         <div className="px-4 py-6 flex flex-col gap-4 h-full max-h-screen ">
-            <QuestionHeader 
-                progress={levelState.progress} 
-                numQuestions={levelState.totalQuestions} 
-                xp={levelState.xp} 
-                show={questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions}
-            />
            
             <div className="flex flex-col justify-between h-full min-h-full gap-12 overflow-auto">
-                {questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions && (
-                    <Question 
-                        question={questions[levelState.currentQuestionIndex]} 
-                        setLevelState={setLevelState}
-                        session={session}
-                        levelState={levelState}
-                        questions={questions}
-                    />
-                )}
-                {levelState.answeredQuestions > 0 && levelState.answeredQuestions == levelState.totalQuestions && (
-                    <div className="flex flex-col gap-8 items-center justify-center w-full h-full min-h-screen px-4 pb-[33vh]">
-                        <Icon upscale filled color="green-500">check_circle</Icon>
-                        <div className="flex flex-col justify-center items-center">
-                            <h2 className="text-4xl font-semibold">Congratulations!</h2>
-                            <p>You have completed this level.</p>
-                        </div>
 
-                        <Link 
-                            className="w-full" 
-                            href={`/level/${params.level}/complete?rankUp=${levelState.rankUp}`}
-                        >
-                            <Button 
-                                color="primary" 
-                                variant="shadow" 
-                                className="w-full font-bold"
-                                isLoading={isLoading}
-                            >
-                                Continue
-                            </Button>
-                        </Link>
-                    </div>
-                )}
+                <LevelMain 
+                    session={session}
+                    level={topic}
+                    questions={randomizedQuestions}
+                    initLevelState={initLevelState}
+                />
+
             </div>
         </div>
     )

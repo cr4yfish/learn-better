@@ -1,8 +1,8 @@
-"use client";
+"use server";
 
 import EditCourseCard from "@/components/course/EditCourseCard";
 
-export default function NewCourse({ params: { userId }} : { params: { userId: string }}) {
+export default async function NewCourse({ params: { userId }} : { params: { userId: string }}) {
 
 
     if(!userId) {
