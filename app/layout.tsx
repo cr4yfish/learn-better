@@ -3,6 +3,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/system";
 
+import PushNotification from "@/components/utils/PushNotification";
+
 const montserrat = Montserrat({
   subsets: ["latin"],
 })
@@ -67,8 +69,10 @@ export default function RootLayout({
           className={`${montserrat.className} antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden dark:bg-primary/5`}
         >
           <NextUIProvider className="h-full max-h-screen overflow-y-hidden flex justify-between flex-col antialiased">
+              <>
               {children}
-              
+              <PushNotification />
+              </>
             </NextUIProvider>
         </body>
     </html>
