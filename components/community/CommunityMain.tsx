@@ -25,7 +25,7 @@ export default async function CommunityMain() {
 
     return (
         <UserCoursesProvider>
-            <div className="flex px-4 py-6 flex-col gap-4 w-full overflow-y-auto max-h-screen pb-20">
+            <div className="flex px-4 py-6 flex-col gap-4 w-full overflow-y-auto max-h-screen pb-40">
                 <h1 className="font-bold">Community</h1>
                 
                 <div className="flex flex-col gap-4">
