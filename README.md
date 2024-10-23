@@ -95,15 +95,15 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] PWA features
     - [ ] App installation popup
     - [ ] Notifications
-    - [ ] Better caching
-    - [ ] Offline Mode
+    - [x] Better caching
+    - [x] Offline Mode
     - [ ] Manual download of Courses?
 
 ### Beta Features
 - [ ] Redesign UI & Refactor Code
     - [ ] Improve UI/UX - it's very utilitarian right now
     - [ ] Add animations
-    - [ ] Move as much as possible to Server Rendering
+    - [x] Move as much as possible to Server Rendering
 - [ ] Buy a domain
 
 ### Userbase Features
