@@ -3,23 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import { Chip } from "@nextui-org/chip";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 
 import { Button } from "@/components/utils/Button";
 import Icon from "../utils/Icon";
 import BlurModal from "../utils/BlurModal";
-import { Course, User_Course } from "@/types/db";
+import { Course } from "@/types/db";
 import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/utils/supabase/courses";
-import { Chip } from "@nextui-org/chip";
 
-
-
+import { useUserCourses } from "@/hooks/SharedUserCourses";
 
 export default function CourseCard ({ 
-    course, userCourses, isSmall=false, userID, setUserCourses
+    course, isSmall=false, userID,
 } : { 
-    course: Course, userCourses?: User_Course[], isSmall?: boolean, userID?: string,
-    setUserCourses?: (courses: User_Course[]) => void,
+    course: Course, isSmall?: boolean, userID?: string,
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
@@ -28,6 +26,8 @@ export default function CourseCard ({
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { userCourses, setUserCourses } = useUserCourses();
 
     const handleJoinCourse = async (course: Course) => {
         if(!userID  || !setUserCourses) return;

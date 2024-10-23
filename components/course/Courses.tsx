@@ -17,7 +17,7 @@ export default async function Courses({ sessionState, courses } : { sessionState
 
             <CoursesShowcaseSwiper courses={courses} session={sessionState} />
 
-            <UserCourseOverview   sessionState={sessionState}  />
+            <UserCourseOverview  sessionState={sessionState}  />
            
         </div>
         </>

@@ -6,14 +6,10 @@ import "swiper/css";
 
 import CourseCard from "./CourseCard";
 
-import { Course, User_Course } from "@/types/db";
+import { Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
 export default function CoursesShowcaseSwiper({ session, courses } : { session: SessionState, courses: Course[] }) {
-
-    const updateUserCourses = (newCourses: User_Course[]) => {
-        console.log(newCourses);
-    }
 
     return (
         <>
@@ -30,8 +26,6 @@ export default function CoursesShowcaseSwiper({ session, courses } : { session: 
                         <CourseCard 
                             isSmall 
                             course={course} 
-                            userCourses={session.courses} 
-                            setUserCourses={(userCourses) => updateUserCourses(userCourses)}
                             userID={session.user?.id}
                         />
                     </SwiperSlide>

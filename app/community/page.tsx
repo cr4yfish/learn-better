@@ -10,6 +10,8 @@ import Icon from "@/components/utils/Icon";
 import { Button } from "@/components/utils/Button";
 import CourseSearch from "@/components/course/CourseSearch";
 
+import { UserCoursesProvider } from "@/hooks/SharedUserCourses";
+
 export default async function Community() {
 
     const session = await getCurrentUser();
@@ -21,20 +23,22 @@ export default async function Community() {
 
     return (
         <>
-        <div className="flex px-4 py-6 flex-col gap-4 w-full">
-            <h1 className="font-bold">Community</h1>
-            
-            <div className="flex flex-col gap-4">
+        <UserCoursesProvider>
+            <div className="flex px-4 py-6 flex-col gap-4 w-full">
+                <h1 className="font-bold">Community</h1>
+                
+                <div className="flex flex-col gap-4">
 
-                <Link href={`course/new/${session?.user?.id}`}>
-                    <Button  color="primary" startContent={<Icon color="fuchsia-950" filled>add</Icon>}>Create a course</Button>
-                </Link>
+                    <Link href={`course/new/${session?.user?.id}`}>
+                        <Button  color="primary" startContent={<Icon color="fuchsia-950" filled>add</Icon>}>Create a course</Button>
+                    </Link>
 
-                <CourseSearch sessionState={session} />
+                    <CourseSearch sessionState={session} />
+                </div>
+    
+                <Courses sessionState={session} courses={courses} />
             </div>
-   
-            <Courses sessionState={session} courses={courses} />
-        </div>
+        </UserCoursesProvider>
         <Navigation activeTitle="Community" />
         </>
     )

@@ -7,7 +7,7 @@ import { Button } from "../utils/Button"
 import Icon from "../utils/Icon"
 import CourseCard from "./CourseCard"
 import { SessionState } from "@/types/auth"
-import { Course, User_Course } from "@/types/db"
+import { Course } from "@/types/db"
 import { searchCourses } from "@/utils/supabase/courses"
 import BlurModal from "../utils/BlurModal"
 
@@ -34,9 +34,6 @@ export default function CourseSearch(
         }
     }, [searchQuery])
 
-    const updateUserCourses = (newCourses: User_Course[]) => {
-        console.log(newCourses);
-    }
 
     return (
         <div className="flex flex-col gap-1">
@@ -48,22 +45,48 @@ export default function CourseSearch(
                 settings={{
                     hasHeader: true,
                     hasBody: true,
-                    hasFooter: false,
+                    hasFooter: true,
                     size: "full",
-                    placement: "top"
+                    placement: "top",
+                    hideCloseButton: true,
                 }}
-                header="Search Courses"
+                header={
+                    <div className="flex items-center justify-between w-full">
+                        <span>Search Courses</span>
+                        <Button onClick={() => setIsModalOpen(false)} variant="light" color="danger" isIconOnly><Icon filled>close</Icon></Button>
+                    </div>
+                }
                 body={
+                    <>
+                    <div className="flex flex-col gap-2">
+                        {searchResults.map((course) => (
+                            <CourseCard 
+                                key={course.id} 
+                                course={course} 
+                                userID={sessionState?.user?.id}
+                            />
+                        ))}
+
+                        {searchResults.length == 0 &&  (
+                        <div className=" w-full flex items-center justify-center mt-6">
+                            <span className="text-tiny">Start searching for results</span>   
+                        </div>
+                        )}
+                    </div>
+                    </>
+                }
+                
+                footer={
                 <>
-                    <div className="flex flex-row justify-between items-center w-full">
-                        <Input
-                            placeholder="Search courses" 
+                    <div className="flex flex-col justify-between items-center gap-4 w-full pb-12">
+                        <div className="flex items-center w-full gap-2">
+                            <Button isDisabled startContent={<Icon filled>sort</Icon>}>Sort</Button>
+                            <Button isDisabled startContent={<Icon filled>filter</Icon>}>Filter</Button>
+                        </div>
+                        <Input 
+                            label="Search"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            startContent={<Icon filled>search</Icon>} 
-                            variant="underlined"
-                            classNames={{
-                            }}
                             endContent={searchQuery.length > 0 && (
                                 <Button 
                                     variant="light" color="primary" 
@@ -75,23 +98,7 @@ export default function CourseSearch(
                             )}
                         />
                     </div>
-                    <div className="flex flex-col gap-2">
-                        {searchResults.map((course) => (
-                            <CourseCard 
-                                key={course.id} 
-                                course={course} 
-                                userCourses={sessionState?.courses} 
-                                setUserCourses={(courses) => updateUserCourses(courses)}
-                                userID={sessionState?.user?.id}
-                            />
-                        ))}
 
-                        {searchResults.length == 0 &&  (
-                        <div className=" w-full flex items-center justify-center mt-6">
-                            <span className="text-tiny">Start searching for results</span>   
-                        </div>
-                        )}
-                    </div>
                 </>
                 }
             />
