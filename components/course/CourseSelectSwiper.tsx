@@ -32,8 +32,8 @@ export default function CourseSelectSwiper({
                 onSwiper={setSwiper}
                 className=' w-full h-full max-w-full overflow-x-scroll'
             >
-                {[currentCourse, ...courses.filter((course) => course.id !== currentCourse?.id )].map((course) => (
-                    <SwiperSlide className=' min-h-full' key={course?.id}>
+                {[currentCourse, ...courses.filter((course) => course.id !== currentCourse?.id )].map((course, index) => (
+                    course && <SwiperSlide className=' min-h-full max-w-[150px]' key={index}>
                         <CourseButton 
                             onPress={() => course && setCurrentCourse(course)} 
                             course={course}
