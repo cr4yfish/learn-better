@@ -1,6 +1,3 @@
-"use client";
-
-
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
 
 import { Course_Section } from "@/types/db";
