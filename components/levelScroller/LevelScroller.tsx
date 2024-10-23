@@ -12,7 +12,7 @@ import CourseSectionBanner from "./CourseSectionBanner";
 import { Button } from "@/components/utils/Button";
 import { getCourseTopics } from "@/utils/supabase/topics";
 
-import { useCurrentCourse } from "@/hooks/SharedUserCourse";
+import { useCurrentCourse } from "@/hooks/SharedCourse";
 import { getUserCourse } from "@/utils/supabase/courses";
 
 const calculateOffsets = (numLevels: number, maxOffset: number) => {

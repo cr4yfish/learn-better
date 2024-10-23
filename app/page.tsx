@@ -4,7 +4,7 @@ import LevelScroller from "@/components/levelScroller/LevelScroller";
 import Navigation from "@/components/utils/Navigation";
 import Header from "@/components/utils/Header";
 
-import { CurrentCourseProvider } from "@/hooks/SharedUserCourse";
+import { CurrentCourseProvider } from "@/hooks/SharedCourse";
 
 import { getCurrentUser } from "@/utils/supabase/auth";
 
