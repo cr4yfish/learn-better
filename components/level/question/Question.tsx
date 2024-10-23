@@ -134,6 +134,7 @@ export default function Question({
                 }))
                 setIsLoading(false);
                 setIsModalOpen(false);
+                setIsExplained(false);
                 return;
             }
         } 
@@ -144,6 +145,7 @@ export default function Question({
         }))
         setIsModalOpen(false);
         setIsLoading(false);
+        setIsExplained(false);
     }
 
     useEffect(() => {
