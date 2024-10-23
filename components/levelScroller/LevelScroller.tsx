@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import InfiniteScroll from "react-infinite-scroller";
 import Link from "next/link";
@@ -78,74 +78,43 @@ async function courseToUserCourse(course: Course): Promise<User_Course> {
     return res;
 }
 
-export default function LevelScroller() {
-    const [topics, setTopics] = useState<Topic[]>([])
+export default function LevelScroller({ initUserCourse, initTopics } : { initUserCourse: User_Course, initTopics: Topic[] }) {
+
+    const [topics, setTopics] = useState<Topic[]>(initTopics)
+    const [isAdmin, setIsAdmin] = useState(initUserCourse.is_admin || initUserCourse.is_collaborator || initUserCourse.is_moderator)
+    const [cursor, setCursor] = useState<number>(initTopics.length)
+
     const [currentCourseSection, setCurrentCourseSection] = useState<Course_Section | null>(null)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [offsets, setOffsets] = useState<number[]>([])
     const [canLoadMore, setCanLoadMore] = useState(true)
-    const [cursor, setCursor] = useState<number>(0)
-    const [isLoading, setIsLoading] = useState(false)
-    const [isAdmin, setIsAdmin] = useState(false)
-    const levelRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-    const { currentCourse } = useCurrentCourse();
-    const [currentUserCourse, setCurrentUserCourse] = useState<User_Course | null>(null);
-
-    useEffect(() => {
-        if(currentCourse == null) { return; }
-        courseToUserCourse(currentCourse).then((res) => {
-            setCurrentUserCourse(res);
-        });
-    }, [currentCourse])
-
-    useEffect(() => {
-        const handleScrollOutOfView = (entry: IntersectionObserverEntry) => {
-            if (!entry.isIntersecting) {
-
-                // topic that just moved out of screen
-                const outOfScreen = topics.find((t) => {
-                    const ref = levelRefs.current.find((r) => r?.dataset.id === t.id);
-                    return ref && ref.getBoundingClientRect().top >= 0;
-                });
-
-                if(!outOfScreen) { return; }
-
-                // first topic is outOfScreen + 2 index ahead
-                const firstTopic = topics[topics.indexOf(outOfScreen) + 2];
-                
-                if (firstTopic) {
-                    setCurrentCourseSection(firstTopic.course_section ?? null);
-                }
-            }
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(handleScrollOutOfView);
-        });
-
-        const currentLevelRefs = levelRefs.current;
-        currentLevelRefs.forEach((ref) => {
-            if (ref) observer.observe(ref);
-        });
-
-        return () => {
-            currentLevelRefs.forEach((ref) => {
-                if (ref) observer.unobserve(ref);
-            });
-        };
-    }, [topics]);
     
-    useEffect(() => {
-        // Reset stuff when course changes
-        setTopics([]);
-        setOffsets([]);
-        setCursor(0);
-        setCanLoadMore(true);
+    const [isLoading, setIsLoading] = useState(false)
 
-        setIsAdmin((currentUserCourse?.is_collaborator || currentUserCourse?.is_admin || currentUserCourse?.is_moderator) ?? false);
+    const { currentCourse } = useCurrentCourse(); // For switching courses
+
+    // Reset stuff if currentCourse changes
+    useEffect(() => {
+
+        // If currentCourse is null, dont do anything -> this should never happen
+        if((currentCourse == null )) { return; }
+
+        // If the current course is the init course and we have topics, dont do anything
+        // -> this means we are still on first load and have the initTopics
+        if((currentCourse.id == initUserCourse.course.id ) && (topics.length > 0)) {
+            return;
+        }
+
+        courseToUserCourse(currentCourse).then((res) => {
+            setTopics([]);
+            setOffsets([]);
+            setCursor(0);
+            setCanLoadMore(true);
+            setIsAdmin((res?.is_collaborator || res?.is_admin || res?.is_moderator) ?? false);
+        });
         
-    }, [currentUserCourse]);
+    }, [currentCourse,initUserCourse?.course.id])
+
 
     const handleLoadMore = async () => {
         if(isLoading || !canLoadMore || !currentCourse) { return; } // this line can be called very often, so leave it short
@@ -173,20 +142,18 @@ export default function LevelScroller() {
 
     return (
     <>
-        {false &&<div className=" w-full h-fit absolute flex justify-center items-center px-6">
-            <CourseSectionBanner courseSection={currentCourseSection} />
-        </div>}
         
         <InfiniteScroll 
             className="flex flex-col items-center gap-4 w-full h-full max-h-screen overflow-y-scroll pb-80"
             pageStart={1}
-            loadMore={() => canLoadMore && handleLoadMore()}
+            loadMore={async () => canLoadMore && await handleLoadMore()}
             hasMore={canLoadMore}
+            initialLoad={!((currentCourse?.id == initUserCourse.course.id) && topics.length > 0)}
             loader={<Spinner key="spinner" />}
             key="infinite-scroll"
         >
                     {topics.map((topic, index) => (
-                        <div key={topic.id} ref={(el) => { levelRefs.current[index] = el; }} data-id={topic.id}>
+                        <div key={topic.id} >
                             {(index == 0 || topic.course_section.id !== topics[index-1]?.course_section.id) && (
                                 <div className=" w-full px-4 mb-4 mt-8"><CourseSectionBanner courseSection={topic.course_section} /></div>
                             )}
