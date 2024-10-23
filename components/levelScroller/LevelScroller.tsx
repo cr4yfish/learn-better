@@ -93,6 +93,21 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
 
     const { currentCourse } = useCurrentCourse(); // For switching courses
 
+    useEffect(() => {
+        // scroll to topic with #next id
+        setTimeout(() => {
+            const parent = document.getElementById("infiniteScroll");
+            const target = document.getElementById("isNextLevel");
+            if(parent && target) {
+                parent.scroll({
+                    top: target.offsetTop - parent.offsetTop,
+                    behavior: "smooth"
+                });
+            }
+        }, 500);
+        
+    }, [topics])
+
     // Reset stuff if currentCourse changes
     useEffect(() => {
 
@@ -144,6 +159,7 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
     <>
         
         <InfiniteScroll 
+            id="infiniteScroll"
             className="flex flex-col items-center gap-4 w-full h-full max-h-screen overflow-y-scroll pb-80"
             pageStart={1}
             loadMore={async () => canLoadMore && await handleLoadMore()}
@@ -160,6 +176,7 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
                             <Level 
                                 topic={topic} 
                                 active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
+                                isNext={(topics[index-1]?.completed && !topic.completed) ?? false}
                                 offset={0}
                                 isAdmin={isAdmin}
                             />

@@ -9,7 +9,7 @@ import ConditionalLink from "@/components/utils/ConditionalLink";
 import Icon from "@/components/utils/Icon"
 import React from "react";
 
-export default function Level({ topic, active, offset, isAdmin=false } : { topic: Topic, active: boolean, offset: number, isAdmin?: boolean }) {
+export default function Level({ topic, active, offset, isAdmin=false, isNext } : { topic: Topic, active: boolean, offset: number, isAdmin?: boolean, isNext: boolean }) {
     const [isOpen, setIsOpen] = React.useState(false);
     
     return (
@@ -18,6 +18,7 @@ export default function Level({ topic, active, offset, isAdmin=false } : { topic
                 transform: `translateX(${offset}rem)`,
             }}
             className="flex flex-col items-center"
+            id={isNext ? "isNextLevel" : ""}
         >
         <Popover 
             showArrow
