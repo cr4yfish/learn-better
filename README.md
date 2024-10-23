@@ -93,7 +93,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Weekly rank ups
     - [ ] Achievements
 - [ ] PWA features
-    - [ ] App installation popup
+    - [x] App installation popup support (depends on Browser)
     - [ ] Notifications
     - [x] Better caching
     - [x] Offline Mode
