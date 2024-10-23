@@ -1,11 +1,13 @@
 "use server"
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { cache } from "react";
+
 import { createClient as getClient } from "./server/server";
 
 import { User_Course, Course, Course_Section, Course_Vote } from "@/types/db";
 
-export async function getUserCourses(userID: string): Promise<User_Course[]> {
+export const getUserCourses = cache(async(userID: string): Promise<User_Course[]> => {
     const { data, error } = await getClient().from("users_courses").select(`
         courses (
             abbreviation,
@@ -51,16 +53,9 @@ export async function getUserCourses(userID: string): Promise<User_Course[]> {
             is_collaborator: db.is_collaborator
         }
     });
-}
+})
 
-export async function updateCurrentCourse(userID: string, courseID: string): Promise<{ id: string }> {
-    const { data, error } = await getClient().from("settings").update({ current_course: courseID }).eq("user", userID).select().single();
-    if(error) { throw error; }
-    return { id: data.id };
-}
-
-
-export async function getUserCourse(courseID: string): Promise<User_Course> {
+export const getUserCourse = cache(async (courseID: string): Promise<User_Course> => {
     const { data, error } = await getClient().from("users_courses").select(`
         courses (
             abbreviation,
@@ -103,14 +98,12 @@ export async function getUserCourse(courseID: string): Promise<User_Course> {
         is_collaborator: db.is_collaborator
     }
 
-}
+})
 
-
-
-export async function getCourses({
+export const getCourses = cache(async ({
     from = 0,
     limit = 10
-} : { from?: number, limit?: number }): Promise<Course[]> {
+} : { from?: number, limit?: number }): Promise<Course[]> => {
     const { data, error } = await getClient()
         .from("courses")
         .select(`
@@ -149,26 +142,9 @@ export async function getCourses({
             
         }
     })
-}
+})
 
-
-export async function upsertCourse(course: Course): Promise<{ id: string }> {
-    const dbEntry = {
-        id: course.id,
-        title: course.title,
-        abbreviation: course.abbreviation,
-        description: course.description,
-        creator: course.creator.id,
-        is_official: course.is_official,
-        institution: course.institution?.id ?? null
-    }
-
-    const { data, error } = await getClient().from("courses").upsert([dbEntry]).select().single();
-    if(error) { throw error; }
-    return { id: data.id };
-}
-
-export async function searchCourseSections(searchQuery: string, course: Course, from=0, limit=10): Promise<Course_Section[]> {
+export const searchCourseSections = cache(async (searchQuery: string, course: Course, from=0, limit=10): Promise<Course_Section[]> => {
     const { data, error } = await getClient()
         .from("course_sections")
         .select(`
@@ -201,16 +177,9 @@ export async function searchCourseSections(searchQuery: string, course: Course, 
             course: db.courses
         }
     })
-}
+})
 
-
-
-/**
- * Searches for courses using SearchQuery in the title, abbreviation, and description
- * @param searchQuery 
- * @returns 
- */
-export async function searchCourses(searchQuery: string, from=0, limit=10): Promise<Course[]> {
+export const searchCourses = cache(async (searchQuery: string, from=0, limit=10): Promise<Course[]> => {
     const { data, error } = await getClient()
         .from("courses")
         .select(`
@@ -246,6 +215,51 @@ export async function searchCourses(searchQuery: string, from=0, limit=10): Prom
             is_official: db.is_official
         }
     })
+})
+
+export const getOwnCourseVote = cache(async (courseID: string, userID: string): Promise<Course_Vote | null> =>  {
+    try {
+        const { data, error } = await getClient().from("courses_votes").select().eq("user", userID).eq("course", courseID).single();
+        if(error) { throw error; }
+        return data;
+    } catch (e : any) {
+        if(e.code !== "PGRST116") {
+            console.error("Error getting own course vote:", e)
+        }
+        ;
+        return null;
+    }
+
+})
+
+export const getAllCourseVotes = cache(async(courseID: string): Promise<Course_Vote[]> => {
+    const { data, error } = await getClient().from("courses_votes").select().eq("course", courseID);
+    if(error) { throw error; }
+    return data;
+})
+
+// No caching
+
+export async function updateCurrentCourse(userID: string, courseID: string): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("settings").update({ current_course: courseID }).eq("user", userID).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
+}
+
+export async function upsertCourse(course: Course): Promise<{ id: string }> {
+    const dbEntry = {
+        id: course.id,
+        title: course.title,
+        abbreviation: course.abbreviation,
+        description: course.description,
+        creator: course.creator.id,
+        is_official: course.is_official,
+        institution: course.institution?.id ?? null
+    }
+
+    const { data, error } = await getClient().from("courses").upsert([dbEntry]).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
 }
 
 export async function joinCourse(courseID: string, userID: string, options?: { is_admin: boolean, is_moderator: boolean, is_collaborator: boolean }): Promise<User_Course> {
@@ -292,23 +306,3 @@ export async function upvoteCourse(courseID: string, userID: string): Promise<Co
     return data;
 }
 
-export async function getOwnCourseVote(courseID: string, userID: string): Promise<Course_Vote | null> {
-    try {
-        const { data, error } = await getClient().from("courses_votes").select().eq("user", userID).eq("course", courseID).single();
-        if(error) { throw error; }
-        return data;
-    } catch (e : any) {
-        if(e.code !== "PGRST116") {
-            console.error("Error getting own course vote:", e)
-        }
-        ;
-        return null;
-    }
-
-}
-
-export async function getAllCourseVotes(courseID: string): Promise<Course_Vote[]> {
-    const { data, error } = await getClient().from("courses_votes").select().eq("course", courseID);
-    if(error) { throw error; }
-    return data;
-}

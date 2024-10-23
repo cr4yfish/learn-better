@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
@@ -7,7 +8,7 @@ import { createClient as getClient } from "./server/server";
 
 import { Topic, Topic_Vote, User_Topic } from "@/types/db";
 
-export async function getCourseTopics(courseId: string, from: number, limit: number): Promise<Topic[]> {
+export const getCourseTopics = cache(async(courseId: string, from: number, limit: number): Promise<Topic[]> => {
     const { data, error } = await getClient().from("topics").select(`
         id,
         created_at,
@@ -56,9 +57,9 @@ export async function getCourseTopics(courseId: string, from: number, limit: num
     });
     
     return topics;
-}
+})
 
-export async function getCourseSectionTopics(courseSectionID: string): Promise<Topic[]> {
+export const getCourseSectionTopics = cache(async(courseSectionID: string): Promise<Topic[]> => {
     const { data, error } = await getClient().from("topics").select(`
         id,
         created_at,
@@ -97,9 +98,9 @@ export async function getCourseSectionTopics(courseSectionID: string): Promise<T
             }
         }
     });
-}
+})
 
-export async function getTopic(topicId: string): Promise<Topic> {
+export const getTopic = cache(async(topicId: string): Promise<Topic> => {
     const { data, error } = await getClient().from("topics").select(`
         id,
         created_at,
@@ -129,29 +130,9 @@ export async function getTopic(topicId: string): Promise<Topic> {
         order: data.order,
         course_section: data.course_sections as any
     }
-}
+})
 
-
-export async function upsertCourseTopic(topic: Topic): Promise<{ id: string }> {
-    const { data, error } = await getClient().from("topics").upsert([{
-        title: topic.title,
-        description: topic.description,
-        course: topic.course.id,
-        course_section: topic.course_section.id
-    }]).select();
-
-    if(error) { throw error; }
-    return { id: data[0].id };
-}
-
-export async function deleteCourseTopic(topic: Topic): Promise<{ success: boolean }> {
-    const { error } = await getClient().from("topics").delete().eq("id", topic.id);
-    if(error) { throw error; }
-    return { success: true };
-}
-
-
-export async function getUsersTopics(): Promise<User_Topic[]> {
+export const getUsersTopics = cache(async(): Promise<User_Topic[]> => {
     const { data, error } = await getClient().from("users_topics").select(`
         user,
         topics (
@@ -179,9 +160,9 @@ export async function getUsersTopics(): Promise<User_Topic[]> {
             xp: db.xp as number
         }
     })
-}
+})
 
-export async function getUserTopic(userId: string, topicId: string): Promise<User_Topic> {
+export const getUserTopic = cache(async(userId: string, topicId: string): Promise<User_Topic> => {
     const { data, error } = await getClient().from("users_topics").select(`
         user,
         topics (
@@ -210,7 +191,21 @@ export async function getUserTopic(userId: string, topicId: string): Promise<Use
         accuracy: data.accuracy as number,
         xp: data.xp as number
     };
-}
+})
+
+export const getOwnTopicVote = cache(async(topic: Topic, userId: string): Promise<Topic_Vote> => {
+    const { data, error } = await getClient().from("topics_votes").select().eq("topic", topic.id).eq("user", userId).single();
+    if(error) { throw error; }
+    return data;
+})
+
+export const getAllTopicVotes = cache(async(topic: Topic): Promise<Topic_Vote[]> => {
+    const { data, error } = await getClient().from("topics_votes").select().eq("topic", topic.id);
+    if(error) { throw error; }
+    return data;
+})
+
+// no cache
 
 export async function addUsersTopics({
     userID, topicID, completed, seconds, accuracy, xp
@@ -242,14 +237,20 @@ export async function upvoteCourseTopic(topic: Topic, userId: string): Promise<T
     return data;
 }
 
-export async function getOwnTopicVote(topic: Topic, userId: string): Promise<Topic_Vote> {
-    const { data, error } = await getClient().from("topics_votes").select().eq("topic", topic.id).eq("user", userId).single();
+export async function upsertCourseTopic(topic: Topic): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("topics").upsert([{
+        title: topic.title,
+        description: topic.description,
+        course: topic.course.id,
+        course_section: topic.course_section.id
+    }]).select();
+
     if(error) { throw error; }
-    return data;
+    return { id: data[0].id };
 }
 
-export async function getAllTopicVotes(topic: Topic): Promise<Topic_Vote[]> {
-    const { data, error } = await getClient().from("topics_votes").select().eq("topic", topic.id);
+export async function deleteCourseTopic(topic: Topic): Promise<{ success: boolean }> {
+    const { error } = await getClient().from("topics").delete().eq("id", topic.id);
     if(error) { throw error; }
-    return data;
+    return { success: true };
 }

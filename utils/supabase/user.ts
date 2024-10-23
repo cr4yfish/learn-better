@@ -1,12 +1,13 @@
 "use server";
 
+import { cache } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { getCurrentUserRank } from "./ranks";
 import { createClient as getClient } from "./server/server";
 import { Profile, Rank } from "@/types/db";
 
-export async function getProfileById(userId: string): Promise<Profile> {
+export const getProfileById = cache(async(userId: string): Promise<Profile> => {
     const { data, error } = await getClient().from("profiles").select(`
         id,
         username,
@@ -30,9 +31,9 @@ export async function getProfileById(userId: string): Promise<Profile> {
         rank: data.ranks as any
     }
 
-}
+})
 
-export async function getProfilesInRank(rankID?: string): Promise<Profile[]> {
+export const getProfilesInRank = cache(async(rankID?: string): Promise<Profile[]> => {
     let localRankID = rankID;
     if(!localRankID) {
         localRankID = (await getCurrentUserRank()).id;
@@ -59,4 +60,4 @@ export async function getProfilesInRank(rankID?: string): Promise<Profile[]> {
             rank: profile.ranks as Rank
         }
     });
-}
+})

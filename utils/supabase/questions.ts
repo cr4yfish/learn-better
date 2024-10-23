@@ -1,18 +1,15 @@
 "use server";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { cache } from "react";
 
 import { createClient as getClient } from "./server/server";
 
 
 import { Question, User_Question } from "@/types/db";
 
-/**
- * 
- * @param topic uuid of topic
- * @returns 
- */
-export async function getQuestions(topicId: string): Promise<Question[]> {
+
+export const getQuestions = cache(async(topicId: string): Promise<Question[]> => {
     const { data, error } = await getClient().from("questions")
     .select(`
         id,
@@ -40,7 +37,27 @@ export async function getQuestions(topicId: string): Promise<Question[]> {
             topic: db.topics // this as well
         }
     });
-}
+})
+
+export const getQuestionTypes = cache(async() => {
+    const { data, error } = await getClient().from("question_types").select();
+    if(error) { throw error; }
+    return data;
+})
+
+export const getQuestionType = cache(async(id: string) => {
+    const { data, error } = await getClient().from("question_types").select().eq("id", id);
+    if(error) { throw error; }
+    return data[0];
+})
+
+export const getUserQuestions = cache(async(userId: string) => {
+    const { data, error } = await getClient().from("users_questions").select().eq("user", userId);
+    if(error) { throw error; }
+    return data;
+})
+
+// no cache
 
 export async function upsertQuestion(question: Question): Promise<{ id: string }> {
 
@@ -64,24 +81,6 @@ export async function deleteQuestion(questionID: string): Promise<boolean> {
     const { error } = await getClient().from("questions").delete().eq("id", questionID);
     if(error) { throw error; }
     return true;
-}
-
-export async function getQuestionTypes() {
-    const { data, error } = await getClient().from("question_types").select();
-    if(error) { throw error; }
-    return data;
-}
-
-export async function getQuestionType(id: string) {
-    const { data, error } = await getClient().from("question_types").select().eq("id", id);
-    if(error) { throw error; }
-    return data[0];
-}
-
-export async function getUserQuestions(userId: string) {
-    const { data, error } = await getClient().from("users_questions").select().eq("user", userId);
-    if(error) { throw error; }
-    return data;
 }
 
 export async function addUserQuestion(userQuestion: User_Question): Promise<User_Question[]> {

@@ -1,27 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+"use server";
 
-import { getClient } from "./client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { cache } from "react";
+
+import { createClient as getClient } from "./server/server";
 
 import { Course_Section } from "@/types/db";
 
-
-
-export async function upsertCourseSection(courseSection: Course_Section): Promise<{ id: string }> {
-    const { data, error } = await getClient().from("course_sections").upsert([{
-        ...courseSection,
-        course: courseSection?.course?.id
-    }]).select().single();
-    if(error) { throw error; }
-    return { id: data.id };
-}
-
-export async function deleteCourseSection(courseSectionID: string): Promise<boolean> {
-    const { error } = await getClient().from("course_sections").delete().eq("id", courseSectionID);
-    if(error) { throw error; }
-    return true;
-}
-
-export async function getCourseSection(courseSectionID: string): Promise<Course_Section> {
+export const getCourseSection = cache(async(courseSectionID: string): Promise<Course_Section> => {
     const { data, error } = await getClient().from("course_sections").select(`
         id,
         created_at,
@@ -44,10 +30,9 @@ export async function getCourseSection(courseSectionID: string): Promise<Course_
         order: data.order,
         course: data.courses as any
     }
-}
+})
 
-
-export async function getCourseSections(courseId: string): Promise<Course_Section[]> {
+export const getCourseSections = cache(async(courseId: string): Promise<Course_Section[]> => {
     const { data, error } = await getClient().from("course_sections").select(`
         id,
         created_at,
@@ -72,4 +57,23 @@ export async function getCourseSections(courseId: string): Promise<Course_Sectio
             course: db.courses
         }
     });
+})
+
+
+// no caching
+
+export async function upsertCourseSection(courseSection: Course_Section): Promise<{ id: string }> {
+    const { data, error } = await getClient().from("course_sections").upsert([{
+        ...courseSection,
+        course: courseSection?.course?.id
+    }]).select().single();
+    if(error) { throw error; }
+    return { id: data.id };
 }
+
+export async function deleteCourseSection(courseSectionID: string): Promise<boolean> {
+    const { error } = await getClient().from("course_sections").delete().eq("id", courseSectionID);
+    if(error) { throw error; }
+    return true;
+}
+

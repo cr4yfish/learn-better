@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { getDayBefore, isSameDay } from "../../functions/helpers";
@@ -8,19 +9,13 @@ import { createClient as getClient } from "./server/server";
 import { Streak } from "@/types/db";
 
 
-export async function getStreaks(userID: string) {
+export const getStreaks = cache(async(userID: string) => {
     const { data, error } = await getClient().from("streaks").select().eq("user", userID);
     if(error) { throw error; }
     return data;
-}
+})
 
-
-/**
- * Returns the current streak of the user, if there is one
- * @param userID 
- * @param date 
- */
-export async function getCurrentStreak(userID: string, date: Date): Promise<Streak | null> {
+export const getCurrentStreak = cache(async(userID: string, date: Date): Promise<Streak | null> => {
     const { data, error } = await getClient()
         .from("streaks")
         .select()
@@ -34,13 +29,11 @@ export async function getCurrentStreak(userID: string, date: Date): Promise<Stre
     }
     return data[0] as Streak;
 
-}
-/**
- * Either extends a current streak or adds a new one, depending on the dates
- * @param userID 
- * @param from 
- * @param to 
- */
+})
+
+
+// no cache
+
 export async function extendOrAddStreak(userID: string, today: Date): Promise<{ streak: Streak, isExtended: boolean, isAdded: boolean }> {
     const { data, error } = await getClient().from("streaks").select().eq("user", userID).order("from", { ascending: false }).limit(1);
     if(error) { throw error; }

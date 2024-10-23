@@ -1,18 +1,21 @@
 "use server"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { cache } from "react";
+
 import { getSession, getProfile } from "./auth";
 import { createClient as getClient } from "./server/server";
 import { Rank } from "@/types/db";
 
 
-export async function getRanks(): Promise<Rank[]> {
+export const getRanks = cache(async(): Promise<Rank[]> => {
     const { data, error } = await getClient().from("ranks").select();
     if(error) { throw error; }
     return data;
-}
+})
 
-export async function getNextRank(currentRank: Rank): Promise<Rank> {
+export const getNextRank = cache(async(currentRank: Rank): Promise<Rank> => {
     const { data, error } = await getClient()
         .from("ranks")
         .select()
@@ -22,7 +25,19 @@ export async function getNextRank(currentRank: Rank): Promise<Rank> {
         .single();
     if(error) { throw error; }
     return data as Rank;
-}
+})
+
+export const getCurrentUserRank = cache(async(): Promise<Rank> => {
+    const session = await getSession();
+    if(!session.data.session) {
+        throw new Error("No session found");
+    }
+
+    const profile = await getProfile(session.data.session.user.id as string);
+    return profile.rank as Rank;
+})
+
+// no cache
 
 export async function tryRankUp(userID: string, xp: number, currentRank: Rank): Promise<{ rank: Rank, rankedUp: boolean }> {
     try {
@@ -40,16 +55,3 @@ export async function tryRankUp(userID: string, xp: number, currentRank: Rank): 
         return { rank: currentRank, rankedUp: false };
     }
 }
-
-
-export async function getCurrentUserRank(): Promise<Rank> {
-    const session = await getSession();
-    if(!session.data.session) {
-        throw new Error("No session found");
-    }
-
-    const profile = await getProfile(session.data.session.user.id as string);
-    return profile.rank as Rank;
-}
-
-
