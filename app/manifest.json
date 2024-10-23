@@ -19,6 +19,13 @@
         "type": "image/png"
       }
     ],
+    "screenshots": [
+      {
+        "src": "/screenshots/01.jpg",
+        "size": "1290x2796",
+        "type": "image/png"
+      }
+    ],
     "theme_color": "#FFFFFF",
     "background_color": "#FFFFFF",
     "start_url": "/",
