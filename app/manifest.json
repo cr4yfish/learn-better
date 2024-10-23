@@ -1,6 +1,6 @@
 {
-    "name": "My awesome PWA app",
-    "short_name": "PWA App",
+    "name": "Nouv - Learn better",
+    "short_name": "Nouv",
     "icons": [
       {
         "src": "/icons/android-chrome-192x192.png",
