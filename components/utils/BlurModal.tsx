@@ -63,7 +63,7 @@ export default function BlurModal({
             }}
         >
             <ModalContent>
-                <Noise opacity={0} className="w-full noise h-fit relative min-h-max" >
+                <Noise opacity={100} className="w-full noise h-fit relative min-h-max" >
                     <NoiseContent className="w-full noise-content h-full justify-normal min-h-max ">
                         <div ref={contentRef} className="h-full min-h-max w-full flex flex-col overflow-visible">
                             {settings.hasHeader && 
