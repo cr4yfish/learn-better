@@ -90,6 +90,7 @@ export default function CourseCard ({
         };
 
         if(userID && course.id) {
+            console.log("Fetching votes");
             fetchVote(userID, course.id).then((res) => setIsUpvoted(res));
         }
         

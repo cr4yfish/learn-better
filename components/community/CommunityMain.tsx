@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-
+import { Suspense } from "react";
 
 import { UserCoursesProvider } from "@/hooks/SharedUserCourses";
 import { Button } from "../utils/Button";
@@ -34,10 +34,14 @@ export default async function CommunityMain() {
                         <Button  color="primary" startContent={<Icon color="fuchsia-950" filled>add</Icon>}>Create a course</Button>
                     </Link>
 
-                    <CourseSearch sessionState={session} />
+                    <Suspense fallback={<div>Loading Course Search......</div>}>
+                        <CourseSearch sessionState={session} />
+                    </Suspense>
                 </div>
 
-                <Courses sessionState={session} courses={courses} />
+                <Suspense fallback={<div>Loading Courses......</div>}>
+                    <Courses sessionState={session} courses={courses} />
+                </Suspense>
             </div>
         </UserCoursesProvider>
     )
