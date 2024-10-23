@@ -1,0 +1,1 @@
+self.addEventListener("push",function(t){let i=t.data.json(),n={body:i.body,icon:"/icon.png",badge:"/badge.png"};t.waitUntil(self.registration.showNotification(i.title,n))});
