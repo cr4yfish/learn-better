@@ -21,8 +21,12 @@ export const CurrentCourseProvider = ({ children }: { children: ReactNode }) => 
   );
 };
 
-export const useCurrentCourse = () => {
+export const useCurrentCourse = (initCourse?: Course) => {
   const context = useContext(SharedStateContext);
+
+  if(initCourse) {
+    context?.setCurrentCourse(initCourse);
+  }
   if (!context) {
     throw new Error('useCurrentCourse must be used within a CurrentCourseProvider');
   }
