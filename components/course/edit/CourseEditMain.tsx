@@ -90,7 +90,10 @@ export default function CourseEditmain({ userCourse, initCourseSections } : { us
         {courseSections?.map((section) => (
         <Card key={section.id} className=" mb-2  cursor-move select-none">
             <CardHeader className="flex flex-row items-center justify-between pb-0">
-            <span className=" font-bold">{section.title}</span>
+              <div className="flex items-center justify-between w-full">
+                <span className=" font-bold">{section.title}</span>
+              </div>
+             
             </CardHeader>
             <CardBody className="flex flex-row items-center justify-end">
             <Icon>drag_indicator</Icon>

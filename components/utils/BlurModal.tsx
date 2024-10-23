@@ -4,6 +4,8 @@ import { Modal, ModalHeader, ModalBody, ModalContent, ModalFooter, useDisclosure
 import React, { useEffect, useRef } from "react";
 import { Noise, NoiseContent } from "react-noise";
 import "react-noise/css";
+import Icon from "./Icon";
+import { Button } from "./Button";
 
 export default function BlurModal({
     settings, header, body, footer, isOpen, updateOpen
@@ -51,7 +53,7 @@ export default function BlurModal({
             size={settings.size}
             isDismissable={settings.isDismissable || true}
             isKeyboardDismissDisabled={settings.isDismissable || false}
-            hideCloseButton={settings.hideCloseButton || false}
+            hideCloseButton={true}
             onClose={() => { internalOnClose(); updateOpen(false) }}
             onOpenChange={onOpenChange}
             backdrop="blur"
@@ -64,7 +66,12 @@ export default function BlurModal({
                 <Noise opacity={0} className="w-full noise h-fit relative min-h-max" >
                     <NoiseContent className="w-full noise-content h-full justify-normal min-h-max ">
                         <div ref={contentRef} className="h-full min-h-max w-full flex flex-col overflow-visible">
-                            {settings.hasHeader && <ModalHeader>{header}</ModalHeader>}
+                            {settings.hasHeader && 
+                            <ModalHeader className="flex flex-row items-center justify-between w-full">
+                                {header}
+                                {!settings.hideCloseButton && <Button onClick={() => {internalOnClose(); updateOpen(false) }} variant="light" color="danger" isIconOnly><Icon filled>close</Icon></Button>}
+                            </ModalHeader>
+                            }
                             {settings.hasBody && <ModalBody>{body}</ModalBody>}
                             {settings.hasFooter && <ModalFooter className=" max-sm:pb-8 ">{footer}</ModalFooter>}
                         </div>

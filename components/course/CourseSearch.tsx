@@ -47,13 +47,12 @@ export default function CourseSearch(
                     hasBody: true,
                     hasFooter: true,
                     size: "full",
-                    placement: "top",
-                    hideCloseButton: true,
+                    placement: "top"
                 }}
                 header={
                     <div className="flex items-center justify-between w-full">
                         <span>Search Courses</span>
-                        <Button onClick={() => setIsModalOpen(false)} variant="light" color="danger" isIconOnly><Icon filled>close</Icon></Button>
+                        
                     </div>
                 }
                 body={
