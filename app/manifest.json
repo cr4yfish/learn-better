@@ -5,8 +5,7 @@
       {
         "src": "/icons/android-chrome-192x192.png",
         "sizes": "192x192",
-        "type": "image/png",
-        "purpose": "any maskable"
+        "type": "image/png"
       },
       {
         "src": "/icons/android-chrome-384x384.png",
@@ -21,8 +20,8 @@
     ],
     "screenshots": [
       {
-        "src": "/screenshots/01.jpg",
-        "size": "1290x2796",
+        "src": "/screenshots/01.png",
+        "sizes": "1290x2796",
         "type": "image/png"
       }
     ],
