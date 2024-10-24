@@ -6,8 +6,16 @@ import { Input } from "@nextui-org/input"
 
 import { login } from "../actions"
 import { Button } from "@/components/utils/Button"
+import { getUser } from "@/utils/supabase/auth"
+import { redirect } from "next/navigation"
 
 export default async function Login() {
+
+    const session = await getUser();
+
+    if(session.data.user?.id) {
+        redirect("/");
+    }
 
     return (
         <>

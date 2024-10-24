@@ -7,8 +7,16 @@ import { Link as NextUILink } from "@nextui-org/link";
 
 import { signup } from "../actions"
 import { Button } from "@/components/utils/Button"
+import { getUser } from "@/utils/supabase/auth";
+import { redirect } from "next/navigation";
 
 export default async function Signup() {
+
+    const session = await getUser();
+
+    if(session.data.user?.id) {
+        redirect("/");
+    }
 
     return (
         <>
