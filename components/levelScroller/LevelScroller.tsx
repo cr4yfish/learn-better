@@ -129,11 +129,9 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
 
 
     const handleLoadMore = async () => {
-        console.log("Handle load more called", isLoading, canLoadMore, currentCourse);
         if(isLoading || !canLoadMore || (!currentCourse && !initUserCourse.course)) { return; } // this line can be called very often, so leave it short
         setIsLoading(true);
 
-        console.log("Loading topics", currentCourse, cursor, topics);
         const result = await loadMoreTopics({
             cursor, currentCourse: currentCourse || initUserCourse.course, topics, limit: 20
         });
@@ -150,7 +148,6 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
             if(currentCourseSection == null && topics.length > 0) {
                 setCurrentCourseSection(topics[0].course_section ?? null);
             }
-            console.log("Loaded more topics", topics, cursor, canLoadMore);
         }
         setIsLoading(false);
     }
@@ -172,7 +169,6 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
 
     return (
     <>
-        
         <InfiniteScroll 
             id="infiniteScroll"
             className="flex flex-col items-center gap-4"
@@ -238,6 +234,11 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
                                     startContent={<Icon color="fuchsia-950" filled>auto_awesome</Icon>}
                                 >
                                     Create levels with AI
+                                </Button>
+                            </Link>
+                            <Link href={"/level/new/copy"}>
+                                <Button color="primary" startContent={<Icon filled>content_copy</Icon>}>
+                                    Copy levels from another source
                                 </Button>
                             </Link>
                         </div>
