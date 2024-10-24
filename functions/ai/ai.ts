@@ -3,11 +3,63 @@
 
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createMistral } from "@ai-sdk/mistral";
-import { convertToCoreMessages, Message, streamObject, streamText } from "ai"; 
+import { convertToCoreMessages, LanguageModelV1, Message, streamObject, streamText, UserContent } from "ai"; 
 import { downloadObject } from "../../utils/supabase/storage";
 import { multipleLevelSchema } from "./schemas";
 
-export async function createLevelFromPDF(
+function createLevelPrompt({ hasCourseSection, title, description } : { hasCourseSection: boolean, title: string, description: string }) {
+    const newCourseSectionsPrompt = `
+    "Create as many course sections as needed and assign each level to a section. A Course Section SHOULD HAVE multiple levels.
+    `
+
+    const existingCourseSectionsPrompt = `
+    "Only create levels for the the given course section title and description. Ignore everything else in the source document.
+
+    Course Section Title: ${title}.
+    Course Section Description: ${description}.
+    `
+
+    if(hasCourseSection) {
+        return existingCourseSectionsPrompt;
+    } else {
+        return newCourseSectionsPrompt;
+    }
+}
+
+const pdfUserMessage = (numLevels: number, courseSectionsPrompt: string) => {
+    return { 
+        type: "text", 
+        text: `
+        Create exactly ${numLevels} unique Levels and at least 4 Questions per Level based solely on the provided document. 
+        Do not include duplicate levels. 
+        ${courseSectionsPrompt}
+        `
+    }
+}
+
+const pdfAttatchment = (arrayBuffer: ArrayBuffer) => {
+    return {
+        type: "file",
+        mimeType: "application/pdf",
+        data: arrayBuffer
+    }
+}
+
+const htmlUserMessage = (numLevels: number, courseSectionsPrompt: string, html: string) => {
+    return { 
+        type: "text", 
+        text: `
+        Create exactly ${numLevels} unique Levels and at least 4 Questions per Level based solely on the provided document. 
+        Do not include duplicate levels. 
+        ${courseSectionsPrompt}
+        
+        This is the document:
+        ${html}
+        `
+    }
+}
+
+export async function createLevelFromDocument(
     { docName, apiKey, numLevels, courseSectionTitle, courseSectionDescription }: 
     { docName: string, apiKey: string, numLevels: number, courseSectionTitle: string, courseSectionDescription: string }) 
     {
@@ -22,44 +74,33 @@ export async function createLevelFromPDF(
     //const openai = createOpenAI({ apiKey: apiKey });
     const gooogle = createGoogleGenerativeAI({ apiKey: apiKey });
 
-    const newCourseSectionsPrompt = `
-    "Create as many course sections as needed and assign each level to a section. A Course Section SHOULD HAVE multiple levels.
-    `
-
-    const existingCourseSectionsPrompt = `
-    "Only create levels for the the given course section title and description. Ignore everything else in the source document.
-
-    Course Section Title: ${courseSectionTitle}.
-    Course Section Description: ${courseSectionDescription}.
-    `
+    const courseSectionsPrompt = createLevelPrompt({ hasCourseSection, title: courseSectionTitle, description: courseSectionDescription });
     
+    const isPDF = docName.endsWith(".pdf");
+
+    const content: UserContent = [];
+
+    if(isPDF) {
+        content.push(pdfUserMessage(numLevels, courseSectionsPrompt) as any);
+        content.push(pdfAttatchment(arrayBuffer) as any);
+    } else {
+        const html = await blob.text();
+        content.push(htmlUserMessage(numLevels, courseSectionsPrompt, html) as any);
+    }
+
     const result = await streamObject({ 
         model: gooogle("gemini-1.5-flash"),
         schema: multipleLevelSchema,
         messages: [
             {
                 role: "user",
-                content: [
-                    { 
-                        type: "text", 
-                        text: `
-                        Create exactly ${numLevels} unique Levels and at least 4 Questions per Level based solely on the provided document. 
-                        Do not include duplicate levels. 
-                        ${hasCourseSection ? existingCourseSectionsPrompt : newCourseSectionsPrompt}
-                        `
-                    },
-                    {
-                        type: "file",
-                        mimeType: "application/pdf",
-                        data: arrayBuffer
-                    }
-                ]
+                content: content
             }
         ]
     })
     
 
-    return result
+    return result;
 }
 
 export async function explainAnswer({
