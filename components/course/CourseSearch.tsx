@@ -45,19 +45,39 @@ export default function CourseSearch(
                 settings={{
                     hasHeader: true,
                     hasBody: true,
-                    hasFooter: true,
+                    hasFooter: false,
                     size: "full",
                     placement: "top"
                 }}
                 header={
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex flex-col w-full">
                         <span>Search Courses</span>
-                        
+
                     </div>
                 }
                 body={
                     <>
                     <div className="flex flex-col gap-2">
+                        <div className="flex flex-col justify-between items-center gap-4 w-full">
+                            <Input 
+                                label="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                endContent={searchQuery.length > 0 && (
+                                    <Button 
+                                        variant="light" color="primary" 
+                                        isIconOnly
+                                        isLoading={searchLoading}
+                                    >
+                                    <Icon color="primary" filled>send</Icon>
+                                </Button>
+                                )}
+                            />
+                            <div className="flex items-center w-full gap-2">
+                                <Button size="sm" isDisabled startContent={<Icon filled>sort</Icon>}>Sort</Button>
+                                <Button size="sm" isDisabled startContent={<Icon filled>filter_alt</Icon>}>Filter</Button>
+                            </div>
+                        </div>
                         {searchResults.map((course) => (
                             <CourseCard 
                                 key={course.id} 
@@ -75,31 +95,6 @@ export default function CourseSearch(
                     </>
                 }
                 
-                footer={
-                <>
-                    <div className="flex flex-col justify-between items-center gap-4 w-full pb-12">
-                        <div className="flex items-center w-full gap-2">
-                            <Button isDisabled startContent={<Icon filled>sort</Icon>}>Sort</Button>
-                            <Button isDisabled startContent={<Icon filled>filter</Icon>}>Filter</Button>
-                        </div>
-                        <Input 
-                            label="Search"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            endContent={searchQuery.length > 0 && (
-                                <Button 
-                                    variant="light" color="primary" 
-                                    isIconOnly
-                                    isLoading={searchLoading}
-                                >
-                                <Icon color="primary" filled>send</Icon>
-                            </Button>
-                            )}
-                        />
-                    </div>
-
-                </>
-                }
             />
     </div>
     )
