@@ -34,7 +34,7 @@ export default function LevelCompleteMain(
     }
 
     return (
-        <div className=" flex flex-col gap-8 px-4 py-6 min-h-screen justify-center pb-[33vh]">
+        <div className=" flex flex-col gap-8 px-4 py-6 h-full justify-center">
             
             { step == 0 && (
                 <div className="flex flex-col items-center justify-center gap-4">
