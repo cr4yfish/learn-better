@@ -10,6 +10,7 @@ import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 import { Button } from "@/components/utils/Button";
 import UppyFileUpload from "@/components/utils/UppyFileUpload";
+import ScraperForm from "@/components/utils/ScraperForm";
 import CourseAutocomplete from "@/components/course/CourseAutocomplete";
 import Icon from "@/components/utils/Icon";
 
@@ -46,7 +47,7 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
             "X-course-section-description": courseSection?.description ?? "",
         },
         onFinish: async () => {
-            await deleteObject({ filename: filename!, path: "", bucketName: "documents" });
+            //await deleteObject({ filename: filename!, path: "", bucketName: "documents" });
         }
     })
 
@@ -157,7 +158,18 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
                         value={numLevels.toString()} 
                         onValueChange={(value) => setNumLevels(parseInt(value))} 
                     />
-                    <UppyFileUpload session={sessionState} label="Upload source PDF" setFileNameCalback={(filename) => setFilename(filename)} />
+                    <div className="flex flex-wrap gap-2 items-center">
+                        <UppyFileUpload 
+                            session={sessionState} 
+                            label="Upload source from PDF" 
+                            setFileNameCalback={(filename) => setFilename(filename)} 
+                        />
+                        <ScraperForm 
+                            session={sessionState} 
+                            setFilenameCallback={(filename) => setFilename(filename)} 
+                        />
+                    </div>
+
                 </CardBody>
                 <CardFooter className="flex flex-row items-center gap-4">
                     <Button 

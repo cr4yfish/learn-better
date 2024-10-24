@@ -4,6 +4,15 @@ import { FileObject } from "@supabase/storage-js";
 import { getClient } from "./client";
 
 
+export async function uploadTextObject({ path, text, bucket } : { text: string, path: string, bucket: string }): Promise<string> {
+    const { data, error } = await getClient()
+        .storage
+        .from(bucket)
+        .upload(path, new Blob([text]));
+    if(error) { throw error; }
+    return data.path;
+}
+
 /**
  * Download object either by providing filename and path or the full path
  * @param params 

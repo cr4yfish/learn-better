@@ -1,5 +1,5 @@
 
-import { createLevelFromPDF } from "@/functions/ai/ai";
+import { createLevelFromDocument } from "@/functions/ai/ai";
 
 export async function POST(req: Request) {
     //const context = await req.json();
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
         return new Response("Missing API key or doc name", {status: 400});
     }
 
-    const result = await createLevelFromPDF({
+    const result = await createLevelFromDocument({
         docName: docName,
         apiKey: apiKey,
         numLevels: numLevels ? parseInt(numLevels) : 1,
