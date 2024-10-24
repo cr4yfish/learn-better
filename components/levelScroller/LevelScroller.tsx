@@ -197,25 +197,9 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
                     ))}
 
             {!canLoadMore && topics.length === 0 && (
-                <>
                 <span>No topics found.</span>
-                {isAdmin && (
-                    <>
-                    <Link 
-                        href={"/level/new"}>
-                            <Button 
-                                color="primary" 
-                                startContent={<Icon filled>add</Icon>} 
-                            >
-                                Add new level
-                            </Button>
-                    </Link> 
-                    </>
-                )}
-                </>
-                
             )}
-            {!canLoadMore && topics.length > 0 && (
+            {!canLoadMore && topics.length >= 0 && (
                 <div className="flex flex-col gap-2">
                     {isAdmin && (
                         <div className="flex flex-col gap-2 items-center justify-center">
@@ -234,11 +218,6 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
                                     startContent={<Icon color="fuchsia-950" filled>auto_awesome</Icon>}
                                 >
                                     Create levels with AI
-                                </Button>
-                            </Link>
-                            <Link href={"/level/new/copy"}>
-                                <Button color="primary" startContent={<Icon filled>content_copy</Icon>}>
-                                    Copy levels from another source
                                 </Button>
                             </Link>
                         </div>
