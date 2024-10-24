@@ -47,7 +47,7 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
             "X-course-section-description": courseSection?.description ?? "",
         },
         onFinish: async () => {
-            //await deleteObject({ filename: filename!, path: "", bucketName: "documents" });
+            await deleteObject({ filename: filename!, path: "", bucketName: "documents" });
         }
     })
 
@@ -165,7 +165,6 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
                             setFileNameCalback={(filename) => setFilename(filename)} 
                         />
                         <ScraperForm 
-                            session={sessionState} 
                             setFilenameCallback={(filename) => setFilename(filename)} 
                         />
                     </div>

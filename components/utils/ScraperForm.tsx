@@ -6,10 +6,9 @@ import { Input } from "@nextui-org/input"
 import { Button } from "@/components/utils/Button"
 import Icon from "@/components/utils/Icon"
 import BlurModal from "./BlurModal";
-import { SessionState } from "@/types/auth";
 import { uploadTextObject } from "@/utils/supabase/storage";
 
-export default function ScraperForm({ setFilenameCallback, session } : { setFilenameCallback: (filename: string) => void, session: SessionState }) {
+export default function ScraperForm({ setFilenameCallback } : { setFilenameCallback: (filename: string) => void }) {
     const [url, setUrl] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [status, setStatus] = useState<string>("");
@@ -107,7 +106,7 @@ export default function ScraperForm({ setFilenameCallback, session } : { setFile
                         isDisabled={!checkValid()}
                         fullWidth
                     >
-                        Start scraper
+                        {isLoading ? status : "Start Scraper"}
                     </Button>
                 </div>
                 </>
