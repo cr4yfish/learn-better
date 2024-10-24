@@ -17,7 +17,7 @@ export default async function Signup() {
             <Card>
                 <CardHeader className="text-lg font-bold">Signup</CardHeader>
                 <CardBody className="flex flex-col gap-2">
-                    <Input name="name" type="text" label="Username" required />
+                    <Input name="username" type="text" label="Username" required />
                     <Input name="email" type="email" label="Email" required />
                     <Input name="password" type="password" label="Password" required />
                 </CardBody>
