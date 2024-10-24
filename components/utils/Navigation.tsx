@@ -7,8 +7,8 @@ import Icon from "../utils/Icon"
 
 type Links = "Home" | "Training" | "Community" | "Profile" | "Leaderboard"
 
-const LinkComponent = ({ href, icon, activeTitle, title } : { href: string, icon: string, activeTitle: string, title: Links }) => {
-    const active: boolean = activeTitle === title
+const LinkComponent = ({ href, icon, activeTitle, title } : { href: string, icon: string, activeTitle: string | undefined, title: Links }) => {
+    const active: boolean = (activeTitle && (activeTitle === title)) || false;
     
     return (
         <Link
@@ -23,7 +23,7 @@ const LinkComponent = ({ href, icon, activeTitle, title } : { href: string, icon
     )
 }
 
-export default async function Navigation({ activeTitle } : { activeTitle: Links }) {
+export default async function Navigation({ activeTitle } : { activeTitle: Links | undefined }) {
 
     return (
         <>

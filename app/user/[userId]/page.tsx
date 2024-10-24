@@ -102,7 +102,7 @@ export default async function User({ params: { userId } } : { params: { userId: 
 
 
     </div>
-    <Navigation activeTitle="Profile" />
+    <Navigation activeTitle={undefined} />
     </>
 
     )
