@@ -88,7 +88,11 @@ export default function UppyFileUpload({ session, label, setFileNameCalback } : 
                 hasFooter: false
             }}  
             header="Upload Files"
-            body={<Dashboard uppy={uppy} className="" />}
+            body={
+                <div className=" w-full">
+                    <Dashboard uppy={uppy} className="" />
+                </div>
+            }
         />
 
         </>
