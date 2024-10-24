@@ -72,7 +72,7 @@ export default function BlurModal({
                                 {!settings.hideCloseButton && <Button onClick={() => {internalOnClose(); updateOpen(false) }} variant="light" color="danger" isIconOnly><Icon filled>close</Icon></Button>}
                             </ModalHeader>
                             }
-                            {settings.hasBody && <ModalBody>{body}</ModalBody>}
+                            {settings.hasBody && <ModalBody className="w-full relative">{body}</ModalBody>}
                             {settings.hasFooter && <ModalFooter className=" max-sm:pb-8 ">{footer}</ModalFooter>}
                         </div>
                     </NoiseContent>
