@@ -12,6 +12,7 @@ export default async function Signup() {
 
     return (
         <>
+        <h1 className="text-4xl font-bold text-center">Welcome to Nouv!</h1>
         <form className="w-full">
             <Card>
                 <CardHeader className="text-lg font-bold">Signup</CardHeader>

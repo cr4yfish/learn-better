@@ -6,7 +6,7 @@ export default function Layout({children} : {children: React.ReactNode}) {
     return (
         <div className="relative w-screen h-screen max-w-screen max-h-screen overflow-hidden overflow-x-hidden flex items-center justify-center">
             <div className=" relative z-50 px-4 py-6  w-full h-full max-w-[500px]  flex flex-col gap-4 items-center justify-center pt-[15vh] pb-[33vh] overflow-hidden">
-                <h1 className="text-4xl font-bold text-center">Welcome to Nouv!</h1>
+                
                 {children}
             </div>
 
