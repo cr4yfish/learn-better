@@ -91,17 +91,20 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Stats about users & learning
     - [ ] Weekly/Monthly streak/xp goals
     - [ ] ~~Weekly rank ups~~
-    - [ ] Achievements
+    - [ ] Achievements - WIP
 - [x] PWA features
     - [x] App installation popup support (depends on Browser)
     - [x] Notification System
     - [x] Better caching
     - [x] Offline Mode
     - [ ] ~~Manual download of Courses?~~
+- [ ] Anon views
+    - [ ] Anon view of courses
+    - [ ] Demo mode for onboarding
 
 ### Beta Features
 - [ ] Redesign UI & Refactor Code
-    - [ ] Improve UI/UX - it's very utilitarian right now
+    - [ ] Improve UI/UX - WIP
     - [ ] Add animations
     - [x] Move as much as possible to Server Rendering
 - [ ] Buy a domain
