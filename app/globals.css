@@ -34,10 +34,24 @@
   display: none !important;
 }
 
+
+@media screen and (max-width: 500px) {
+  .uppy-Dashboard-inner {
+    width: 90vw !important;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .uppy-Dashboard-inner {
+    width: 87vw !important;
+  }
+}
+
 .noise {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   display: flex;
   position: relative;
   min-height: max-content;
@@ -48,6 +62,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   position: relative;
   min-height: max-content !important;
 }
@@ -65,10 +80,13 @@
   flex: 1;
   position: relative;
   height: 100% !important;
+  width: 100% !important;
   min-height: max-content !important;
 }
 
 .noise-content {
   height: 100% !important;
+  width: 100% !important;
   min-height: max-content !important;
+  max-width: fit-content;
 }
