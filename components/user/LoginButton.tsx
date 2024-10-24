@@ -9,8 +9,9 @@ import { Checkbox } from "@nextui-org/checkbox"
 
 
 import { SessionState } from "@/types/auth";
-import { userSignUp, userLogin, getProfile, getSession, userLogOut } from "@/utils/supabase/auth";
+import { userSignUp, userLogin, getSession, userLogOut } from "@/utils/supabase/auth";
 import BlurModal from "../utils/BlurModal";
+import { getProfileById } from "@/utils/supabase/user";
 
 export default function LoginButton(
     { sessionState, setSessionState, isRedirecting=false } : 
@@ -60,7 +61,7 @@ export default function LoginButton(
 
                 if(res.success) {
                     
-                    const profile = await getProfile(res.user.id as string);
+                    const profile = await getProfileById(res.user.id as string);
                     const { data: sessionData } = await getSession();
 
                     if(profile && sessionData.session && setSessionState && sessionState) {

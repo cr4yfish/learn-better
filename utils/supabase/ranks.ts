@@ -4,9 +4,10 @@
 
 import { cache } from "react";
 
-import { getSession, getProfile } from "./auth";
+import { getSession } from "./auth";
 import { createClient as getClient } from "./server/server";
 import { Rank } from "@/types/db";
+import { getProfileById } from "./user";
 
 
 export const getRanks = cache(async(): Promise<Rank[]> => {
@@ -33,7 +34,7 @@ export const getCurrentUserRank = cache(async(): Promise<Rank> => {
         throw new Error("No session found");
     }
 
-    const profile = await getProfile(session.data.session.user.id as string);
+    const profile = await getProfileById(session.data.session.user.id as string);
     return profile.rank as Rank;
 })
 

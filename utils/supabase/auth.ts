@@ -1,7 +1,6 @@
 "use server";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cache } from "react";
 import { User, AuthResponse } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { createClient as getClient } from "./server/server";
@@ -11,49 +10,8 @@ import { getSettings } from "./settings";
 
 import { Profile, Settings } from "@/types/db";
 import { SessionState } from "@/types/auth";
-
-export const getProfile = cache(async(id: string): Promise<Profile> => {
-    const { data, error } = await getClient().from("profiles").select(`
-        id,
-        username,
-        avatar,
-        total_xp,
-        ranks (
-            id,
-            title,
-            description,
-            xp_threshold
-        ),
-        banner
-    `).eq("id", id).single();
-    if(error) { throw error; }
-
-    const profile = {
-        id: data.id,
-        username: data.username,
-        avatar: data.avatar,
-        total_xp: data.total_xp,
-        rank: data.ranks as any,
-        banner: data.banner,
-        avatarLink: "",
-        bannerLink: ""
-    }
-
-    // get links
-    try {
-        //if(profile.avatar) profile.avatarLink = await getObjectPublicURL({ id: profile.avatar, bucket: "avatars" });
-        //if(profile.banner) profile.bannerLink = await getObjectPublicURL({ id: profile.banner, bucket: "banners" });   
-    } catch (error) {
-        console.error("Error getting profile links:", error);
-    }
-    return profile;
-})
-
-export const getProfiles = cache(async(): Promise<Profile[]> => {
-    const { data, error } = await getClient().from("profiles").select().order("total_xp", { ascending: false });
-    if(error) { throw error; }
-    return data;
-})
+import { streakToStreakDays } from "@/functions/helpers";
+import { getProfileById } from "./user";
 
 // no cache
 
@@ -67,17 +25,14 @@ export async function getCurrentUser(): Promise<SessionState | null> {
             return null;
         }
 
-        const profile = await getProfile(session?.user?.id as string);
+        const profile = await getProfileById(session?.user?.id as string);
         const settings = await getSettings(session?.user.id as string);
         const courses = await getUserCourses(session?.user.id as string);
         const currentStreak = await getCurrentStreak(session?.user.id as string, new Date());
         let currentStreakDays = 0;
 
         if(currentStreak) {
-            const from = new Date(currentStreak.from);
-            const to = currentStreak.to ? new Date(currentStreak.to) : new Date(); // if to is null, use today -> streak is ongoing
-            const diff = Math.abs(to.getTime() - from.getTime()) + 1;
-            currentStreakDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            currentStreakDays = streakToStreakDays(currentStreak);
         }
 
         revalidatePath("/api/user/current");

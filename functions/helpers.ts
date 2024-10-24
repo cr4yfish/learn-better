@@ -1,3 +1,5 @@
+import { Streak } from "@/types/db";
+
 /**
  * Swap strings with Date objects in data
  * @param data | data[]
@@ -29,6 +31,15 @@ export function formatSeconds(seconds: number) {
     return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
+
+
+export function formatReadableDate(date: string) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+
+    const d = new Date(date);
+    return `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 export function getDayBefore(date: Date): Date {
     const previousDay = new Date(date);
@@ -67,4 +78,11 @@ export function getSupabaseURL(): string {
 
 export function getSupabaseStorageURL(): string {
     return process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL as string;
+}
+
+export function streakToStreakDays(streak: Streak): number {
+    const from = new Date(streak.from);
+    const to = streak.to ? new Date(streak.to) : new Date(); // if to is null, use today -> streak is ongoing
+    const diff = Math.abs(to.getTime() - from.getTime()) + 1;
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }

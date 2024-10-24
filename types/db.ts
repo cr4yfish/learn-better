@@ -2,6 +2,7 @@ import { User } from "@supabase/supabase-js";
 
 export type Profile = {
     id: string;
+    created_at?: string;
     username: string;
     avatar?: string,
     avatarLink?: string,
@@ -9,6 +10,7 @@ export type Profile = {
     bannerLink?: string,
     total_xp: number;
     rank: Rank;
+    currentStreakDays?: number;
 }
 
 // unused right now
@@ -211,4 +213,12 @@ export type Topic_Vote = {
     user: User;
     topic: Topic;
     vote: boolean;
+}
+
+export type User_Follow = {
+    user: string;
+    other_user: string;
+    follows: boolean;
+    block: boolean;
+    friends: boolean;
 }
