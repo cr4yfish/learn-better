@@ -15,7 +15,7 @@ export default function CoursesShowcaseSwiper({ session, courses } : { session: 
         <>
             <h2 className=" font-bold">Newest Courses</h2>
             <Swiper
-                spaceBetween={25}
+                spaceBetween={15}
                 slidesPerView={3}
                 loop={false}
                 simulateTouch
