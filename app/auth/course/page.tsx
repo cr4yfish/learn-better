@@ -1,8 +1,13 @@
 "use server";
 
-import CourseSearch from "@/components/course/CourseSearch";
-import { getCurrentUser } from "@/utils/supabase/auth";
 import { redirect } from "next/navigation";
+
+import SelectFirstCourse from "@/components/auth/SelectFirstCourse"
+
+import { getCurrentUser } from "@/utils/supabase/auth";
+import { getCourses } from "@/utils/supabase/courses";
+import { UserCoursesProvider } from "@/hooks/SharedUserCourses";
+
 
 export default async function SelectCourse() {
 
@@ -12,13 +17,14 @@ export default async function SelectCourse() {
         redirect("/auth");
     }
 
+    const courses = await getCourses({ from: 0, limit: 10 });
+
     return (
         <>
             <h1 className="text-4xl font-bold text-center">Join a course to get started</h1>
-            <CourseSearch 
-                sessionState={sessionState}
-            />
-            
+            <UserCoursesProvider>
+                <SelectFirstCourse sessionState={sessionState} initCourses={courses} />
+            </UserCoursesProvider>
         </>
     )
 }
