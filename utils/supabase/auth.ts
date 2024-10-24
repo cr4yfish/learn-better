@@ -26,9 +26,9 @@ export async function getCurrentUser(): Promise<SessionState | null> {
         }
 
         const profile = await getProfileById(session?.user?.id as string);
-        const settings = await getSettings(session?.user.id as string);
-        const courses = await getUserCourses(session?.user.id as string);
-        const currentStreak = await getCurrentStreak(session?.user.id as string, new Date());
+        const settings = await getSettings(session?.user?.id as string);
+        const courses = await getUserCourses(session?.user?.id as string);
+        const currentStreak = await getCurrentStreak(session?.user?.id as string, new Date());
         let currentStreakDays = 0;
 
         if(currentStreak) {
