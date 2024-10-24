@@ -90,14 +90,14 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Training mode on low confidence questions
     - [ ] Stats about users & learning
     - [ ] Weekly/Monthly streak/xp goals
-    - [ ] Weekly rank ups
+    - [ ] ~~Weekly rank ups~~
     - [ ] Achievements
-- [ ] PWA features
+- [x] PWA features
     - [x] App installation popup support (depends on Browser)
-    - [ ] Notifications
+    - [x] Notification System
     - [x] Better caching
     - [x] Offline Mode
-    - [ ] Manual download of Courses?
+    - [ ] ~~Manual download of Courses?~~
 
 ### Beta Features
 - [ ] Redesign UI & Refactor Code
@@ -110,8 +110,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 I will only implement these features if there are any users or interest to justify it.
 
 - [ ] Community Features 2
-    - [ ] Following other users / Friends
-    - [ ] Rating Courses, Levels & Questions
+    - [x] Following other users
     - [ ] Course Collaboration   
 
 ### Future Features
