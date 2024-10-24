@@ -33,6 +33,7 @@ export const getCourseTopics = cache(async(courseId: string, from: number, limit
         )
     `)
     .eq("course", courseId)
+    .order("created_at", { ascending: true })
     .order("order", { ascending: true })
     .range(from, from + limit -1);
     if(error) { throw error; }

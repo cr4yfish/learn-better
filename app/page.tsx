@@ -23,14 +23,14 @@ export default async function Home() {
 
   const currentCourse = sessionState.settings.current_course;
   const currentUserCourse = await getUserCourse(currentCourse.id);
-  const initTopics = await getCourseTopics(currentCourse.id, 0, 20);
+  const initTopics = await getCourseTopics(currentCourse.id, 0, 10);
 
   return (
     <>
     <CurrentCourseProvider>
-      <main className="flex flex-col justify-between items-center w-full min-h-full h-full ">
+      <main className="flex flex-col justify-between items-center w-full h-screen ">
         <Header />
-        <div className="relative w-full h-full">
+        <div id="scrollparent" className="relative w-full h-[90vh] overflow-y-auto pb-80">
           <LevelScroller initUserCourse={currentUserCourse} initTopics={initTopics} />
         </div>
       </main>

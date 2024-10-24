@@ -91,22 +91,18 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
     
     const [isLoading, setIsLoading] = useState(false)
 
-    const { currentCourse } = useCurrentCourse(); // For switching courses
+    const { currentCourse, setCurrentCourse } = useCurrentCourse(); // For switching courses
 
-    useEffect(() => {
-        // scroll to topic with #next id
-        setTimeout(() => {
-            const parent = document.getElementById("infiniteScroll");
-            const target = document.getElementById("isNextLevel");
-            if(parent && target) {
-                parent.scroll({
-                    top: target.offsetTop - parent.offsetTop,
-                    behavior: "smooth"
-                });
-            }
-        }, 500);
-        
-    }, [topics])
+    /*const scrollToNext = () => {
+        const parent = document.getElementById("scrollparent");
+        const target = document.getElementById("isNextLevel");
+        if(parent && target) {
+            parent.scroll({
+                top: target.offsetTop - parent.offsetTop,
+                behavior: "smooth"
+            });
+        }
+    }*/
 
     // Reset stuff if currentCourse changes
     useEffect(() => {
@@ -117,6 +113,7 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
         // If the current course is the init course and we have topics, dont do anything
         // -> this means we are still on first load and have the initTopics
         if((currentCourse.id == initUserCourse.course.id ) && (topics.length > 0)) {
+            setCurrentCourse(initUserCourse.course);
             return;
         }
 
@@ -132,11 +129,13 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
 
 
     const handleLoadMore = async () => {
-        if(isLoading || !canLoadMore || !currentCourse) { return; } // this line can be called very often, so leave it short
+        console.log("Handle load more called", isLoading, canLoadMore, currentCourse);
+        if(isLoading || !canLoadMore || (!currentCourse && !initUserCourse.course)) { return; } // this line can be called very often, so leave it short
         setIsLoading(true);
 
+        console.log("Loading topics", currentCourse, cursor, topics);
         const result = await loadMoreTopics({
-            cursor, currentCourse: currentCourse, topics, limit: 20
+            cursor, currentCourse: currentCourse || initUserCourse.course, topics, limit: 20
         });
 
         if ('error' in result) {
@@ -151,8 +150,24 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
             if(currentCourseSection == null && topics.length > 0) {
                 setCurrentCourseSection(topics[0].course_section ?? null);
             }
+            console.log("Loaded more topics", topics, cursor, canLoadMore);
         }
         setIsLoading(false);
+    }
+
+    const checkInitialLoad = () => {
+        const result = !((currentCourse?.id == initUserCourse.course.id) && topics.length > 0)
+        return result;
+    }
+
+    const checkIsNext = (topic: Topic, index: number) => {
+        const isNext = (topics[index-1]?.completed && !topic.completed) ?? false;
+
+        if(isNext) {
+            //scrollToNext();
+        }
+
+        return isNext;
     }
 
     return (
@@ -160,11 +175,13 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
         
         <InfiniteScroll 
             id="infiniteScroll"
-            className="flex flex-col items-center gap-4 w-full h-full max-h-screen overflow-y-scroll pb-80"
+            className="flex flex-col items-center gap-4"
             pageStart={1}
-            loadMore={async () => canLoadMore && await handleLoadMore()}
+            loadMore={async () => await handleLoadMore()}
             hasMore={canLoadMore}
-            initialLoad={!((currentCourse?.id == initUserCourse.course.id) && topics.length > 0)}
+            initialLoad={checkInitialLoad()}
+            useWindow={false}
+            threshold={50}
             loader={<Spinner key="spinner" />}
             key="infinite-scroll"
         >
@@ -176,7 +193,7 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
                             <Level 
                                 topic={topic} 
                                 active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
-                                isNext={(topics[index-1]?.completed && !topic.completed) ?? false}
+                                isNext={checkIsNext(topic, index)}
                                 offset={0}
                                 isAdmin={isAdmin}
                             />
