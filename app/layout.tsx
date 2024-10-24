@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/system";
+import NextTopLoader from "nextjs-toploader";
 
 import PushNotification from "@/components/utils/PushNotification";
 
@@ -70,6 +71,7 @@ export default function RootLayout({
         >
           <NextUIProvider className="h-full max-h-screen overflow-y-hidden flex justify-between flex-col antialiased">
               <>
+              <NextTopLoader color="#E879F9" showSpinner={false} />
               {children}
               <PushNotification />
               </>
