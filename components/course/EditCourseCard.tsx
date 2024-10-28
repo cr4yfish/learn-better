@@ -119,14 +119,16 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
             >
                 {isNew ? done ? "Created" : "Create" : done ? "Saved" : "Save"}
             </Button>
-            <Button
-                color="danger"
-                variant="faded"
-                isDisabled
-                startContent={<Icon filled>delete</Icon>}
-            >
-                Delete Course
-            </Button>
+            {!isNew && 
+                <Button
+                    color="danger"
+                    variant="faded"
+                    isDisabled
+                    startContent={<Icon filled>delete</Icon>}
+                >
+                    Delete Course
+                </Button>
+            }
             </div>
 
         </div>
