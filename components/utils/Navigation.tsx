@@ -15,10 +15,10 @@ const LinkComponent = ({ href, icon, activeTitle, title } : { href: string, icon
             href={href}
             className="flex flex-col items-center justify-center w-fit h-fit scale-150"
         >
-            <Icon filled={active} color={active ? "primary" : "gray-600"} darkColor={active ? "white" : "slate-400"} >
+            <Icon filled={active} color={active ? "primary" : "primary"} darkColor={active ? "primary" : "gray-400"} >
                 {icon}
             </Icon>
-            <span className={` text-[0.5rem] ${active ? "text-fuchsia-800 dark:text-white" : "text-gray-600 dark:text-slate-400"}`}>{title}</span>
+            <span className={` text-[0.5rem] ${active ? "light:text-fuchsia-800 dark:text-white" : "light:text-gray-600 dark:text-gray-400"}`}>{title}</span>
         </Link>
     )
 }
@@ -27,7 +27,7 @@ export default async function Navigation({ activeTitle } : { activeTitle: Links 
 
     return (
         <>
-        <div className=" absolute bottom-0 bg-white/50 dark:bg-black/50 z-50 backdrop-blur-xl rounded-t-xl flex justify-center items-center w-full p-6">
+        <div className=" absolute bottom-0 light:bg-white/50 dark:bg-black/50 z-50 backdrop-blur-xl rounded-t-xl flex justify-center items-center w-full p-6">
             <div className="flex items-center justify-evenly w-full max-w-[960px] gap-4">
                 <LinkComponent title="Home" href="/" icon="home" activeTitle={activeTitle} />
                 <LinkComponent title="Leaderboard" href="/leaderboard" icon="leaderboard" activeTitle={activeTitle} />
