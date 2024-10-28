@@ -1,6 +1,7 @@
 import {nextui} from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
+import animate from "tailwindcss-animate"
 
 const config: Config = {
   content: [
@@ -11,12 +12,17 @@ const config: Config = {
   ],
   darkMode: "class",
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
+  	extend: {
+  		colors: {
+  			background: 'var(--background)',
+  			foreground: 'var(--foreground)'
+  		},
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		}
+  	}
   },
   plugins: [
     typography,
@@ -39,7 +45,8 @@ const config: Config = {
           }
         },
       }
-    })
+    }),
+    animate
   ],
 };
 export default config;
