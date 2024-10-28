@@ -51,10 +51,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
   display: flex;
   position: relative;
-  min-height: max-content;
+  min-height: max-content; 
 }
 
 .noise > div {
@@ -62,16 +61,17 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
   position: relative;
   min-height: max-content !important;
+  overflow: hidden;
+  min-width: initial !important;
+  width: inherit !important;
 }
 
 .noise canvas {
   z-index: -2;
   top: 0;
   left: 0;
-  width: 100%;
   position: absolute;
   height: 100vh;
 }
@@ -80,12 +80,16 @@
   flex: 1;
   position: relative;
   height: 100% !important;
-  width: 100% !important;
   min-height: max-content !important;
+  min-width: initial !important;
+  width: inherit !important;
 }
 
 .noise-content {
   height: 100% !important;
-  width: 100% !important;
   min-height: max-content !important;
+}
+
+.swiper-wrapper, .swiper-slide, .swiper {
+  overflow: visible !important;
 }
