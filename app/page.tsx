@@ -28,7 +28,7 @@ export default async function Home() {
   return (
     <>
     <CurrentCourseProvider>
-      <main className="flex flex-col justify-between items-center w-full h-screen ">
+      <main className="flex flex-col items-center w-full h-screen ">
         <Header />
         <div id="scrollparent" className="relative w-full h-[90vh] overflow-y-auto pb-80">
           <LevelScroller initUserCourse={currentUserCourse} initTopics={initTopics} />
