@@ -79,7 +79,7 @@ export default function Question({
             setQuestionState({...questionState, correct: "wrong"})
         }            
         
-        const res = await addUserQuestion({
+        await addUserQuestion({
             try_id: uuidv4(),
             user: session.user?.id as string,
             question: question.id,
