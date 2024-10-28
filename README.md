@@ -33,6 +33,7 @@ The main reason for this project is that I would love to have an App like Duolin
 * Supabase
 * TailwindCSS
 * NextUI
+* Shadcn
 * Vercel AI SDK
 * Gemini
 * Mistral/NVIDIA Nemo
