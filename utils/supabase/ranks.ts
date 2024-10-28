@@ -11,7 +11,10 @@ import { getProfileById } from "./user";
 
 
 export const getRanks = cache(async(): Promise<Rank[]> => {
-    const { data, error } = await getClient().from("ranks").select();
+    const { data, error } = await getClient()
+        .from("ranks")
+        .select()
+        .order("xp_threshold", { ascending: true });
     if(error) { throw error; }
     return data;
 })
