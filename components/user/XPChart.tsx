@@ -14,7 +14,7 @@ export default function XPChart({ xp } : { xp: User_XP[] }) {
 
     return (
         <>
-        <ChartContainer config={chartConfig} className=" min-h-[200px] w-full " color="black" >
+        <ChartContainer config={chartConfig} className=" max-h-[200px] max-w-[400px] w-full " color="black" >
             <AreaChart accessibilityLayer data={xp} className=" stroke-fuchsia-200/50 dark:stroke-fuchsia-950/50 ">
                 <CartesianGrid vertical={false} />
                 <Area 
