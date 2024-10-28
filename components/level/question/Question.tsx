@@ -46,11 +46,16 @@ export default function Question({
     
     useEffect(() => {
         setInput(`Please explain why the correct answer and why my answer is wrong. The Question Title: ${question.title}. The Question Description: ${question.question}. The Correct Answer: ${question.answer_correct}. All the Answer Options: ${question.answer_options.join(", ")}. The wrong Answer I chose: ${questionState.selected}`)
-        stopwatch.start();
     }, [
             question.title, question.question, question.answer_options,
-            question.answer_correct, questionState.selected, setInput, stopwatch
+            question.answer_correct, questionState.selected, setInput
         ])
+
+    useEffect(() => {
+        stopwatch.stop();
+        stopwatch.start();
+        return () => { stopwatch.stop() }
+    }, [question.question, stopwatch])
 
     const handleCheckAnswer = async () => {
 
@@ -74,7 +79,7 @@ export default function Question({
             setQuestionState({...questionState, correct: "wrong"})
         }            
         
-        await addUserQuestion({
+        const res = await addUserQuestion({
             try_id: uuidv4(),
             user: session.user?.id as string,
             question: question.id,
