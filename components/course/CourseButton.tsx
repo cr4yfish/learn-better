@@ -10,11 +10,11 @@ export default function CourseButton({ course, active, onPress } : { course: Cou
         <Card 
             isPressable
             onPress={onPress}
-            className={` w-full min-h-full border border-default1 text-white ${active ? 'border-primary text-fuchsia-800' : 'bg-default'} `}
+            className={` w-full min-h-full border border-default1 text-white ${active ? 'border-primary text-fuchsia-50 bg-fuchsia-500' : 'bg-gray-400 dark:bg-default'} `}
         >
             <CardHeader className="font-bold pb-0 text-inherit">{course?.abbreviation}</CardHeader>
             <CardBody className=" pt-1 text-inherit">
-                {course?.institution && <Chip size="sm" className=" text-inherit" >{course?.institution?.abbreviation}</Chip>}
+                {course?.institution && false && <Chip size="sm" className=" text-inherit" >{course?.institution?.abbreviation}</Chip>}
                 <span className=" text-inherit">{course?.description}</span>
             </CardBody>
         </Card>
