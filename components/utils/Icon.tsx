@@ -9,7 +9,7 @@ export default function Icon(
         <span 
             className={
                 "material-symbols-rounded text-tiny" 
-                + (color ? ` light:text-${color}` : "")
+                + (color ? ` text-${color}` : "")
                 + (darkColor ? ` dark:text-${darkColor}` : "") 
                 + (filled ? " material-symbols-filled " : "") 
                 + (upscale ? "scale-125" : "") + (downscale ? "scale-75" : "")
