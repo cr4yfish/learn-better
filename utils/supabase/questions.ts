@@ -6,20 +6,15 @@ import { cache } from "react";
 import { createClient as getClient } from "./server/server";
 
 
-import { Question, User_Question } from "@/types/db";
+import { Question, User_Question, Weak_User_Questions } from "@/types/db";
 
 
 export const getQuestions = cache(async(topicId: string): Promise<Question[]> => {
     const { data, error } = await getClient().from("questions")
     .select(`
-        id,
-        created_at,
-        title,
-        question,
-        answer_correct,
-        answer_options,
-        question_types (id, title, description),
-        topics (id, title, description, course)
+        *.
+        question_types (*),
+        topics (*)
     `).eq("topic", topicId);
     if(error) { throw error; }
 
@@ -38,6 +33,26 @@ export const getQuestions = cache(async(topicId: string): Promise<Question[]> =>
         }
     });
 })
+
+/**
+ * Gets weak user questions, lowest score first
+ */
+export const getWeakQuestions = cache(async (): Promise<Weak_User_Questions[]> => {
+    const { data, error } = await getClient().from("weak_user_questions")
+        .select(`
+            *,
+            questions (*)
+        `)
+        .order("score", { ascending: false })
+    
+    if(error) { throw error; }
+    return data.map((db: any) => {
+        return {
+            ...db,
+            question: db.questions
+        }
+    })
+} )
 
 export const getQuestionTypes = cache(async() => {
     const { data, error } = await getClient().from("question_types").select();
