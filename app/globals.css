@@ -2,18 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -93,3 +81,22 @@
 .swiper-wrapper, .swiper-slide, .swiper {
   overflow: visible !important;
 }
+
+.recharts-area-area {
+  fill: inherit !important;
+}
+
+.recharts-area-curve {
+  stroke: inherit !important;
+}
+
+.recharts-cartesian-grid line {
+  stroke: inherit !important;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+

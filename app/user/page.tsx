@@ -11,6 +11,8 @@ import { Chip } from "@nextui-org/chip";
 import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import Settings from "@/components/user/Settings";
+import { getXP } from "@/utils/supabase/xp";
+import XPChart from "@/components/user/XPChart";
 
 export default async function User() {;
 
@@ -19,6 +21,8 @@ export default async function User() {;
     if(!session) {
         redirect("/auth");
     }
+
+    const xp = await getXP();
 
     return (
     <>
@@ -111,11 +115,16 @@ export default async function User() {;
             
         </div>
 
-
+        <div className="flex flex-col">
+            <h2 className="text-lg font-bold">XP</h2>
+            <XPChart xp={xp} />
+        </div>
+    
 
         <div className="flex flex-col">
             <h2 className="text-lg font-bold">Achievements</h2>
         </div>
+
 
 
     </div>

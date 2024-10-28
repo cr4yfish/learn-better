@@ -157,6 +157,27 @@ export type User_Question = {
     accuracy?: number;
 }
 
+/**
+ * Read only!
+ */
+export type Weak_User_Questions = {
+    user?: User;
+    question: Question;
+    try_count: number;
+    avg_seconds: number;
+    avg_accuracy: number;
+    score: number;
+}
+
+/**
+ * Read only!
+ */
+export type User_XP = {
+    user?: User;
+    xp: number;
+    created_date: string;
+}
+
 export type UserQuestionClient = {
     user: User,
     question: Question,
