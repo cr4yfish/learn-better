@@ -49,7 +49,7 @@ export default async function User() {;
                                 content={<span>+ {session.courses.length}</span>}
                                 classNames={{
                                     base: " min-w-fit h-[28px] pl-0",
-                                    badge: "bg-transparent text-gray-400 translate-x-[25px] -translate-y-[0]",
+                                    badge: "bg-transparent text-gray-400 translate-x-[25px] -translate-y-[0] border-none",
                                 }}
                             >
                                 <Chip variant="light" color="secondary" className="p-0" classNames={{ base: "p-0", content: "p-0" }}>
