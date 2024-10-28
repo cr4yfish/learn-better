@@ -44,7 +44,7 @@ export default async function Level({ params } : { params: { level: string }}) {
     }
 
     return (
-        <div className="px-4 py-6 flex flex-col gap-4 h-full max-h-screen ">
+        <div className="px-4 py-6 pt-0 flex flex-col gap-4 h-full max-h-screen ">
            
             <div className="flex flex-col justify-between h-full min-h-full gap-12 overflow-auto">
 
