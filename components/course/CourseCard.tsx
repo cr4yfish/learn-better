@@ -13,6 +13,7 @@ import { Course } from "@/types/db";
 import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/utils/supabase/courses";
 
 import { useUserCourses } from "@/hooks/SharedUserCourses";
+import { Spinner } from "@nextui-org/spinner";
 
 export default function CourseCard ({ 
     course, isSmall=false, userID,
@@ -23,6 +24,7 @@ export default function CourseCard ({
     const [isJoined, setIsJoined] = useState(false);
     const [isUpvoted, setIsUpvoted] = useState(false);
     const [isVoting, setIsVoting] = useState(false);
+    const [isVoteLoading, setIsVoteLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,7 +92,10 @@ export default function CourseCard ({
         };
 
         if(userID && course.id) {
-            fetchVote(userID, course.id).then((res) => setIsUpvoted(res));
+            fetchVote(userID, course.id).then((res) => {
+                setIsUpvoted(res)
+                setIsVoteLoading(false)
+            });
         }
         
     }, [userID, course.id])
@@ -98,8 +103,9 @@ export default function CourseCard ({
     return (
     <>
         <Card
+            
             isPressable onClick={() => setIsModalOpen(true)} 
-            className={`h-32 ${isSmall && "h-30 w-24"} `}
+            className={`h-32 ${isSmall && "h-30 w-24"} text-gray-700 dark:text-gray-100 `}
             classNames={{
                 base: "overflow-y-hidden bg-content1/60 backdrop-blur",
             }}
@@ -112,7 +118,11 @@ export default function CourseCard ({
                         className="w-fit" size="sm"
                     >
                         <div className="w-full h-full flex items-center justify-center">
-                            <Icon downscale filled={isUpvoted}>favorite</Icon>
+                            { isVoteLoading ? 
+                                <Spinner color="primary" size="sm" />
+                                :
+                                <Icon downscale filled={isUpvoted}>favorite</Icon>
+                            }
                         </div>
                         
                     </Chip>
