@@ -20,7 +20,7 @@ export default function UserCourseOverview({ sessionState } : { sessionState: Se
     return (
         <>
         <h2 className=" font-bold">Your courses</h2>
-        <ScrollShadow className="flex flex-col gap-5 min-h-[50vh] overflow-y-auto">
+        <ScrollShadow className="flex flex-col gap-5 min-h-[50vh] overflow-y-auto overflow-visible">
             {userCourses?.map((userCourse) => (
                 <CourseCard 
                     key={userCourse.course.id} 

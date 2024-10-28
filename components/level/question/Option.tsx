@@ -20,10 +20,11 @@ export default function Option(
             isPressable
             onPress={() => active && setQuestionState(!(state == "selected"))}
             className={`
-                flex flex-row items-center justify-start gap-2 
-                ${state == "selected" ? "bg-primary-500 text-white" : ""}
+                flex flex-row items-center justify-start gap-2 text-gray-500 dark:text-gray-300
+                ${state == "selected" ? "bg-fuchsia-500 text-white" : ""}
                 ${state == "correct" ? "bg-green-500 text-white" : ""}
                 ${state == "wrong" ? "bg-red-500 text-white" : ""}
+               
             `}
         >
             <CardBody className="flex flex-row items-center justify-start gap-2">

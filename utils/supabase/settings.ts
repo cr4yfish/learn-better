@@ -9,12 +9,8 @@ import { Course, Settings } from "@/types/db";
 
 export const getSettings = cache(async(userID: string): Promise<Settings> => {
     const { data, error } = await getClient().from("settings").select(`
-        created_at,
-        updated_at,
-        theme,
-        color,
-        courses (*),
-        gemini_api_key
+        *,
+        courses (*)
     `).eq("user", userID);
     if(error) { throw error; }
 

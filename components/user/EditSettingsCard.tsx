@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import {Skeleton} from "@nextui-org/skeleton";
+import { Switch } from "@nextui-org/switch";
 
 import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
@@ -12,12 +13,13 @@ import Icon from "../utils/Icon";
 import { upsertSettings } from "@/utils/supabase/settings";
 
 export default function EditSettingsCard({ sessionState } : { sessionState: SessionState }) {
-    const [settings, setSettings] = useState<Settings | undefined>(sessionState.settings);
+    const [settings, setSettings] = useState<Settings>(sessionState.settings);
     const [isSaveLoading, setIsSaveLoading] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         setSettings(sessionState.settings);
+        console.log(sessionState.settings);
     }, [sessionState])
 
     const handleSaveSettings = async () => {
@@ -35,24 +37,31 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
         setIsSaveLoading(false);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleSettingsChange = (key: string, value: any) => {
+        if(!settings) return;
+        setSettings({...settings, [key]: value});
+    }
+
     return (
         <>
-        <Card>
+        <Card className=" text-black dark:text-white ">
             <CardHeader className=" font-bold">Settings</CardHeader>
-            <CardBody>
+            <CardBody className="flex flex-col gap-4">
 
                 <Skeleton
                     isLoaded={!!settings}
                     className=" rounded-xl"
                 >
                     <Input 
-                        value={settings?.gemini_api_key} 
+                        value={settings.gemini_api_key} 
                         label="Gemini API Key" 
                         type="password"
                         endContent={<div className=" h-full flex items-center justify-center"><Icon filled >key</Icon></div>} 
-                        onChange={e => settings && setSettings({...settings, gemini_api_key: e.target.value})}
+                        onChange={e => setSettings({...settings, gemini_api_key: e.target.value})}
                     />
                 </Skeleton>
+                <Switch classNames={{ label: "text-black dark:text-white" }} isSelected={settings.theme_is_dark} onValueChange={(value) =>handleSettingsChange("theme_is_dark", value)}  >Dark Mode</Switch>
             </CardBody>
             <CardFooter className="flex flex-row gap-4 items-center">
                 <div className="flex flex-col gap-1">

@@ -139,6 +139,7 @@ export type Settings = {
     created_at?: string; // timestampz
     updated_at?: string; // timestampz
     theme: string;
+    theme_is_dark: boolean;
     color: string;
     current_course: Course;
     gemini_api_key?: string;

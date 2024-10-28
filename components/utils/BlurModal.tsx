@@ -58,21 +58,21 @@ export default function BlurModal({
             onOpenChange={onOpenChange}
             backdrop="blur"
             classNames={{
-                base: "bg-content1/50 backdrop-blur-xl",
+                base: " bg-content1/70 dark:bg-content1/50  dark:backdrop-blur-xl",
                 body: "bg-transparent"
             }}
         >
             <ModalContent>
-                <Noise opacity={100} className="w-full noise h-fit relative min-h-max" >
-                    <NoiseContent className="w-full noise-content h-full justify-normal min-h-max ">
-                        <div ref={contentRef} className="h-full min-h-max w-full flex flex-col overflow-visible">
+                <Noise opacity={100} className=" noise h-fit relative min-h-max" >
+                    <NoiseContent className=" noise-content h-full justify-normal min-h-max ">
+                        <div ref={contentRef} className="h-full min-h-max  flex flex-col overflow-visible">
                             {settings.hasHeader && 
-                            <ModalHeader className="flex flex-row items-center justify-between w-full">
+                            <ModalHeader className="flex flex-row items-center justify-between ">
                                 {header}
                                 {!settings.hideCloseButton && <Button onClick={() => {internalOnClose(); updateOpen(false) }} variant="light" color="danger" isIconOnly><Icon filled>close</Icon></Button>}
                             </ModalHeader>
                             }
-                            {settings.hasBody && <ModalBody className="w-full relative">{body}</ModalBody>}
+                            {settings.hasBody && <ModalBody className="relative overflow-hidden ">{body}</ModalBody>}
                             {settings.hasFooter && <ModalFooter className=" max-sm:pb-8 ">{footer}</ModalFooter>}
                         </div>
                     </NoiseContent>

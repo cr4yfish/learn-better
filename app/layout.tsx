@@ -5,6 +5,7 @@ import { NextUIProvider } from "@nextui-org/system";
 import NextTopLoader from "nextjs-toploader";
 
 import PushNotification from "@/components/utils/PushNotification";
+import AutoThemer from "@/components/utils/AutoThemer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -73,6 +74,7 @@ export default function RootLayout({
               <>
               <NextTopLoader color="#E879F9" showSpinner={false} />
               {children}
+              <AutoThemer />
               <PushNotification />
               </>
             </NextUIProvider>

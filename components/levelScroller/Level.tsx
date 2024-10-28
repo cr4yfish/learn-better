@@ -28,7 +28,7 @@ export default function Level({ topic, active, offset, isAdmin=false, isNext } :
         >
             <PopoverTrigger>
                 <Button 
-                    className={` w-20 h-20 ${!active && "bg-gray-800"}`}
+                    className={` w-20 h-20 ${!active && "bg-gray-100 dark:bg-gray-800"}`}
                     radius="full"
                     variant={active ? "shadow" : "flat"}
                     size="lg"

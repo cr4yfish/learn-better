@@ -29,7 +29,15 @@ const config: Config = {
               DEFAULT: "#E879F9",
             }
           }
-        }
+        },
+        light: {
+          colors: {
+            primary: {
+              foreground: "#250326",
+              DEFAULT: "#E879F9",
+            }
+          }
+        },
       }
     })
   ],

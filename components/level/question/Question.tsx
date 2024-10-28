@@ -178,13 +178,13 @@ export default function Question({
 
     return (
         <>
-        <div className="flex flex-col prose dark:prose-invert gap-6">
+        <div className="flex flex-col prose dark:prose-invert gap-6 overflow-visible">
             <div className="flex flex-col gap-1">
                 <p className=" m-0">{question.title}</p>
                 <h2 className="m-0 font-bold">{question.question}</h2>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 overflow-visible">
                 <span className=" text-tiny">{question?.type?.description}</span>
                 {question.answer_options.map((option: string, index: number) => (
                     <Option 

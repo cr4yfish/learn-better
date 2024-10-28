@@ -86,3 +86,19 @@ export function streakToStreakDays(streak: Streak): number {
     const diff = Math.abs(to.getTime() - from.getTime()) + 1;
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
+
+export const theme = {
+    enableDarkMode: () => {
+        document.documentElement.classList.add("dark");
+    },
+    disableDarkMode: () => {
+        document.documentElement.classList.remove("dark");
+    },
+    setDarkMode: (value: boolean) => {
+        if (value) {
+            theme.enableDarkMode();
+        } else {
+            theme.disableDarkMode();
+        }
+    }
+}

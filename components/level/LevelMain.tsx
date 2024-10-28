@@ -70,7 +70,7 @@ export default function LevelMain({ session, level, questions, initLevelState } 
     }, [levelState.answeredQuestions])
 
     return (
-        <div className="px-4 py-6 flex flex-col gap-4 h-full max-h-screen ">
+        <div className="px-4 py-6 pt-4 flex flex-col gap-4 h-full max-h-screen ">
             <QuestionHeader 
                 progress={levelState.progress} 
                 numQuestions={levelState.totalQuestions} 
@@ -78,7 +78,7 @@ export default function LevelMain({ session, level, questions, initLevelState } 
                 show={questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions}
             />
            
-            <div className="flex flex-col justify-between h-full min-h-full gap-12 overflow-auto">
+            <div className="flex flex-col justify-between h-full min-h-full gap-12 overflow-visible">
                 {questions.length > 0 && levelState.answeredQuestions < levelState.totalQuestions && (
                     <Question 
                         question={questions[levelState.currentQuestionIndex]} 

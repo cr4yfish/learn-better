@@ -35,7 +35,7 @@ export default async function Header() {
 
     return (
         <>
-        <div className="flex flex-col justify-center items-center w-full p-6">
+        <div className="flex flex-col justify-center items-center w-full p-6 shadow-lg dark:shadow-none ">
             <div className="flex flex-row items-center justify-evenly flex-nowrap gap-5 backdrop-blur w-full">
                 <HeaderCourseSelect sessionState={sessionState}  />
                 <Streak 

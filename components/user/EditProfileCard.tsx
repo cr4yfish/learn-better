@@ -34,7 +34,7 @@ export default function EditProfileCard({ sessionState } : { sessionState: Sessi
 
     return (
         <>
-        <Card>
+        <Card className=" text-black dark:text-white ">
             <CardHeader className=" font-bold">Edit Profile</CardHeader>
             <CardBody>
 

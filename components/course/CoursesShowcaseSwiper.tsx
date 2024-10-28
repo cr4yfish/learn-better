@@ -19,10 +19,10 @@ export default function CoursesShowcaseSwiper({ session, courses } : { session: 
                 slidesPerView={3}
                 loop={false}
                 simulateTouch
-                className=' w-full h-full max-w-full overflow-x-scroll select-none'
+                className=' w-full h-full max-w-full overflow-x-scroll overflow-visible select-none'
             >
                 {courses.slice(0,5).map((course) => (
-                    <SwiperSlide className=' w-fit min-h-full' key={course.id}>
+                    <SwiperSlide className=' w-fit min-h-full overflow-visible' key={course.id}>
                         <CourseCard 
                             isSmall 
                             course={course} 

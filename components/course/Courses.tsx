@@ -12,7 +12,7 @@ export default async function Courses({ sessionState, courses } : { sessionState
 
     return (
         <>
-        <div className="flex px-4 py-6 flex-col gap-4 max-h-screen">
+        <div className="flex px-4 py-6 flex-col gap-4 max-h-screen overflow-visible">
             <h1 className="font-bold">Courses</h1>
 
             <CoursesShowcaseSwiper courses={courses} session={sessionState} />

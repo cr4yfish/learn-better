@@ -29,7 +29,7 @@ export default async function Leaderboard() {
 
             <div className="flex flex-col gap-2">
                 {profiles.map((profile, index) => (
-                    <LeaderboardCard key={index} profile={profile} />
+                    <LeaderboardCard key={index} profile={profile} sessionState={sessionState} />
                 ))}
             </div>
         </div>
