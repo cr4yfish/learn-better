@@ -1,22 +1,23 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 import { User } from "@nextui-org/user";
 
 import { Profile } from "@/types/db";
 import BlurModal from "../utils/BlurModal";
-import { Button } from "../utils/Button";
+import ProfileCard from "./ProfileCard";
+import { SessionState } from "@/types/auth";
 
 
 
-export default function Username({ profile } : { profile: Profile }) {
+export default function Username({ profile, sessionState } : { profile: Profile, sessionState: SessionState }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     return (
         <>
         <User
+            className=""
             onClick={() => setIsModalOpen(true)}
             name={profile.username}
             avatarProps={{ src: profile?.avatarLink }}
@@ -28,28 +29,11 @@ export default function Username({ profile } : { profile: Profile }) {
             settings={{
                 hasHeader: true,
                 hasBody: true,
-                hasFooter: true,
+                hasFooter: false,
+                size: "full"
             }}
-            header={<>{profile?.username}</>}
-            body={
-                <>
-                    <span>Rank: {profile.rank.title}</span>
-                    <span>{profile.total_xp} XP</span>
-                </>
-            }
-            footer={
-                <>
-                    <Link href={`/user/${profile?.id}`}  >
-                        <Button
-                            variant="flat"
-                            color="primary"
-                            className=" text-primary"
-                        >
-                            View Profile
-                        </Button>
-                    </Link>
-                </>
-            }
+            header={<>{profile?.username}s&apos; Profile</>}
+            body={<ProfileCard profile={profile} session={sessionState} />}
         />
 
         </>
