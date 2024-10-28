@@ -3,9 +3,9 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/system";
 import NextTopLoader from "nextjs-toploader";
+import { ThemeProvider } from "next-themes";
 
 import PushNotification from "@/components/utils/PushNotification";
-import AutoThemer from "@/components/utils/AutoThemer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -71,12 +71,15 @@ export default function RootLayout({
           className={`${montserrat.className} antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden dark:bg-primary/5`}
         >
           <NextUIProvider className="h-full max-h-screen overflow-y-hidden flex justify-between flex-col antialiased">
-              <>
-              <NextTopLoader color="#E879F9" showSpinner={false} />
-              {children}
-              <AutoThemer />
-              <PushNotification />
-              </>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+              >
+                <NextTopLoader color="#E879F9" showSpinner={false} />
+                {children}
+                <PushNotification />
+              </ThemeProvider>
             </NextUIProvider>
         </body>
     </html>

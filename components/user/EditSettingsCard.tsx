@@ -5,6 +5,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import {Skeleton} from "@nextui-org/skeleton";
 import { Switch } from "@nextui-org/switch";
+import { useTheme } from "next-themes";
 
 import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
@@ -16,6 +17,7 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
     const [settings, setSettings] = useState<Settings>(sessionState.settings);
     const [isSaveLoading, setIsSaveLoading] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
+    const { setTheme } = useTheme();
 
     useEffect(() => {
         setSettings(sessionState.settings);
@@ -43,6 +45,11 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
         setSettings({...settings, [key]: value});
     }
 
+    const handleThemeChange = (value: boolean) => {
+        setTheme(value ? "dark" : "light");
+        handleSettingsChange("theme_is_dark", value);
+    }
+
     return (
         <>
         <Card className=" text-black dark:text-white ">
@@ -61,7 +68,7 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
                         onChange={e => setSettings({...settings, gemini_api_key: e.target.value})}
                     />
                 </Skeleton>
-                <Switch classNames={{ label: "text-black dark:text-white" }} isSelected={settings.theme_is_dark} onValueChange={(value) =>handleSettingsChange("theme_is_dark", value)}  >Dark Mode</Switch>
+                <Switch classNames={{ label: "text-black dark:text-white" }} isSelected={settings.theme_is_dark} onValueChange={handleThemeChange}  >Dark Mode</Switch>
             </CardBody>
             <CardFooter className="flex flex-row gap-4 items-center">
                 <div className="flex flex-col gap-1">
