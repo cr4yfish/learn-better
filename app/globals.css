@@ -14,14 +14,23 @@
 
 .uppy-Dashboard-inner, .uppy-Dashboard-inner * {
   background: transparent !important;
-  color: var(--foreground) !important;
   border: none !important;
+}
+
+.uppy-Dashboard-AddFiles-title {
+  color: black !important;
 }
 
 .uppy-Dashboard-AddFiles-info {
   display: none !important;
 }
 
+/* dark theme */
+@media screen and (prefers-color-scheme: dark) {
+  .uppy-Dashboard-AddFiles-title, .uppy-DashboardContent-title, .uppy-Dashboard-AddFiles-info, .uppy-Dashboard-Item-fileInfo {
+    color: white !important;
+  }
+}
 
 @media screen and (max-width: 500px) {
   .uppy-Dashboard-inner {
