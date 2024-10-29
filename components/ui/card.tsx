@@ -12,12 +12,12 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl overflow-hidden relative border border-neutral-200 bg-white text-neutral-950 shadow dark:border-neutral-800 dark:bg-primary/5 backdrop-blur-xl dark:text-neutral-50",
+      "rounded-xl overflow-hidden relative border border-neutral-200 bg-primary/5 text-neutral-950 shadow dark:border-neutral-800 dark:bg-primary/5 backdrop-blur-xl dark:text-neutral-50",
       className
     )}
     {...props}
   >
-    <Noise opacity={.5} className=" absolute w-full h-full top-0 left-0 z-40 " />
+    <Noise opacity={.5} className=" absolute w-full h-full top-0 left-0 z-40 opacity-15 dark:opacity-100 " />
       {children}
   </div>
 ))
