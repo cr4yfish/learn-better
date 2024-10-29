@@ -8,7 +8,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(accordion|autocomplete|avatar|badge|button|calendar|card|checkbox|chip|divider|dropdown|image|input|kbd|link|modal|progress|radio|scroll-shadow|select|skeleton|slider|spinner|toggle|table|tabs|popover|user|ripple|listbox|menu|spacer).js"
+    "./node_modules/@nextui-org/theme/dist/components/(accordion|autocomplete|avatar|badge|button|calendar|card|checkbox|chip|divider|dropdown|image|input|kbd|link|modal|navbar|progress|radio|scroll-shadow|select|skeleton|slider|spinner|toggle|table|tabs|popover|user|ripple|listbox|menu|spacer).js"
   ],
   darkMode: "class",
   theme: {
