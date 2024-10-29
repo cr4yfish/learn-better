@@ -1,7 +1,7 @@
 "use server"
 
 import Link from "next/link"
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card"
+import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Input } from "@nextui-org/input"
 
 import { login } from "../actions"
@@ -18,21 +18,23 @@ export default async function Login() {
     }
 
     return (
-        <>
-        <h1 className="text-4xl font-bold text-center">Welcome back!</h1>
-        <form className="w-full">
-            <Card>
-                <CardHeader className="text-lg font-bold">Login</CardHeader>
-                <CardBody className="flex flex-col gap-2">
-                        <Input name="email" type="email" label="Email" required />
-                        <Input name="password" type="password" label="Password" required  />
-                </CardBody>
-                <CardFooter>
-                    <Button fullWidth color="primary" type="submit" formAction={login} >Login</Button>
-                </CardFooter>
-            </Card>
-        </form>
-        <Link href={"/auth/signup"} className=" text-blue-400 hover:text-blue-500 transition-all ">Sign up instead</Link>
-        </>
+        <div className="flex flex-col gap-4">
+            <h1 className="text-4xl font-bold text-center">Welcome back!</h1>
+            <form className="w-full">
+                <Card>
+                    <CardHeader className="text-lg font-bold">
+                        <CardTitle className="text-2xl font-bold">Login</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-2 relative z-50">
+                            <Input name="email" type="email" label="Email" variant="bordered" required />
+                            <Input name="password" type="password" label="Password" variant="bordered" required  />
+                    </CardContent>
+                    <CardFooter>
+                        <Button fullWidth color="primary" type="submit" formAction={login} >Login</Button>
+                    </CardFooter>
+                </Card>
+            </form>
+            <Link href={"/auth/signup"} className=" text-blue-400 hover:text-blue-500 transition-all ">Sign up instead</Link>
+        </div>
     )
 }
