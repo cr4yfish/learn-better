@@ -129,7 +129,6 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Institutional Accounts?    
 
 ### AI features
-
 - [x] Creating Levels & Questions from Document uploads using AI
     - [x] PDF
     - [x] Website URL (only works on server-rendered websites)
