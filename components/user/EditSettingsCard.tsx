@@ -21,7 +21,6 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
 
     useEffect(() => {
         setSettings(sessionState.settings);
-        console.log(sessionState.settings);
     }, [sessionState])
 
     const handleSaveSettings = async () => {
