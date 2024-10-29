@@ -78,27 +78,26 @@ Features marked with a question mark are not yet decided on, and might be droppe
         - [x] Level Scroller
         - [x] Level Creation
 - [x] Community Features 1
-    - [ ] ~~Image upload support~~
-    - [ ] ~~Adding more optional info fields~~
+    - [ ] ~~Image upload support~~ - Will add later
+    - [ ] ~~Adding more optional info fields~~ - Might add later
     - [x] Viewing other user profiles
     - [x] Rating System
         - [x] Courses
         - [x] Levels 
-        - [ ] ~~Questions~~
-- [x] AI Helper for answering questions (free for now)
+        - [ ] ~~Questions~~ - Too Granular
 - [x] Recurring questions in levels when questions are answered wrong
 - [ ] Data Features 1
     - [ ] Training mode on low confidence questions - WIP
     - [x] Stats about users & learning
     - [ ] Weekly/Monthly streak/xp goals
-    - [ ] ~~Weekly rank ups~~
+    - [ ] ~~Weekly rank ups~~ - Might add later
     - [ ] Achievements - WIP
 - [x] PWA features
     - [x] App installation popup support (depends on Browser)
     - [x] Notification System
     - [x] Better caching
     - [x] Offline Mode
-    - [ ] ~~Manual download of Courses?~~
+    - [ ] ~~Manual download of Courses?~~ - idk if that's useful
 - [ ] Anon views
     - [ ] Anon view of courses
     - [ ] Demo mode for onboarding
@@ -110,17 +109,13 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Move as much as possible to Server Rendering
 - [ ] Buy a domain
 
-### Userbase Features
-I will only implement these features if there are any users or interest to justify it.
-
+### Future Features
 - [ ] Community Features 2
     - [x] Following other users
-    - [ ] Course Collaboration   
-
-### Future Features
+    - [ ] Course Collaboration  
 - [ ] Importing Levels & Questions from other sources
     - [ ] Anki decks
-    - [ ] Study Drive Scraper 👀
+    - [x] Website Scraper (only works on server-rendered websites)
 - [ ] Security features
     - [ ] Cloudflare
     - [ ] Captcha for user sign ups
@@ -133,14 +128,16 @@ I will only implement these features if there are any users or interest to justi
     - [ ] Multi-language Courses
 - [ ] Institutional Accounts?    
 
-### Paywall features (these cost significant money to run)
-These features will be locked either behind a payment plan or by letting users provide their API keys (e.g. for OpenAI).
-Since it's open source the 2nd option will be available anyway for tech-users.
-Right now I prefer the first option since it might also help pay for server cost.
+### AI features
 
-- [x] Creating Levels & Questions from Document uploads using AI (PDF only right now)?
-- [ ] ~~Creating Levels & Questions from Pictures of Documents?~~ <- Pretty expensive
-- [ ] ~~AI Helper for creating questions & levels (mostly for writing help)~~ Just use the first feature
+- [x] Creating Levels & Questions from Document uploads using AI
+    - [x] PDF
+    - [x] Website URL (only works on server-rendered websites)
+    - [ ] ~~Image uploads~~ - Might add later
+    - [ ] ~~Plain text~~ - idk if that's useful
+- [x] AI explanation for questions
+- [ ] Personalized Teacher AI per course
+- [ ] ~~AI Helper for creating questions & levels (mostly for writing help)~~ - Just use the first feature
 
 ## Open Source & Contributions
 This project is 100% open source. 
