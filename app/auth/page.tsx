@@ -22,7 +22,7 @@ export default async function Auth() {
     return (
         <div className="flex flex-col gap-6 h-fit min-h-fit pt-5">
             <div className="flex flex-col items-center justify-center text-center">
-                <h1 className="font-black text-4xl">Welcome to <span className=" text-primary">Nouv</span></h1>
+                <h1 className="font-black text-4xl">Welcome to <span className=" text-primary italic">Nouv</span></h1>
                 <p>The next gen education platform</p>
             </div>
             <div className="flex flex-row items-center justify-center gap-2 w-full">
@@ -30,7 +30,7 @@ export default async function Auth() {
                 <Link href="/auth/login"><Button size="lg" color="secondary" variant="flat">Login</Button></Link>
             </div>
             
-            <Separator className="my-4 opacity-50"  />
+            <Separator className=" opacity-50"  />
 
             <div className="flex flex-col gap-1 items-center">
                 <h2 className="font-bold text-lg">Need some convincing?</h2>
