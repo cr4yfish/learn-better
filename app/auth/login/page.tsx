@@ -26,8 +26,8 @@ export default async function Login() {
                         <CardTitle className="text-2xl font-bold">Login</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2 relative z-50">
-                            <Input name="email" type="email" label="Email" variant="bordered" required />
-                            <Input name="password" type="password" label="Password" variant="bordered" required  />
+                            <Input name="email" type="email" label="Email" required />
+                            <Input name="password" type="password" label="Password" required  />
                     </CardContent>
                     <CardFooter>
                         <Button fullWidth color="primary" type="submit" formAction={login} >Login</Button>
