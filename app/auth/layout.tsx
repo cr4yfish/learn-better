@@ -13,18 +13,23 @@ export default function Layout({children} : {children: React.ReactNode}) {
 
     return (
         <>
-        <Navbar>
-            <NavbarBrand>
-                <span className="font-black text-primary">Nouv</span>
-            </NavbarBrand>
-            <NavbarContent justify="end">
-                <NavbarItem>
-                    <Link href="/auth/login"><Button variant="flat" color="secondary">Login</Button></Link>
-                </NavbarItem>
-            </NavbarContent>
-        </Navbar>
+
         <div className="relative w-screen h-screen max-w-screen max-h-screen overflow-hidden overflow-x-hidden flex items-center justify-center">
-            <ScrollShadow className="relative z-50 w-full h-full gap-4 overflow-y-auto overflow-x-hidden pt-5 pb-20 px-6">
+            
+            <Navbar className="absolute top-0 z-50" classNames={{
+                    wrapper: "bg-white/50 backdrop-blur-xl dark:bg-black/50",
+                }}>
+                <NavbarBrand>
+                    <span className="font-black text-primary">Nouv</span>
+                </NavbarBrand>
+                <NavbarContent justify="end">
+                    <NavbarItem>
+                        <Link href="/auth/login"><Button variant="flat" color="secondary">Login</Button></Link>
+                    </NavbarItem>
+                </NavbarContent>
+            </Navbar>
+                
+            <ScrollShadow className="relative z-40 w-full h-full gap-4 overflow-y-auto overflow-x-hidden pt-20 pb-20 px-6">
                 
                 {children}
 
