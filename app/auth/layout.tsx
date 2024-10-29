@@ -24,7 +24,7 @@ export default function Layout({children} : {children: React.ReactNode}) {
             </NavbarContent>
         </Navbar>
         <div className="relative w-screen h-screen max-w-screen max-h-screen overflow-hidden overflow-x-hidden flex items-center justify-center">
-            <ScrollShadow className="relative z-50 w-full h-full max-w-[500px] gap-4 overflow-y-auto pt-5 pb-20 px-6">
+            <ScrollShadow className="relative z-50 w-full h-full max-w-[500px] gap-4 overflow-y-auto overflow-x-hidden pt-5 pb-20 px-6">
                 
                 {children}
 
