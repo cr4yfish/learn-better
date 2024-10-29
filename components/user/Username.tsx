@@ -30,7 +30,6 @@ export default function Username({ profile, sessionState } : { profile: Profile,
                 hasHeader: true,
                 hasBody: true,
                 hasFooter: false,
-                size: "full"
             }}
             header={<>{profile?.username}s&apos; Profile</>}
             body={<ProfileCard profile={profile} session={sessionState} />}
