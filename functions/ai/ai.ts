@@ -31,7 +31,7 @@ const pdfUserMessage = (numLevels: number, courseSectionsPrompt: string) => {
         type: "text", 
         text: `
         Create exactly ${numLevels} unique Levels and at least 4 Questions per Level based solely on the provided document. 
-        Do not include duplicate levels. 
+        Do not include duplicate levels. Include a diverse set of questions, utilizing multiple question types.
         ${courseSectionsPrompt}
         `
     }

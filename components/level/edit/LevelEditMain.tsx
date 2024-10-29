@@ -1,8 +1,6 @@
-
-
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { Input } from "@nextui-org/input";
@@ -18,6 +16,8 @@ import BlurModal from "@/components/utils/BlurModal";
 import EditQuestion from "@/components/level/question/EditQuestion";
 
 import { upsertCourseTopic, deleteCourseTopic } from "@/utils/supabase/topics";
+import { QuestionTypes } from "@/utils/constants/question_types";
+import { SharedSelection } from "@nextui-org/system";
 
 
 export default function LevelEditMain({ initTopic, initQuestions } : { initTopic: Topic, initQuestions: Question[] }) {
@@ -25,6 +25,7 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
     const [questions, setQuestions] = useState(initQuestions);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedQuestionType, setSelectedQuestionType] = useState<Question_Type>(QuestionTypes.multiple_choice);
 
     const [isAddingQuestionLoading, setIsAddingQuestionLoading] = useState(false);
     const [newQuestion, setNewQuestion] = useState<Question>({} as Question);
@@ -32,7 +33,6 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
     const [isLoadingSave, setIsLoadingSave] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
     const [isLoadingDelete, setIsLoadingDelete] = useState(false);
-    
 
     const updateQuestionValue = (question: Question, key: keyof Question, value: string & string[] & Topic & Question_Type) => {
         setQuestions((prev) => {
@@ -60,14 +60,17 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
     const addQuestion = async (question: Question) => {
         setIsAddingQuestionLoading(true);
 
-        question.type = {
-            id: "5570443a-63bb-4158-b86a-a2cef3457cf0",
-            title: "Multiple Choice",
-            description: "Multiple choice question",
-        }; // multiple choice enforced for now
-
+        question.type = selectedQuestionType;
         question.topic = topic;
         question.id = uuidv4();
+        
+        if(question.type.title == "Boolean") {
+            question.answers_correct = ["true", "false"];
+            question.answer_options = ["true", "false"];
+        } else {
+            question.answers_correct = [];
+            question.answer_options = [];
+        }
 
         // only add it locally for now, since options are still missing
         setQuestions((prev) => {
@@ -96,6 +99,12 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
         // route user to home
         window.location.href = "/";
         setIsLoadingDelete(false);
+    }
+
+    const handleQuestionTypeSelectChange = (e: SharedSelection) => {
+        const id = e.currentKey;
+        const type = Object.values(QuestionTypes).find(q => q.id == id);
+        if(type) setSelectedQuestionType(type);
     }
 
     return (
@@ -170,9 +179,6 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
                 </Button>
             </div>
         
-
-
-
         <BlurModal 
             isOpen={isModalOpen}
             updateOpen={setIsModalOpen}
@@ -191,18 +197,16 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
                             description="Select the type of question you want to add"
                             placeholder="Select a topic"
                             selectionMode="single"
-                            selectedKeys={["multipleChoice"]}
-                            defaultSelectedKeys={["multipleChoice"]}
-                            disabledKeys={["topic2", "topic3"]}
+                            selectedKeys={[selectedQuestionType?.id]}
+                            defaultSelectedKeys={["5570443a-63bb-4158-b86a-a2cef3457cf0"]}
+                            disabledKeys={["6335b9a6-2722-4ece-a142-4749f57e6fed"]}
                             value={topic.title}
-                            onSelectionChange={(e) => console.log(e)}
+                            onSelectionChange={(e) => e.currentKey && handleQuestionTypeSelectChange(e)}
                         >
-                            <SelectSection  
-                                title="Select a question type"
-                                >
-                                <SelectItem key={"multipleChoice"} value="1">Multiple Choice</SelectItem>
-                                <SelectItem key={"topic2"} value="2">Boolean</SelectItem>
-                                <SelectItem key={"topic3"} value="3">Fill in the blank</SelectItem>
+                            <SelectSection title="Select a question type" >
+                                <SelectItem key={"5570443a-63bb-4158-b86a-a2cef3457cf0"} value="1">Multiple Choice</SelectItem>
+                                <SelectItem key={"33b2c6e5-df24-4812-a042-b5bed4583bc0"} value="2">Boolean</SelectItem>
+                                <SelectItem key={"6335b9a6-2722-4ece-a142-4749f57e6fed"} value="3">Fill in the blank</SelectItem>
                             </SelectSection>
                         </Select>
                         <Input

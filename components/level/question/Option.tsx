@@ -7,12 +7,13 @@ import React from "react";
 import { OptionState } from "@/types/client";
 
 export default function Option(
-    { children, state, setQuestionState, active } : 
+    { children, state, setQuestionState, active, size="md" } : 
     { 
         children: React.ReactNode,
         state: OptionState
         setQuestionState: (state: boolean) => void,
-        active: boolean
+        active: boolean,
+        size?: "md" | "lg"
     }) {
     
     return (
@@ -24,8 +25,9 @@ export default function Option(
                 ${state == "selected" ? "bg-fuchsia-500 text-white" : ""}
                 ${state == "correct" ? "bg-green-500 text-white" : ""}
                 ${state == "wrong" ? "bg-red-500 text-white" : ""}
-               
+                ${size == "lg" && "py-6"}
             `}
+
         >
             <CardBody className="flex flex-row items-center justify-start gap-2">
                 <Icon filled={state !== "unselected"}>check_circle</Icon>

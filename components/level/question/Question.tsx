@@ -13,7 +13,7 @@ import Option from "./Option";
 import BlurModal from "@/components/utils/BlurModal";
 import { addUserQuestion } from "@/utils/supabase/questions";
 import Icon from "@/components/utils/Icon";
-import { shuffleArray } from "@/functions/helpers";
+import { areArraysEqual as arraysAreEqual, shuffleArray } from "@/functions/helpers";
 
 
 export default function Question({
@@ -29,7 +29,7 @@ export default function Question({
     const [isLoading, setIsLoading] = useState(false)
     const [questionState, setQuestionState] = useState<QuestionState>({
         options: question.answer_options,
-        selected: "",
+        selected: [],
         correct: "initial"
     })
     const stopwatch = useStopwatch();
@@ -45,10 +45,10 @@ export default function Question({
     const [isExplained, setIsExplained] = useState(false);
     
     useEffect(() => {
-        setInput(`Please explain why the correct answer and why my answer is wrong. The Question Title: ${question.title}. The Question Description: ${question.question}. The Correct Answer: ${question.answer_correct}. All the Answer Options: ${question.answer_options.join(", ")}. The wrong Answer I chose: ${questionState.selected}`)
+        setInput(`Please explain the correct answer and if my answer is wrong, then also why it is wrong. The Question Title: ${question.title}. The Question Description: ${question.question}. The Correct Answer Options: [${question.answers_correct.join(", ")}]. All the Answer Options: [${question.answer_options.join(", ")}]. The Answers options I chose: [${questionState.selected.join(", ")}]`)
     }, [
             question.title, question.question, question.answer_options,
-            question.answer_correct, questionState.selected, setInput
+            question.answers_correct, questionState.selected, setInput
         ])
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export default function Question({
         let xp = 0;
         let completed = false;
 
-        if (questionState.selected == question.answer_correct) {
+        if (arraysAreEqual(question.answers_correct, questionState.selected)) {
             setQuestionState({...questionState, correct: "correct"})
             xp = 100;
             completed = true;
@@ -108,13 +108,13 @@ export default function Question({
 
     const getOptionState = (questionState: QuestionState, option: string): OptionState => {
 
-        if(questionState.correct == "initial" && questionState.selected == option) {
+        if(questionState.correct == "initial" && questionState.selected.includes(option)) { 
             return "selected";
         } 
-        else if(questionState.correct == "correct" && questionState.selected == option) {
+        else if(questionState.correct == "correct" && questionState.selected.includes(option)) {
             return "correct";
         }
-        else if(questionState.correct == "wrong" && questionState.selected == option) {
+        else if(questionState.correct == "wrong" && questionState.selected.includes(option)) {
             return "wrong";
         }
 
@@ -175,12 +175,12 @@ export default function Question({
         // reset the question state when the question changes
         setQuestionState((prevState) => ({
             ...prevState,
-            selected: "",
+            selected: [],
             correct: "initial"
         }))
 
         setMessages([])
-    }, [question.answer_correct])
+    }, [question.answers_correct])
 
     return (
         <>
@@ -191,11 +191,23 @@ export default function Question({
             </div>
 
             <div className="flex flex-col gap-2 overflow-visible">
-                <span className=" text-tiny">{question?.type?.description}</span>
-                {question.answer_options.map((option: string, index: number) => (
+                <span className=" text-tiny">{question?.type?.title == "Multiple Choice" ? `Choose ${question.answers_correct.length} options` : question.type.description}</span>
+                {question.type.title == "Multiple Choice" && question.answer_options.map((option: string, index: number) => (
                     <Option 
                         state={getOptionState(questionState, option)}
-                        setQuestionState={() => setQuestionState({...questionState, selected: option})}
+                        setQuestionState={() => setQuestionState((prevState) => {
+                            if(prevState.selected.includes(option)) {
+                                return {
+                                    ...prevState,
+                                    selected: prevState.selected.filter(selectedOption => selectedOption != option)
+                                }
+                            } else {
+                                return {
+                                    ...prevState,
+                                    selected: [...prevState.selected, option]
+                                }
+                            }
+                        })}
                         key={index}
                         active={questionState.correct == "initial"}
                         >
@@ -203,6 +215,47 @@ export default function Question({
                     </Option>
                 ))}
                 
+                {question.type.title == "Boolean" && (
+                    <>
+                    <Option
+                        size="lg"
+                        state={getOptionState(questionState, "True")}
+                        setQuestionState={() => setQuestionState((prevState) => {
+                            if(prevState.selected.includes("True")) {
+                                return {
+                                    ...prevState,
+                                    selected: prevState.selected.filter(selectedOption => selectedOption != "True")
+                                }
+                            } else {
+                                return {
+                                    ...prevState,
+                                    selected: ["True"]
+                                }
+                            }
+                        })}
+                        active={questionState.correct == "initial"}
+                    >Statement is <b>True</b></Option>
+                    <Option
+                        size="lg"
+                        state={getOptionState(questionState, "False")}
+                        setQuestionState={() => setQuestionState((prevState) => {
+                            if(prevState.selected.includes("False")) {
+                                return {
+                                    ...prevState,
+                                    selected: prevState.selected.filter(selectedOption => selectedOption != "False")
+                                }
+                            } else {
+                                return {
+                                    ...prevState,
+                                    selected: ["False"]
+                                }
+                            }
+                        })}
+                        active={questionState.correct == "initial"}
+                    >Statement is <b>False</b></Option>
+                    </>
+                )}
+
             </div>
 
             <Button 

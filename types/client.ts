@@ -16,7 +16,7 @@ export type LevelState = {
 
 export type QuestionState = {
     options: string[],
-    selected: string,
+    selected: string[],
     correct: "correct" | "wrong" | "initial"
 }
 

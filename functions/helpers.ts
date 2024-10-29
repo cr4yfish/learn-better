@@ -102,3 +102,7 @@ export const theme = {
         }
     }
 }
+
+export function areArraysEqual(array1: string[], array2: string[]) {
+    return array1.length === array2.length && array1.every((value, index) => array2.some((v) => v.toLowerCase() === value.toLowerCase()));
+}

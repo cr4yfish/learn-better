@@ -24,6 +24,7 @@ import { SessionState } from "@/types/auth";
 import { Course, Course_Section, Question, Topic } from "@/types/db";
 import { upsertQuestion } from "@/utils/supabase/questions";
 import CourseSectionAutocomplete from "@/components/courseSection/CourseSectionAutocomplete";
+import { QuestionTypes } from "@/utils/constants/question_types";
 
 
 export default function LevelNewAIMain({ sessionState } : { sessionState: SessionState }) {
@@ -95,10 +96,11 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
 
                 if(res) {
                     level.questions.forEach(async (question) => {
-                        if(!question || !question.title || !question.question 
-                            || !question.answer_options || question.answer_options.length == 0 ||
-                            !question.answer_correct || typeof question.answer_options[0] !== "string"
-                        ) return;
+                        if(!question || !question.title || !question.question) return;
+
+                        console.log(question);
+
+                        
 
                         const newQuestion: Question = {
                             id: uuidv4(),
@@ -108,13 +110,9 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
                                 ...newLevel,
                                 id: res.id
                             },
-                            answer_options: question.answer_options as string[],
-                            answer_correct: question.answer_correct,
-                            type: {
-                                id: "5570443a-63bb-4158-b86a-a2cef3457cf0",
-                                title: "Multiple Choice",
-                                description: "Multiple choice question"
-                            }
+                            answer_options: question.question_type == "multiple_choice" ? question.multiple_choice?.answer_options as string[] : ["true", "false"],
+                            answers_correct: question.question_type == "multiple_choice" ? question.multiple_choice?.answers_correct as string[] : question.true_false?.answer_correct ? ["true"] : ["false"],
+                            type: question.question_type == "multiple_choice" ? QuestionTypes.multiple_choice : QuestionTypes.boolean
                         }
 
                         await upsertQuestion(newQuestion);
@@ -214,11 +212,19 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
                                             key={i}
                                             title={q?.title} subtitle={q?.question}
                                         >
-                                            <div className="flex flex-col">
-                                                {q?.answer_options?.map((a, j) => (
-                                                    <span key={j} className={`text-tiny ${q?.answer_correct == a && "text-green-400"}`}>{a}</span>
-                                                ))}
-                                            </div>
+
+                                            {q?.question_type == "multiple_choice" &&
+                                                <div className="flex flex-col">
+                                                    {q?.multiple_choice?.answer_options?.map((a, j) => (
+                                                        <span key={j} className={`text-tiny ${q?.multiple_choice?.answers_correct?.includes(a) && "text-green-400"}`}>{a}</span>
+                                                    ))}
+                                                </div>
+                                            }
+
+                                            {q?.question_type == "true_false" &&
+                                                <span className={`text-tiny ${q?.true_false?.answer_correct ? "text-green-400" : "text-red-400"}`}>{q?.true_false?.answer_correct ? "true" : "false"}</span>
+                                            }
+
                                         </AccordionItem>
                                     ))}
                                 </Accordion>

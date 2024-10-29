@@ -12,24 +12,18 @@ import { Question, User_Question, Weak_User_Questions } from "@/types/db";
 export const getQuestions = cache(async(topicId: string): Promise<Question[]> => {
     const { data, error } = await getClient().from("questions")
     .select(`
-        *.
         question_types (*),
-        topics (*)
+        topics (*),
+        *
+    
     `).eq("topic", topicId);
     if(error) { throw error; }
-
-
-    // cast db to any since there is a mismatch in the foreign key fields
+    
     return data.map((db: any) => {
         return {
-            id: db.id,
-            created_at: db.created_at,
-            title: db.title,
-            question: db.question,
-            answer_correct: db.answer_correct,
-            answer_options: db.answer_options,
-            type: db.question_types, // what the fuck? Why is this not returning as an array?
-            topic: db.topics // this as well
+            ...db,
+            type: db.question_types,
+            topic: db.topics 
         }
     });
 })
@@ -40,8 +34,8 @@ export const getQuestions = cache(async(topicId: string): Promise<Question[]> =>
 export const getWeakQuestions = cache(async (): Promise<Weak_User_Questions[]> => {
     const { data, error } = await getClient().from("weak_user_questions")
         .select(`
-            *,
-            questions (*)
+            questions (*),
+            *
         `)
         .order("score", { ascending: false })
     
@@ -80,7 +74,7 @@ export async function upsertQuestion(question: Question): Promise<{ id: string }
         id: question.id,
         title: question.title,
         question: question.question,
-        answer_correct: question.answer_correct,
+        answers_correct: question.answers_correct,
         answer_options: question.answer_options,
         type: question.type.id,
         topic: question.topic.id,

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 
 import { Button } from "@/components/utils/Button";
@@ -8,6 +10,9 @@ import { Input } from "@nextui-org/input"
 import { Question, Question_Type, Topic } from "@/types/db";
 import Icon from "@/components/utils/Icon";
 import { upsertQuestion, deleteQuestion } from "@/utils/supabase/questions";
+import { QuestionTypes } from "@/utils/constants/question_types";
+import EditMultipleChoice from "./questionTypes/EditMultipleChoice";
+import EditBoolean from "./questionTypes/EditBoolean";
 
 export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key:  keyof Question, value: string & string[] & Topic & Question_Type) => void , removeQuestion: (question: Question) => void  }) {
     const [integrity, setIntegrity] = useState(true);
@@ -57,8 +62,8 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
     const handleOptionValueChange = (value: string, index: number) => {
         
         // if the correct answer is changed, update the correct answer as well
-        if(question.answer_options.length > 0 && question.answer_options[index] == question.answer_correct) {
-            handleUpdateValue("answer_correct", value);
+        if(question.answer_options.length > 0 && question.answers_correct.includes(question.answer_options[index])) {
+            handleUpdateValue("answers_correct", [...question.answers_correct, value]);
         }
 
         handleUpdateValue("answer_options", question.answer_options.map((o, i) => i == index ? value : o));
@@ -73,59 +78,24 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
                 <Input value={question.title} label="Question title" onChange={(e) => handleUpdateValue("title", e.target.value)} />
                 <Input value={question.question} label="Question" onChange={(e) => handleUpdateValue("question", e.target.value)} />
 
-                <div className="flex flex-col gap-1">
-                    <span className=" font-semibold">Options</span>
-                    {question.answer_options?.map((option, index) => (
-                        <Input 
-                            key={index} 
-                            label={`Option ${index + 1}`} 
-                            placeholder="Enter the option" 
-                            value={option} 
-                            onValueChange={(value) => handleOptionValueChange(value, index)}
-                            description={option == question.answer_correct ? "Selected as correct answer" : ""}
-                            endContent={(
-                                <div className="flex flex-row items-center gap-1">
-                                    { option == question.answer_correct ? 
-                                        <Button 
-                                            color="success" 
-                                            variant="light" 
-                                            isIconOnly
-                                            onClick={() => handleUpdateValue("answer_correct", "")}
-                                        >
-                                            <Icon filled color="success">check_circle</Icon> 
-                                        </Button> :
-                                        <Button 
-                                            color="success" 
-                                            variant="light" 
-                                            isIconOnly
-                                            onClick={() => handleUpdateValue("answer_correct", option)}
-                                        >
-                                            <Icon color="success">check_circle</Icon>
-                                        </Button>
-                                    }
-                                    <Button 
-                                        color="danger" 
-                                        variant="light" 
-                                        isIconOnly
-                                        onClick={() => handleUpdateValue("answer_options", question.answer_options.filter((o, i) => i != index))}
-                                    >
-                                        <Icon color="danger">delete</Icon>
-                                    </Button>
-                                </div>
-                            )}
-                        />
-                    ))}
-                    <div className="mt-1">
-                        <Button 
-                            color="warning" 
-                            variant="light" 
-                            startContent={<Icon color="warning" filled>add</Icon>}
-                            onClick={() => handleUpdateValue("answer_options", question.answer_options ? [...question.answer_options, ""] : [""])}
-                        >
-                            Add an option
-                        </Button>
-                    </div>
-                </div>
+                {question.type.id == QuestionTypes.multiple_choice.id && 
+                    <EditMultipleChoice 
+                        question={question} 
+                        handleUpdateValue={handleUpdateValue} 
+                        handleOptionValueChange={handleOptionValueChange} 
+                    />
+                }
+
+                {question.type.id == QuestionTypes.boolean.id &&
+                    <EditBoolean
+                        question={question} 
+                        handleUpdateValue={handleUpdateValue}
+                    />
+                }
+
+                {question.type.id == QuestionTypes.fill_in_the_blank.id &&
+                    <><span>This Question type is not supported yet. Please choose a different one.</span></>
+                }
             </CardBody>
             <CardFooter className="flex flex-row items-center gap-4"> 
 

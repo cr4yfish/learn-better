@@ -63,7 +63,7 @@ export type Question = {
     created_at?: string; // timestampz
     title: string;
     question: string;
-    answer_correct: string;
+    answers_correct: string[];
     answer_options: string[];
     type: Question_Type;
     topic: Topic;
@@ -130,7 +130,7 @@ export type Community = {
 export type Question_Type = {
     id: string;
     created_at?: string; // timestampz
-    title: "Multiple Choice" | "Single Choice" | "Boolean" | "Fill in the Blank";
+    title: "Multiple Choice" | "Boolean" | "Fill in the Blank";
     description: string;
 }
 
