@@ -26,8 +26,8 @@ export default async function Auth() {
                 <p>The next gen education platform</p>
             </div>
             <div className="flex flex-row items-center justify-center gap-2 w-full">
-                <Link href="/auth/signup"><Button color="primary" variant="shadow" fullWidth>Get started</Button></Link>
-                <Link href="/auth/login"><Button color="secondary" variant="flat">Login</Button></Link>
+                <Link href="/auth/signup"><Button size="lg" color="primary" variant="shadow" fullWidth>Get started</Button></Link>
+                <Link href="/auth/login"><Button size="lg" color="secondary" variant="flat">Login</Button></Link>
             </div>
             
             <Separator className="my-4 opacity-50"  />
