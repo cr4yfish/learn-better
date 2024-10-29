@@ -19,7 +19,7 @@ export default async function Signup() {
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 relative">
             <h1 className="text-4xl font-bold text-center">Welcome to Nouv!</h1>
             <form className="w-full">
                 <Card>

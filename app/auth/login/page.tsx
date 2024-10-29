@@ -18,7 +18,7 @@ export default async function Login() {
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 relative">
             <h1 className="text-4xl font-bold text-center">Welcome back!</h1>
             <form className="w-full">
                 <Card>

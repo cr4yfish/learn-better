@@ -20,7 +20,7 @@ import Icon from "@/components/utils/Icon";
 export default async function Auth() {
 
     return (
-        <div className="flex flex-col gap-6 h-fit min-h-fit pt-5">
+        <div className="flex flex-col gap-6 h-fit min-h-fit pt-5 relative">
             <div className="flex flex-col items-center justify-center text-center">
                 <h1 className="font-black text-4xl">Welcome to <span className=" text-primary italic">Nouv</span></h1>
                 <p>The next gen education platform</p>
