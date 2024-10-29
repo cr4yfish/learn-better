@@ -1,19 +1,25 @@
+"use client";
+
 import * as React from "react"
+import { Noise } from "react-noise";
 
 import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border border-neutral-200 bg-white text-neutral-950 shadow dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50",
+      "rounded-xl overflow-hidden relative border border-neutral-200 bg-white text-neutral-950 shadow dark:border-neutral-800 dark:bg-primary/5 backdrop-blur-xl dark:text-neutral-50",
       className
     )}
     {...props}
-  />
+  >
+    <Noise opacity={.5} className=" absolute w-full h-full top-0 left-0 z-40 " />
+      {children}
+  </div>
 ))
 Card.displayName = "Card"
 
