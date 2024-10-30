@@ -15,33 +15,42 @@ import { getCourseTopics } from "@/utils/supabase/topics";
 import { useCurrentCourse } from "@/hooks/SharedCourse";
 import { getUserCourse } from "@/utils/supabase/courses";
 
-const calculateOffsets = (numLevels: number, maxOffset: number) => {
-    const offsets = [];
-    let offset = 0;
-    let direction = 1;
-    const stepSize = 3;
+/**
+ * 
+ * @param prevOffset 
+ * @param maxOffset % of screen width
+ * @param stepSize 
+ * @returns 
+ */
+const getNextOffset = (currentIndex: number, maxOffset: number, stepSize = 1): { nextOffset: number } => {;
+    const maxLevelsPerDirection = Math.ceil(maxOffset / stepSize);
 
-    for (let i = 0; i < numLevels; i++) {
-        offsets.push(offset);
-        offset += stepSize * direction;
-        if (offset > maxOffset || offset <= -(2*maxOffset)) {
-            direction *= -1;
-            offset += stepSize * direction; // Adjust offset after direction change
-            // reduce offset of last one to make a curve
-            offsets[i - 1] -= (stepSize/5);
-        }
-        if(Math.abs(offsets[i]) == Math.abs(offset)) {
-            offset += stepSize;
-        }
-    }
-    return offsets;
+    let nextOffset = 0;
+    let goRight = true;
+
+    // get next direction
+    const numDirectionChange = Math.floor(currentIndex / maxLevelsPerDirection);
+    goRight = numDirectionChange % 2 === 0;
+
+    const numInSegment = currentIndex % maxLevelsPerDirection;
+
+    // get next offset
+    if(goRight) {
+        nextOffset = numInSegment
+    } else {
+        nextOffset = -numInSegment + maxLevelsPerDirection - 2;
+    } 
+
+    nextOffset -= 2
+
+    return { nextOffset };
 };
 
 async function loadMoreTopics({
     cursor, currentCourse, topics, limit=20
 } : {
     currentCourse: Course, topics: Topic[], cursor: number, limit?: number,
-}): Promise<{ data: { cursor: number, topics: Topic[], offsets: number[], canLoadMore: boolean } } | { error: string }>  {
+}): Promise<{ data: { cursor: number, topics: Topic[], canLoadMore: boolean } } | { error: string }>  {
     let canLoadMore = true;
 
     if (!currentCourse?.id) {  return { error: "No course selected" }; }
@@ -56,13 +65,10 @@ async function loadMoreTopics({
         if (filteredRes.length < limit || filteredRes.length === 0) {  canLoadMore = false;  }
         if (filteredRes.length === 0) { return { error: "No more topics to load" }; }
 
-        const calcOffsets = calculateOffsets(filteredRes.length, 4);
-
         return {
             data :{
                 cursor: cursor + limit + 1,
                 topics: [...topics, ...filteredRes],
-                offsets: calcOffsets,
                 canLoadMore: canLoadMore,
             }
         }
@@ -85,8 +91,6 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
     const [cursor, setCursor] = useState<number>(initTopics.length)
 
     const [currentCourseSection, setCurrentCourseSection] = useState<Course_Section | null>(null)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [offsets, setOffsets] = useState<number[]>([])
     const [canLoadMore, setCanLoadMore] = useState(true)
     
     const [isLoading, setIsLoading] = useState(false)
@@ -119,7 +123,6 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
 
         courseToUserCourse(currentCourse).then((res) => {
             setTopics([]);
-            setOffsets([]);
             setCursor(0);
             setCanLoadMore(true);
             setIsAdmin((res?.is_collaborator || res?.is_admin || res?.is_moderator) ?? false);
@@ -140,10 +143,9 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
             console.error(result.error);
             setCanLoadMore(false);
         } else {
-            const { cursor, topics, offsets, canLoadMore } = result.data;
+            const { cursor, topics, canLoadMore } = result.data;
             setCursor(cursor);
             setTopics(topics);
-            setOffsets(offsets);
             setCanLoadMore(canLoadMore);
             if(currentCourseSection == null && topics.length > 0) {
                 setCurrentCourseSection(topics[0].course_section ?? null);
@@ -167,6 +169,12 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
         return isNext;
     }
 
+    const handleGetOffset = (index: number): number => {
+        if(index == 0) { return -2; }
+        const { nextOffset } =  getNextOffset(index, 5);
+        return nextOffset;
+    }
+
     return (
     <>
         <InfiniteScroll 
@@ -184,13 +192,13 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
                     {topics.map((topic, index) => (
                         <div key={topic.id} >
                             {(index == 0 || topic.course_section.id !== topics[index-1]?.course_section.id) && (
-                                <div className=" w-full px-4 mb-4 mt-8"><CourseSectionBanner courseSection={topic.course_section} /></div>
+                                <CourseSectionBanner courseSection={topic.course_section} />
                             )}
                             <Level 
                                 topic={topic} 
                                 active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
                                 isNext={checkIsNext(topic, index)}
-                                offset={0}
+                                offset={handleGetOffset(index)}
                                 isAdmin={isAdmin}
                             />
                         </div>            

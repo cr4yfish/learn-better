@@ -15,7 +15,7 @@ export default function Level({ topic, active, offset, isAdmin=false, isNext } :
     return (
         <div
             style={{
-                transform: `translateX(${offset}rem)`,
+                transform: `translateX(${offset*2}rem)`,
             }}
             className="flex flex-col items-center"
             id={isNext ? "isNextLevel" : ""}
