@@ -5,6 +5,7 @@ import CoursesShowcaseSwiper from "./CoursesShowcaseSwiper";
 import { Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 import UserCourseOverview from "./UserCourseOverview";
+import { Separator } from "@/components/ui/separator";
 
 
 
@@ -12,11 +13,10 @@ export default async function Courses({ sessionState, courses } : { sessionState
 
     return (
         <>
-        <div className="flex px-4 py-6 flex-col gap-4 max-h-screen overflow-visible">
-            <h1 className="font-bold">Courses</h1>
+        <div className="flex flex-col gap-4 max-h-screen overflow-visible pb-20">
 
             <CoursesShowcaseSwiper courses={courses} session={sessionState} />
-
+            <Separator className="mt-4 opacity-25 " />
             <UserCourseOverview  sessionState={sessionState}  />
            
         </div>
