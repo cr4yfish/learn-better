@@ -12,7 +12,8 @@ The learning app that helps you learn anything you want.
     <img src="https://i.imgur.com/jkz577X.png" style="height: 500px; width: auto;" >
 </div>
 
-
+## TL;DR
+Duolingo but for any subject and community-driven.
 
 ## Description
 This is a project to help people learn better. Its main feature is the ability to create and share courses.
