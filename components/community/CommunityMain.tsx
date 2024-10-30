@@ -1,3 +1,5 @@
+"use server";
+
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -25,19 +27,18 @@ export default async function CommunityMain() {
 
     return (
         <UserCoursesProvider>
-            <div className="flex px-6 py-6 flex-col gap-4 w-full overflow-y-auto max-h-screen pb-40">
-                <h1 className="font-bold">Community</h1>
-                
-                <div className="flex flex-col gap-4">
-
+            <div className="flex px-4 py-6 flex-col gap-4 w-full overflow-y-auto max-h-screen pb-40">
+                <div className="flex flex-row items-center justify-between w-full">
+                    <h1 className="font-bold text-4xl">Community</h1>
                     <Link href={`course/new/${session?.user?.id}`}>
-                        <Button  color="primary" startContent={<Icon color="fuchsia-950" filled>add</Icon>}>Create a course</Button>
+                        <Button  color="primary" variant="flat" isIconOnly ><Icon color="primary" filled>add</Icon></Button>
                     </Link>
-
-                    <Suspense fallback={<div>Loading Course Search......</div>}>
-                        <CourseSearch sessionState={session} />
-                    </Suspense>
                 </div>
+                
+            
+                <Suspense fallback={<div>Loading Course Search......</div>}>
+                    <CourseSearch sessionState={session} />
+                </Suspense>
 
                 <Suspense fallback={<div>Loading Courses......</div>}>
                     <Courses sessionState={session} courses={courses} />
