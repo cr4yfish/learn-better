@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { Chip } from "@nextui-org/chip";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 
 import { Button } from "@/components/utils/Button";
 import Icon from "../utils/Icon";
@@ -13,18 +13,16 @@ import { Course } from "@/types/db";
 import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/utils/supabase/courses";
 
 import { useUserCourses } from "@/hooks/SharedUserCourses";
-import { Spinner } from "@nextui-org/spinner";
 
 export default function CourseCard ({ 
-    course, isSmall=false, userID,
+    course, userID,
 } : { 
-    course: Course, isSmall?: boolean, userID?: string,
+    course: Course, userID?: string,
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
     const [isUpvoted, setIsUpvoted] = useState(false);
     const [isVoting, setIsVoting] = useState(false);
-    const [isVoteLoading, setIsVoteLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,7 +92,6 @@ export default function CourseCard ({
         if(userID && course.id) {
             fetchVote(userID, course.id).then((res) => {
                 setIsUpvoted(res)
-                setIsVoteLoading(false)
             });
         }
         
@@ -103,49 +100,29 @@ export default function CourseCard ({
     return (
     <>
         <Card
-            
-            isPressable onClick={() => setIsModalOpen(true)} 
-            className={`h-32 ${isSmall && "h-30 w-24"} text-gray-700 dark:text-gray-100 `}
-            classNames={{
-                base: "overflow-y-hidden bg-content1/60 backdrop-blur",
-            }}
+            onClick={() => setIsModalOpen(true)} 
+            className={`text-gray-700 dark:text-gray-100`}
         >
-            <CardHeader className="m-0 pb-0 font-bold overflow-y-hidden flex items-center justify-between">
-                <span>{course.abbreviation}</span>
-                {!isSmall && 
-                    <Chip 
-                        color="secondary" variant="light"
-                        className="w-fit" size="sm"
-                    >
-                        <div className="w-full h-full flex items-center justify-center">
-                            { isVoteLoading ? 
-                                <Spinner color="primary" size="sm" />
-                                :
-                                <Icon downscale filled={isUpvoted}>favorite</Icon>
-                            }
-                        </div>
-                        
-                    </Chip>
-                }
+            <CardHeader className="pb-2">
+                <CardDescription>{course.title}</CardDescription>
+                <CardTitle>{course.abbreviation}</CardTitle>
+                
             </CardHeader>
-            <CardBody className="flex flex-col pb-4 overflow-y-hidden">
-                {!isSmall && <span className=" text-tiny font-semibold">{course.title}</span>}
-                {!isSmall && <span>{course.description}</span>}
-                {isSmall &&
-                    <div className="flex flex-col gap-2">
-                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>TBD</Chip>
-                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>TBD</Chip>
-                    </div>
-                }
-            </CardBody>
-            {!isSmall &&
-                <CardFooter>
-                    <div className="flex items-center justify-between gap-4">
-                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>TBD</Chip>
-                        <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>TBD</Chip>
-                    </div>
-                </CardFooter>
-            }
+
+            <CardContent className="prose dark:prose-invert prose-p:m-0 py-0">
+                <p>{course.description}</p>
+            </CardContent>
+
+            <CardFooter className="flex items-center gap-2 pt-2">
+                <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>
+                    123
+                </Chip>
+                <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>
+                    123
+                </Chip>
+
+            </CardFooter>
+            
         </Card>
 
         <BlurModal 
@@ -195,7 +172,7 @@ export default function CourseCard ({
                         Join Course
                     </Button>
                 }
-                { isAdmin && !isSmall &&
+                { isAdmin &&
                     <Link href={`/course/edit/${course.id}`}>
                         <Button 
                             variant="flat" 
