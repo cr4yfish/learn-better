@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { redirect } from "next/navigation";
 
 import { Input } from "@nextui-org/input"
 import { Switch } from "@nextui-org/switch"
@@ -57,9 +58,11 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
 
             if(dbRes) {
                 setDone(true);
+                redirect(`/course/${res.id}`);
             }
         } else if(res.id) {
             setDone(true);
+            redirect(`/course/${res.id}`);
         }
 
         setIsLoading(false);
