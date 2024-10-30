@@ -88,8 +88,8 @@ export default async function User() {;
                     <div className="flex flex-row items-center flex-wrap gap-4">
                         
                         <div className="flex flex-row gap-1">
-                            <div>
-                                <Icon filled>mode_heat</Icon>
+                            <div className=" text-orange-500">
+                                <Icon color="orange-500" filled>mode_heat</Icon>
                             </div>
                             <div className="flex flex-col">
                                 <span>{session.currentStreakDays}</span>
@@ -98,7 +98,7 @@ export default async function User() {;
 
                                           
                         <div className="flex flex-row gap-1">
-                            <div>
+                            <div className="text-green-400">
                                 <Icon filled>hotel_class</Icon>
                             </div>
                             <div className="flex flex-col">
