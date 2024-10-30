@@ -2,7 +2,11 @@
 
 
 import { SwiperSlide, Swiper } from "swiper/react";
+import { Scrollbar } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/navigation";
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 import CourseCard from "./CourseCard";
 
@@ -15,16 +19,17 @@ export default function CoursesShowcaseSwiper({ session, courses } : { session: 
         <>
             <h2 className=" font-bold">Newest Courses</h2>
             <Swiper
+                modules={[Scrollbar]}
                 spaceBetween={15}
-                slidesPerView={3}
+                slidesPerView={1}
                 loop={false}
                 simulateTouch
-                className=' w-full h-full max-w-full overflow-x-scroll overflow-visible select-none'
+                scrollbar={{ draggable: true }}
+                className=' w-full h-full overflow-x-scroll overflow-visible select-none'
             >
                 {courses.slice(0,5).map((course) => (
-                    <SwiperSlide className=' w-fit min-h-full overflow-visible' key={course.id}>
+                    <SwiperSlide className=' w-fit h-fit overflow-visible' key={course.id}>
                         <CourseCard 
-                            isSmall 
                             course={course} 
                             userID={session.user?.id}
                         />

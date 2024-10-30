@@ -91,6 +91,15 @@
   overflow: visible !important;
 }
 
+.swiper-scrollbar {
+  @apply bg-primary/10 !important;
+  transform: translateY(400%);
+}
+
+.swiper-scrollbar-drag {
+  @apply bg-primary/50 rounded-full !important;
+}
+
 .recharts-area-area {
   fill: inherit !important;
 }
