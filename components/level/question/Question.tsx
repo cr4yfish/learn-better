@@ -184,7 +184,7 @@ export default function Question({
 
     return (
         <>
-        <div className="flex flex-col prose dark:prose-invert gap-6 overflow-visible">
+        <div className="flex flex-col prose dark:prose-invert gap-6 overflow-visible pb-20">
             <div className="flex flex-col gap-1">
                 <p className=" m-0">{question.title}</p>
                 <h2 className="m-0 font-bold">{question.question}</h2>
@@ -262,6 +262,7 @@ export default function Question({
                 color={questionState.correct == "initial" ? "primary" : (questionState.correct == "correct" ? "success" : "danger")}
                 isDisabled={questionState.selected.length == 0 || questionState.correct != "initial"}
                 isLoading={isLoading}
+                size="lg"
                 onClick={handleCheckAnswer}
             >
                     {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
