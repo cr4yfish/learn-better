@@ -17,7 +17,7 @@ export default function CourseSectionBanner(
             content: "bg-transparent p-0"
         }}>
             <PopoverTrigger>
-                <div className="flex flex-row items-center justify-center gap-6 w-full min-w-fit overflow-visible my-4">
+                <div className="flex flex-row items-center justify-center gap-6 w-full max-w-[85vw] overflow-hidden my-4">
                     <Separator className="w-[60px]" />
                     <span className=" w-full min-w-max flex justify-center items-center text-center text-gray-700 dark:text-gray-400">{courseSection.title}</span>
                     <Separator className="w-[60px]" />
