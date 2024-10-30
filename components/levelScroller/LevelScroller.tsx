@@ -179,7 +179,7 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
     <>
         <InfiniteScroll 
             id="infiniteScroll"
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col items-center gap-4 overflow-x-hidden"
             pageStart={1}
             loadMore={async () => await handleLoadMore()}
             hasMore={canLoadMore}
