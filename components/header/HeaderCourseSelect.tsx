@@ -14,20 +14,19 @@ import { upsertSettings } from "@/utils/supabase/settings";
 import { Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
-export default function HeaderCourseSelect({ sessionState } : { sessionState: SessionState }) {
+export default function HeaderCourseSelect({ sessionState} : { sessionState: SessionState }) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { currentCourse, setCurrentCourse } = useCurrentCourse();
 
     const handleCourseChange = async (course: Course) => {
-        //setSessionState({...sessionState, settings: {...sessionState.settings, current_course: userCourse.course}})
+
         upsertSettings({
           ...sessionState.settings,
           current_course: course,
           user: sessionState.user
         })
         setCurrentCourse(course)
-        //setCurrentCourse(userCourse)
     }
 
     useEffect(() => {
@@ -44,7 +43,7 @@ export default function HeaderCourseSelect({ sessionState } : { sessionState: Se
             }} 
             isLoading={!sessionState.settings.current_course?.abbreviation}
         >
-            {sessionState.settings.current_course?.abbreviation}
+            {currentCourse?.abbreviation ?? sessionState.settings.current_course?.abbreviation}
         </Button>
 
         <BlurModal 
