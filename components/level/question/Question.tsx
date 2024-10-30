@@ -296,18 +296,20 @@ export default function Question({
                 </div>
             }
             footer={
-                <div className="flex items-center justify-between gap-2">
-                    <form onSubmit={handleSubmit}>
+                <div className="flex flex-col w-full gap-2">
+                    <form onSubmit={handleSubmit} className=" w-full">
                         <Button 
                             isLoading={isMistralLoading} 
                             isDisabled={isExplained} type="submit" 
-                            color="secondary" variant="flat" 
+                            color="secondary" variant="bordered" 
+                            size="lg"
+                            fullWidth
                             startContent={<Icon filled>auto_awesome</Icon>}
                         >
                             Explain answer
                         </Button>
                     </form>
-                    <Button isLoading={isLoading} color="primary" onClick={handleNextQuestion}>Next Question</Button>
+                    <Button isLoading={isLoading} size="lg" color="primary" onClick={handleNextQuestion}>Next Question</Button>
                 </div>
             }
         />
