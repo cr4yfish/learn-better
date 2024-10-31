@@ -1,17 +1,29 @@
 "use server";
 
 import TrainButton from "@/components/training/TrainButton";
+import WeeklyGoal from "@/components/training/WeeklyGoal";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import Navigation from "@/components/utils/Navigation"
+import { getSession } from "@/utils/supabase/auth";
 import { getWeakQuestions } from "@/utils/supabase/questions";
+import { getTimeSpentByUser, getWeeklyGoalByUser } from "@/utils/supabase/weeklyGoals";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
+import { redirect } from "next/navigation";
 
 
 export default async function Training() {
 
+    const { data: { session }} = await getSession();
+
+    if(!session) {
+        redirect('/auth');
+    }
+
     const weakQuestions = await getWeakQuestions();
+    const weeklyGoal = await getWeeklyGoalByUser(session.user.id);
+    const secondsSpentByUser = await getTimeSpentByUser(session.user.id);
     
     return (
         <>
@@ -31,7 +43,6 @@ export default async function Training() {
                         <Button startContent={<Icon filled>list</Icon>} size="lg" className="w-[150px]" color="secondary" variant="flat">View</Button>
                     </CardContent>
                 </Card>
-
                 
                 <Card>
                     <CardHeader>
@@ -42,14 +53,7 @@ export default async function Training() {
                         <CardTitle>Your weekly goal</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex flex-row justify-evenly items-center w-full">
-                            <Button isIconOnly variant="flat"><Icon>remove</Icon></Button>
-                            <div className="flex flex-col items-center justify-center">
-                                <span className="text-4xl font-bold">25</span>
-                                <span className="text-tiny text-gray-700 dark:text-gray-300">Minutes/Day</span>
-                            </div>
-                            <Button isIconOnly variant="flat"><Icon>add</Icon></Button>
-                        </div>
+                        <WeeklyGoal goal={weeklyGoal} userId={session.user.id} minutesSpentInWeek={secondsSpentByUser/60} />
                     </CardContent>
                 </Card>
 
@@ -68,8 +72,6 @@ export default async function Training() {
                         <Button startContent={<Icon filled>group</Icon>} fullWidth size="lg" color="primary" variant="shadow">Start a Quest</Button>
                     </CardFooter>
                 </Card>
-
-                
 
             </div>
         </ScrollShadow>

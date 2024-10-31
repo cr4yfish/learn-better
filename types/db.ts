@@ -260,3 +260,10 @@ export type Training_Question = {
     question: Question;
     created_at?: string;
 }
+
+export type Weekly_Goal = {
+    id: string;
+    created_at?: string;
+    user?: User;
+    goal: number;
+}
