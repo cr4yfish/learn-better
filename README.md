@@ -105,9 +105,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Anon views
     - [ ] Anon view of courses
     - [ ] Demo mode for onboarding
-- [ ] Community Features 2
+- [x] Community Features 2
     - [x] Following other users
-    - [ ] Friend Battles - WIP    
+    - [x] Friend Battles    
 
 ### Beta Features
 - [ ] Redesign UI & Refactor Code
