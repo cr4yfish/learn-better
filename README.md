@@ -106,6 +106,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Anon views
     - [ ] Anon view of courses
     - [ ] Demo mode for onboarding
+- [ ] Community Features 2
+    - [x] Following other users
+    - [ ] Friend Battles - WIP    
 
 ### Beta Features
 - [ ] Redesign UI & Refactor Code
@@ -115,11 +118,8 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Buy a domain
 
 ### Future Features
-- [ ] Community Features 2
-    - [x] Following other users
-    - [ ] Course Collaboration  
-    - [ ] Friend Quests
-    - [ ] Friend Battles
+- [ ] Course Collaboration  
+- [ ] Friend Quests
 - [ ] Importing Levels & Questions from other sources
     - [ ] Anki decks
     - [x] Website Scraper (only works on server-rendered websites)
