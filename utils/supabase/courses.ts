@@ -269,7 +269,8 @@ export async function upsertCourse(course: Course): Promise<{ id: string }> {
         description: course.description,
         creator: course.creator.id,
         is_official: course.is_official,
-        institution: course.institution?.id ?? null
+        institution: course.institution?.id ?? null,
+        is_public: course.is_public ?? true,
     }
 
     const { data, error } = await getClient().from("courses").upsert([dbEntry]).select().single();
