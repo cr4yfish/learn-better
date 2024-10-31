@@ -5,6 +5,7 @@ import Icon from "@/components/utils/Icon";
 import FollowButton from "@/components/utils/FollowButton";
 import { Profile } from "@/types/db";
 import { SessionState } from "@/types/auth";
+import ProfileStreak from "./ProfileStreak";
 
 export default  function ProfileCard({ profile, session } : { profile: Profile, session: SessionState }) {;
 
@@ -27,19 +28,6 @@ export default  function ProfileCard({ profile, session } : { profile: Profile, 
                             <span>Joined {formatReadableDate(profile.created_at ?? "")}</span>
                         </div>
                     </div>
-                    <div className="flex flex-row gap-8 mt-4 h-[48px]">
-
-                        <div className="flex flex-col min-h-full gap-1 h-full">
-                            <span className=" font-medium text-medium h-[28px]">5</span>
-                            <span className="text-tiny">Following</span>
-                        </div>
-
-                        <div className="flex flex-col min-h-full gap-1 h-full">
-                            <span className=" font-medium text-medium h-[28px]">7</span>
-                            <span className="text-tiny">Followers</span>
-                        </div>
-
-                    </div>
                 </div>
 
                 <div className="flex flex-col">
@@ -47,14 +35,7 @@ export default  function ProfileCard({ profile, session } : { profile: Profile, 
                                 
                     <div className="flex flex-row items-center flex-wrap gap-4">
                         
-                        <div className="flex flex-row gap-1">
-                            <div>
-                                <Icon filled>mode_heat</Icon>
-                            </div>
-                            <div className="flex flex-col">
-                                <span>{profile.currentStreakDays}</span>
-                            </div>
-                        </div>
+                        <ProfileStreak profile={profile} />
 
                                           
                         <div className="flex flex-row gap-1">
