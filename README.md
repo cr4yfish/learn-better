@@ -7,8 +7,9 @@ The learning app that helps you learn anything you want.
     <img src="https://i.imgur.com/ZI5MVWV.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jlW9KwP.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/ELax4dC.png" style="height: 500px; width: auto;" >
-    <img src="https://i.imgur.com/OyY51zM.png" style="height: 500px; width: auto;" >
-    <img src="https://i.imgur.com/w0RevEF.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/9BdqEjB.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/MR2U4bb.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/qSPt5SL.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jWbhecS.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jkz577X.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/dD3LDbq.png" style="height: 500px; width: auto;" >
