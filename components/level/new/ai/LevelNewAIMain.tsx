@@ -98,10 +98,6 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
                     level.questions.forEach(async (question) => {
                         if(!question || !question.title || !question.question) return;
 
-                        console.log(question);
-
-                        
-
                         const newQuestion: Question = {
                             id: uuidv4(),
                             title: question.title,
