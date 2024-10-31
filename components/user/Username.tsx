@@ -29,10 +29,11 @@ export default function Username({ profile, sessionState } : { profile: Profile,
             settings={{
                 hasHeader: true,
                 hasBody: true,
-                hasFooter: false,
+                hasFooter: true,
             }}
             header={<>{profile?.username}s&apos; Profile</>}
             body={<ProfileCard profile={profile} session={sessionState} />}
+            footer={<></>}
         />
 
         </>
