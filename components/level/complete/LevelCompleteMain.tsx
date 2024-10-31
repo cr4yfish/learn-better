@@ -49,17 +49,19 @@ export default function LevelCompleteMain(
                 <LevelCompleteStreak streakDays={sessionState.currentStreakDays ?? 0} />
             )}
 
-            { step == 2 && rankUp && (
-                <LevelCompleteRank rankTitle={sessionState.profile?.rank.title ?? "N/A"} />
+            { step == 2 && rankUp && sessionState.profile?.rank.title && (
+                <LevelCompleteRank rankTitle={sessionState.profile?.rank.title} />
             )}
 
-            {  rankUp ? (step == 3) : (step == 2) && !isVoted && (
+            { ( (rankUp && step == 3) || (!rankUp && step == 2)) && (
                 <div className="flex flex-col items-center justify-center gap-4">
                     <span className="font-bold text-xl">Like the Level?</span>
                     <div className="flex gap-4">
                         <Button 
-                            color="primary" variant="shadow" 
+                            color="secondary" variant="shadow" 
                             onClick={handleUpvoteLevel}
+                            fullWidth
+                            size="lg"
                             isLoading={isVoting}
                             isDisabled={isVoted}
                             startContent={<Icon filled={isVoted}>favorite</Icon>}
@@ -71,10 +73,16 @@ export default function LevelCompleteMain(
             )}
             
             <div className="w-full">
-                <ConditionalLink active={rankUp ? (step == 3) : (isVoted ? (step == 1) : (step == 2))} href="/">
+                <span>{step}</span>
+                <ConditionalLink active={(rankUp && step == 3) || (!rankUp && step == 2)} href="/">
                     <Button 
                         fullWidth
-                        onClick={() => setStep(step + 1)}
+                        size="lg"
+                        onClick={() => {
+                            if( (rankUp && step < 3) || (!rankUp && step < 2) ) {
+                                setStep(step+1)
+                            }
+                        }}
                         color="primary" 
                         isDisabled={isVoting}
                         variant="shadow" 
