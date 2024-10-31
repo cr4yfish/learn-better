@@ -85,6 +85,18 @@ export const getFriends = cache(async(userId: string): Promise<Profile[]> => {
     });
 })
 
+export const getFriendStatus = cache(async({ userId, otherUserId } : { userId: string, otherUserId: string }): Promise<User_Follow> => {
+    const { data, error } = await getClient()
+        .from("users_follow")
+        .select(`*`)
+        .eq("user", userId)
+        .eq("other_user", otherUserId)
+        .select();
+    if(error) { throw error; }
+
+    return data[0] as User_Follow;
+})
+
 export const searchFriends = cache(async(searchQuery: string): Promise<Followed_Profile[]> => {
     const { data, error } = await getClient()
         .from("followed_profiles")
@@ -101,10 +113,10 @@ export const searchFriends = cache(async(searchQuery: string): Promise<Followed_
 
 export const followUser = async({ userId, otherUserId } : { userId: string, otherUserId: string }): Promise<User_Follow> => {
     const { data, error } = await getClient()
-        .from("followers")
-        .upsert({ user_id: userId, other_user_id: otherUserId })
-        .eq("user_id", userId)
-        .eq("other_user_id", otherUserId)
+        .from("users_follow")
+        .upsert({ user: userId, other_user: otherUserId, follows: true, friends: true })
+        .eq("user", userId)
+        .eq("other_user", otherUserId)
         .select(`*`).single();
         
     if(error) { throw error; }
@@ -114,11 +126,11 @@ export const followUser = async({ userId, otherUserId } : { userId: string, othe
 
 export const unFollowUser = async({ userId, otherUserId } : { userId: string, otherUserId: string }): Promise<boolean> => {
     const { error } = await getClient()
-        .from("followers")
+        .from("users_follow")
         .delete()
-        .eq("user_id", userId)
-        .eq("other_user_id", otherUserId)
-        .single();
+        .eq("user", userId)
+        .eq("other_user", otherUserId)
+        .select(`*`).single();
         
     if(error) { throw error; }
 
