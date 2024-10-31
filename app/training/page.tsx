@@ -1,5 +1,6 @@
 "use server";
 
+import Battles from "@/components/training/Battles";
 import TrainButton from "@/components/training/TrainButton";
 import WeeklyGoal from "@/components/training/WeeklyGoal";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import Navigation from "@/components/utils/Navigation"
 import { getSession } from "@/utils/supabase/auth";
+import { getBattles } from "@/utils/supabase/battles";
 import { getWeakQuestions } from "@/utils/supabase/questions";
 import { getTimeSpentByUser, getWeeklyGoalByUser } from "@/utils/supabase/weeklyGoals";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
@@ -24,6 +26,7 @@ export default async function Training() {
     const weakQuestions = await getWeakQuestions();
     const weeklyGoal = await getWeeklyGoalByUser(session.user.id);
     const secondsSpentByUser = await getTimeSpentByUser(session.user.id);
+    const battles = await getBattles(session.user.id);
     
     return (
         <>
@@ -57,6 +60,8 @@ export default async function Training() {
                     </CardContent>
                 </Card>
 
+                <Battles battles={battles} userId={session.user.id} />
+
                 <Card>
                     <CardHeader>
                         <CardDescription className="flex flex-row items-center gap-1">
@@ -74,25 +79,6 @@ export default async function Training() {
                             fullWidth size="lg" color="secondary" isDisabled variant="flat">Start a Quest</Button>
                     </CardFooter>
                 </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardDescription className="flex flex-row items-center gap-1">
-                            <Icon downscale>swords</Icon>
-                            Compete with Friends
-                        </CardDescription>
-                        <CardTitle>Your Battles</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex items-center justify-center">
-                        <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Battles</span>
-                    </CardContent>
-                    <CardFooter>
-                        <Button 
-                            startContent={<Icon filled>swords</Icon>} 
-                            fullWidth size="lg" color="secondary" isDisabled variant="flat">Start a Battle</Button>
-                    </CardFooter>
-                </Card>
-
 
             </div>
         </ScrollShadow>

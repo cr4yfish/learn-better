@@ -13,6 +13,11 @@ export type Profile = {
     currentStreakDays?: number;
 }
 
+export type Followed_Profile = {
+    id: string;
+    username: string;
+}
+
 // unused right now
 export type Object = {
     id: string;
@@ -266,4 +271,16 @@ export type Weekly_Goal = {
     created_at?: string;
     user?: User;
     goal: number;
+}
+
+export type Battle = {
+    id: string;
+    created_at?: string;
+    end_date: string;
+    user_initiator: Profile;
+    other_user: Profile;
+    xp_goal: number;
+    completed: boolean;
+    user_init_start_xp: number;
+    user_other_start_xp: number;
 }

@@ -5,7 +5,7 @@ import { cache } from "react";
 
 import { getCurrentUserRank } from "./ranks";
 import { createClient as getClient } from "./server/server";
-import { Profile, Rank, User_Follow } from "@/types/db";
+import { Followed_Profile, Profile, Rank, User_Follow } from "@/types/db";
 import { getCurrentStreak } from "./streaks";
 import { streakToStreakDays } from "@/functions/helpers";
 
@@ -63,6 +63,41 @@ export const getProfilesInRank = cache(async(rankID?: string): Promise<Profile[]
     });
 })
 
+export const getFriends = cache(async(userId: string): Promise<Profile[]> => {
+    const { data, error } = await getClient()
+        .from("users_follow")
+        .select(`
+            *,
+            users_follow_user_fkey1 (*),
+            users_follow_other_user_fkey1 (*),
+        `)
+        .eq("user_id", userId)
+        .eq("friends", true)
+        ;
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            ...db,
+            user: db.users_follow_user_fkey1 as Profile,
+            other_user: db.users_follow_other_user_fkey1 as Profile
+        }
+    });
+})
+
+export const searchFriends = cache(async(searchQuery: string): Promise<Followed_Profile[]> => {
+    const { data, error } = await getClient()
+        .from("followed_profiles")
+        .select(`
+            *
+        `)
+        .ilike("username", `%${searchQuery}%`)
+        .order("username", { ascending: true });
+
+    if(error) { throw error; }
+
+    return data as Followed_Profile[];
+})
 
 export const followUser = async({ userId, otherUserId } : { userId: string, otherUserId: string }): Promise<User_Follow> => {
     const { data, error } = await getClient()
