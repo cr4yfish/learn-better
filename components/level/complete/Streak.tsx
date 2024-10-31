@@ -1,6 +1,4 @@
-
-
-export default async function LevelCompleteStreak({ streakDays } : { streakDays: number }) {
+export default function LevelCompleteStreak({ streakDays } : { streakDays: number }) {
 
     return (
         <div className="flex flex-col items-center justify-center gap-4">

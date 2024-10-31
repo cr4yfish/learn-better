@@ -1,7 +1,4 @@
-"use server";
-
-
-export default async function LevelCompleteRank({ rankTitle } : { rankTitle: string }) {
+export default  function LevelCompleteRank({ rankTitle } : { rankTitle: string }) {
 
     return (
         <div className="flex flex-col items-center justify-center gap-4">
