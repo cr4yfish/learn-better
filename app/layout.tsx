@@ -66,11 +66,11 @@ export default function RootLayout({
 }>) {
   return (
     
-    <html lang="en" className=" min-h-screen max-h-screen dark">
+    <html lang="en" className=" min-h-screen max-h-screen w-screen overflow-x-hidden dark">
         <body
           className={`${montserrat.className} antialiased h-full min-h-screen flex justify-between flex-col overflow-y-hidden dark:bg-primary/5`}
         >
-          <NextUIProvider className="h-full max-h-screen overflow-y-hidden flex justify-between flex-col antialiased">
+          <NextUIProvider className="relative h-screen w-full overflow-y-hidden overflow-x-hidden flex justify-between flex-col antialiased">
               <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
