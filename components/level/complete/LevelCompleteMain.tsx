@@ -73,7 +73,6 @@ export default function LevelCompleteMain(
             )}
             
             <div className="w-full">
-                <span>{step}</span>
                 <ConditionalLink active={(rankUp && step == 3) || (!rankUp && step == 2)} href="/">
                     <Button 
                         fullWidth
