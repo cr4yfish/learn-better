@@ -1,5 +1,6 @@
 "use server";
 
+import TrainButton from "@/components/training/TrainButton";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
@@ -26,7 +27,7 @@ export default async function Training() {
                         <CardTitle>You&apos;ve got {weakQuestions.length} weak questions</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-row items-center gap-2">
-                        <Button startContent={<Icon filled>exercise</Icon>} fullWidth size="lg" color="primary" variant="shadow">Train</Button>
+                        <TrainButton weakQuestions={weakQuestions} />
                         <Button startContent={<Icon filled>list</Icon>} size="lg" className="w-[150px]" color="secondary" variant="flat">View</Button>
                     </CardContent>
                 </Card>

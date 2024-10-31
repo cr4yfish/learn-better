@@ -10,6 +10,8 @@ import Icon from "@/components/utils/Icon";
 import { SessionState } from "@/types/auth";
 import { Topic_Vote, User_Topic } from "@/types/db"
 import { upvoteCourseTopic } from "@/utils/supabase/topics";
+import LevelCompleteStreak from "./Streak";
+import LevelCompleteRank from "./LevelCompleteRank";
 
 
 
@@ -38,37 +40,17 @@ export default function LevelCompleteMain(
             
             { step == 0 && (
                 <div className="flex flex-col items-center justify-center gap-4">
-                <h1 className="font-bold text-5xl">Level complete!</h1>
-                    <LevelComplete  userTopic={userTopic} />
+                    <h1 className="font-bold text-5xl">Level complete!</h1>
+                    <LevelComplete userTopic={userTopic} />
                 </div>
             )}
 
             { step == 1 && (
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <span 
-                        style={{
-                            fontSize: "128pt",
-                            textShadow: "0px 0px 100px rgba(255, 165, 0, 0.5)",
-                            transform: "translateY(120px)"
-                        }}
-                        className="material-symbols-rounded material-symbols-filled  text-orange-400"
-                        >
-                            mode_heat
-                    </span>
-                    <span 
-                        style={{
-                        }}
-                        className="text-[128pt] m-0 font-black z-20 h-[200px]">{sessionState.currentStreakDays}</span>
-                    <span className=" text-2xl font-bold">day streak</span>
-                </div>
+                <LevelCompleteStreak streakDays={sessionState.currentStreakDays ?? 0} />
             )}
 
             { step == 2 && rankUp && (
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <span className="text-[24pt] font-bold ">You ranked up!</span>
-                    <span className="text-[50pt] font-bold ">{sessionState.profile?.rank.title}</span>
-                    <span className="text-[16pt] ">New rank</span>
-                </div>
+                <LevelCompleteRank rankTitle={sessionState.profile?.rank.title ?? "N/A"} />
             )}
 
             {  rankUp ? (step == 3) : (step == 2) && !isVoted && (

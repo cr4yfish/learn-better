@@ -244,3 +244,19 @@ export type User_Follow = {
     block: boolean;
     friends: boolean;
 }
+
+export type Training = {
+    id: string;
+    created_at?: string;
+    user?: User;
+    completed: boolean;
+    accuracy: number | null;
+    seconds: number | null;
+    xp: number | null;
+}
+
+export type Training_Question = {
+    training: Training;
+    question: Question;
+    created_at?: string;
+}
