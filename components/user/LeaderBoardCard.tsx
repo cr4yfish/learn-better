@@ -15,7 +15,7 @@ export default async function LeaderboardCard({ profile, sessionState, position 
             <CardBody className=" w-full flex flex-row justify-between items-center dark:text-gray-200 text-gray-800">
                 <div className="h-full flex flex-row items-center">
                     { position < 4 &&
-                        <div className="h-full w-[35px] pl-2">
+                        <div className="h-full w-[35px] pl-2 flex items-center justify-start">
                             <span 
                                 className={
                                     `text-lg font-black 
