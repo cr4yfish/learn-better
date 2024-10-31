@@ -96,7 +96,6 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Weekly/Monthly streak/xp goals
     - [ ] ~~Weekly rank ups~~ - Might add later
     - [ ] Achievements - WIP
-    - [ ] Solo Quests
 - [x] PWA features
     - [x] App installation popup support (depends on Browser)
     - [x] Notification System
@@ -115,7 +114,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Improve UI/UX - WIP
     - [ ] Add animations
     - [x] Move as much as possible to Server Rendering
-- [ ] Buy a domain
+- [x] Buy a domain
 
 ### Future Features
 - [ ] Course Collaboration  
