@@ -106,6 +106,7 @@ export type Course = {
     is_public?: boolean;
     institution?: Institution;
     votes?: number;
+    members?: number;
 }
 
 export type Institution = {

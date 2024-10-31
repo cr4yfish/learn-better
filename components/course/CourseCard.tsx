@@ -115,10 +115,10 @@ export default function CourseCard ({
 
             <CardFooter className="flex items-center gap-2 pt-2">
                 <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>
-                    123
+                    {course.members}
                 </Chip>
                 <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>
-                    123
+                    {course.votes}
                 </Chip>
 
             </CardFooter>

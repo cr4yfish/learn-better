@@ -25,6 +25,9 @@ export const getUserCourses = cache(async(userID: string): Promise<User_Course[]
             is_official,
             courses_votes (
                 vote
+            ),
+            users_courses (
+                joined_at
             )
         ),
         joined_at,
@@ -45,7 +48,8 @@ export const getUserCourses = cache(async(userID: string): Promise<User_Course[]
                 institution: db.courses.institutions,
                 title: db.courses.title,
                 is_official: db.courses.is_official,
-                votes: (db.courses.courses_votes as {vote: boolean}[]).length
+                votes: (db.courses.courses_votes as {vote: boolean}[]).length,
+                members: (db.courses.users_courses as {joined_at: string}[]).length
             },
             joined_at: db.joined_at,
             is_admin: db.is_admin,
@@ -70,7 +74,13 @@ export const getUserCourse = cache(async (courseID: string): Promise<User_Course
                 description
             ),
             title,
-            is_official
+            is_official,
+            courses_votes (
+                vote
+            ),
+            users_courses (
+                joined_at
+            )
         ),
         joined_at,
         is_admin,
@@ -90,7 +100,9 @@ export const getUserCourse = cache(async (courseID: string): Promise<User_Course
             id: db.courses.id,
             institution: db.courses.institutions,
             title: db.courses.title,
-            is_official: db.courses.is_official
+            is_official: db.courses.is_official,
+            votes: (db.courses.courses_votes as {vote: boolean}[]).length,
+            members: (db.courses.users_courses as {joined_at: string}[]).length
         },
         joined_at: db.joined_at,
         is_admin: db.is_admin,
@@ -122,6 +134,9 @@ export const getCourses = cache(async ({
             is_official,
             courses_votes (
                 vote
+            ),
+            users_courses (
+                joined_at
             )
         `)
         .order("created_at", { ascending: false })
@@ -138,8 +153,8 @@ export const getCourses = cache(async ({
             institution: db.institutions,
             title: db.title,
             is_official: db.is_official,
-            votes: (db.courses_votes as {vote: boolean}[]).length
-            
+            votes: (db.courses_votes as {vote: boolean}[]).length,
+            members: (db.users_courses as {joined_at: string}[]).length
         }
     })
 })
