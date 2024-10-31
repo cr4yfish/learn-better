@@ -90,9 +90,10 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Data Features 1
     - [x] Training mode on low confidence questions
     - [x] Stats about users & learning
-    - [ ] Weekly/Monthly streak/xp goals
+    - [x] Weekly/Monthly streak/xp goals
     - [ ] ~~Weekly rank ups~~ - Might add later
     - [ ] Achievements - WIP
+    - [ ] Solo Quests
 - [x] PWA features
     - [x] App installation popup support (depends on Browser)
     - [x] Notification System
@@ -114,6 +115,8 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Community Features 2
     - [x] Following other users
     - [ ] Course Collaboration  
+    - [ ] Friend Quests
+    - [ ] Friend Battles
 - [ ] Importing Levels & Questions from other sources
     - [ ] Anki decks
     - [x] Website Scraper (only works on server-rendered websites)
