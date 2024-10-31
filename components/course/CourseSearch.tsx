@@ -37,7 +37,7 @@ export default function CourseSearch(
 
     return (
         <div className="flex flex-col gap-1">
-            <Button color="secondary" variant="flat" onClick={() => setIsModalOpen(true)} startContent={<Icon filled>search</Icon>} >Search courses</Button>
+            <Button size="lg" color="secondary" variant="flat" onClick={() => setIsModalOpen(true)} startContent={<Icon filled>search</Icon>} >Search courses</Button>
         
             <BlurModal 
                 isOpen={isModalOpen}
