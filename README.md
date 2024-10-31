@@ -2,12 +2,12 @@
 The learning app that helps you learn anything you want.
 
 <div style="width: 100%; display: flex; justify-content: center; gap: 1rem;">
-    <img src="https://i.imgur.com/h2AnOsN.png" style="height: 500px; width: auto;" >
-    <img src="https://i.imgur.com/oJPxh5z.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/jlW9KwP.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/ELax4dC.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/OyY51zM.png" style="height: 500px; width: auto;" >
 </div>
 <div style="width: 100%; display: flex; justify-content: center; gap: 1rem;">
-    <img src="https://i.imgur.com/prgZ6Ue.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/w0RevEF.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jWbhecS.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jkz577X.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/dD3LDbq.png" style="height: 500px; width: auto;" >
