@@ -51,8 +51,8 @@ export default function BlurModal({
             isOpen={internalIsOpen}
             placement={settings.placement}
             size={settings.size}
-            isDismissable={settings.isDismissable || true}
-            isKeyboardDismissDisabled={settings.isDismissable || false}
+            isDismissable={settings.isDismissable}
+            isKeyboardDismissDisabled={settings.isDismissable}
             hideCloseButton={true}
             onClose={() => { internalOnClose(); updateOpen(false) }}
             onOpenChange={onOpenChange}
