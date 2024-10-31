@@ -29,7 +29,7 @@ export default async function CommunityMain() {
         <UserCoursesProvider>
             <div className="flex px-4 py-6 flex-col gap-4 w-full max-w-[100vw] overflow-y-auto overflow-x-hidden max-h-screen pb-40">
                 <div className="flex flex-row items-center justify-between w-full">
-                    <h1 className="font-bold text-4xl">Community</h1>
+                    <h1 className="font-bold text-2xl">Community</h1>
                     <Link href={`course/new/${session?.user?.id}`}>
                         <Button  color="primary" variant="flat" isIconOnly ><Icon color="primary" filled>add</Icon></Button>
                     </Link>
