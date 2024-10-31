@@ -69,7 +69,7 @@ export default async function Training() {
                         <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Quests</span>
                     </CardContent>
                     <CardFooter>
-                        <Button startContent={<Icon filled>group</Icon>} fullWidth size="lg" color="primary" variant="shadow">Start a Quest</Button>
+                        <Button startContent={<Icon filled>group</Icon>} fullWidth size="lg" color="secondary" isDisabled variant="flat">Start a Quest</Button>
                     </CardFooter>
                 </Card>
 
