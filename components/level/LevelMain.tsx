@@ -95,7 +95,7 @@ export default function LevelMain(
     }
 
     return (
-        <div className="px-4 py-6 pt-4 flex flex-col gap-4 h-full max-h-screen ">
+        <div className="px-4 py-6 pt-4 flex flex-col gap-4 h-full max-h-screen   ">
             <QuestionHeader 
                 progress={levelState.progress} 
                 numQuestions={levelState.totalQuestions} 

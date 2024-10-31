@@ -34,7 +34,7 @@ export default async function LevelCompleteScreen({ params: { level }, searchPar
     
 
     return (
-        <div className="flex flex-col gap-8 px-4 py-6 h-screen justify-center pb-[33vh]">
+        <div className="flex flex-col gap-8 px-4 py-6 h-screen w-screen relative overflow-x-hidden justify-center pb-[33vh]">
             <LevelCompleteMain 
                 userTopic={userTopic} 
                 rankUp={rankUp} 

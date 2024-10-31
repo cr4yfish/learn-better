@@ -17,7 +17,7 @@ export default async function TrainingCompleteScreen({ params: { trainingId }, s
     }
 
     return (
-        <div className="flex flex-col gap-8 px-4 py-6 h-screen justify-center pb-[33vh]">
+        <div className="flex flex-col gap-8 px-4 py-6 h-screen w-screen justify-center pb-[33vh] relative overflow-x-hidden">
             <TrainingCompleteMain 
                 training={training} 
                 sessionState={currentUser}
