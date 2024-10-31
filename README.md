@@ -88,7 +88,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
         - [ ] ~~Questions~~ - Too Granular
 - [x] Recurring questions in levels when questions are answered wrong
 - [ ] Data Features 1
-    - [ ] Training mode on low confidence questions - WIP
+    - [x] Training mode on low confidence questions
     - [x] Stats about users & learning
     - [ ] Weekly/Monthly streak/xp goals
     - [ ] ~~Weekly rank ups~~ - Might add later
