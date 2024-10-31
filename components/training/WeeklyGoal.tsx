@@ -48,7 +48,7 @@ export default function WeeklyGoal({ goal, userId, minutesSpentInWeek } : { goal
                 <Button isIconOnly variant="flat" onClick={()=> updateWeeklyGoal(localGoal.goal - 5)} ><Icon>remove</Icon></Button>
                 <div className="flex flex-col items-center justify-center">
                     <span className="text-4xl font-bold">{localGoal.goal}</span>
-                    <span className="text-tiny text-gray-700 dark:text-gray-300">Minutes/Day</span>
+                    <span className="text-tiny text-gray-700 dark:text-gray-300">Minutes/Week</span>
                 </div>
                 <Button isIconOnly variant="flat" onClick={() => updateWeeklyGoal(localGoal.goal + 5)} ><Icon>add</Icon></Button>
             </div>
