@@ -1,7 +1,10 @@
 # Nouv - learn better
 The learning app that helps you learn anything you want.
 
+
+
 <div style="width: 100%; display: flex; justify-content: center; gap: 1rem;">
+    <img src="https://i.imgur.com/ZI5MVWV.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jlW9KwP.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/ELax4dC.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/OyY51zM.png" style="height: 500px; width: auto;" >
