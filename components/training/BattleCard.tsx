@@ -8,9 +8,28 @@ import { Button } from "../utils/Button";
 import Icon from "../utils/Icon";
 import BlurModal from "../utils/BlurModal";
 import { Battle } from "@/types/db";
+import { forfeitBattle } from "@/utils/supabase/battles";
 
-export default function BattleCard({ battle } : { battle: Battle }) {
+const statusMap = {
+    active: <><Icon>pending</Icon> In progress</>,
+    won: <><Icon>trophy</Icon> You won</>,
+    lost: <><Icon>bomb</Icon> You lost</>,
+    you_forfeited: <><Icon>block</Icon> You forfeited</>,
+    other_forfeited: <><Icon>rocket_launch</Icon> They forfeited</>,
+    draw: <><Icon>square</Icon> Draw</>
+}
+
+export default function BattleCard({ battle, userId } : { battle: Battle, userId: string }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isForfeited, setIsForfeited] = useState(false);
+
+    const handleForfeit = async () => {
+        setIsLoading(true);
+        await forfeitBattle(battle.id, userId);
+        setIsForfeited(true);
+        setIsLoading(false);
+    }
 
     return (
         <>
@@ -37,7 +56,15 @@ export default function BattleCard({ battle } : { battle: Battle }) {
             body={
                 <>
                     <span className=" text-sm">Battle details</span>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-2">
+                        <div className="flex flex-row items-center gap-1">
+                            {!battle.completed && statusMap["active"]}
+                            {battle.completed && battle.winning_user == battle.user_initiator.id && statusMap["won"]}
+                            {battle.completed && battle.winning_user == battle.other_user.id && statusMap["lost"]}
+                            {battle.completed && (battle.winning_user == null) && (battle.forfeit_user == null) && statusMap["draw"]}
+                            {battle.completed && battle.user_initiator.id == battle.forfeit_user && statusMap["you_forfeited"]}
+                            {battle.completed && battle.other_user.id == battle.forfeit_user && statusMap["other_forfeited"]}
+                        </div>
                         <div className="flex flex-row items-center gap-1">
                             <Icon>hotel_class</Icon>
                             {battle.xp_goal} XP to win
@@ -53,7 +80,17 @@ export default function BattleCard({ battle } : { battle: Battle }) {
             }
             footer={
                 <>
-                <Button variant="faded" color="danger">Forfeit Battle</Button>
+                {!battle.completed && 
+                    <Button 
+                        isLoading={isLoading}
+                        isDisabled={isForfeited} 
+                        onClick={handleForfeit} 
+                        variant="faded" 
+                        color="danger"
+                    >
+                        {isForfeited ? "Forfeited" : "Forfeit"}
+                    </Button>
+                }
                 </>
             }
         />

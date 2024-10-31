@@ -279,8 +279,12 @@ export type Battle = {
     end_date: string;
     user_initiator: Profile;
     other_user: Profile;
+    forfeit_user?: string;
+    winning_user?: string;
     xp_goal: number;
     completed: boolean;
     user_init_start_xp: number;
     user_other_start_xp: number;
+    is_forfeited: boolean;
+    is_cancelled: boolean;
 }

@@ -11,6 +11,7 @@ import BlurModal from "../utils/BlurModal";
 import FriendlistAutocomplete from "./FriendlistAutocomplete";
 import { createBattle } from "@/utils/supabase/battles";
 import BattleCard from "./BattleCard";
+import ViewBattles from "./ViewBattles";
 
 const xpGoalsToDifficulty = {
     easy: 1000,
@@ -58,11 +59,11 @@ export default function Battles({ battles, userId } : { battles: Battle[], userI
                 <CardTitle>Your Battles</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center justify-center">
-                {localBattles.length == 0 && <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Battles</span>}
-                {localBattles.length > 0 &&
+                {localBattles.filter((b) => !b.completed).length == 0 && <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Battles</span>}
+                {localBattles.filter((b) => !b.completed).length > 0 &&
                 <>
-                {localBattles.map((battle) => (
-                    <BattleCard key={battle.id} battle={battle} />
+                {localBattles.filter((b) => !b.completed).map((battle) => (
+                    <BattleCard key={battle.id} battle={battle} userId={userId} />
                 ))}
                 </>
                 }
@@ -76,7 +77,7 @@ export default function Battles({ battles, userId } : { battles: Battle[], userI
                 >
                     Start a Battle
                 </Button>
-                <Button size="lg" variant="flat">Archive</Button>
+                <ViewBattles battles={localBattles} userId={userId} />
             </CardFooter>
         </Card>
 

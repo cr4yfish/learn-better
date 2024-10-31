@@ -48,3 +48,11 @@ export async function createBattle({ userInitId, userOtherId, xp_goal } : { user
 
     return data as Battle
 }
+
+export async function forfeitBattle(battleId: string, userId: string): Promise<void> {
+    const { error } = await createClient()
+        .from("battles")
+        .update({ completed: true, forfeit_user: userId })
+        .eq("id", battleId)
+    if (error) throw error
+}
