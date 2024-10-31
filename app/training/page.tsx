@@ -69,9 +69,30 @@ export default async function Training() {
                         <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Quests</span>
                     </CardContent>
                     <CardFooter>
-                        <Button startContent={<Icon filled>group</Icon>} fullWidth size="lg" color="secondary" isDisabled variant="flat">Start a Quest</Button>
+                        <Button 
+                            startContent={<Icon filled>group</Icon>} 
+                            fullWidth size="lg" color="secondary" isDisabled variant="flat">Start a Quest</Button>
                     </CardFooter>
                 </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardDescription className="flex flex-row items-center gap-1">
+                            <Icon downscale>swords</Icon>
+                            Compete with Friends
+                        </CardDescription>
+                        <CardTitle>Your Battles</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex items-center justify-center">
+                        <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Battles</span>
+                    </CardContent>
+                    <CardFooter>
+                        <Button 
+                            startContent={<Icon filled>swords</Icon>} 
+                            fullWidth size="lg" color="secondary" isDisabled variant="flat">Start a Battle</Button>
+                    </CardFooter>
+                </Card>
+
 
             </div>
         </ScrollShadow>
