@@ -42,12 +42,6 @@ export default  function ProfileCard({ profile, session } : { profile: Profile, 
                     </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    {session?.user?.id && session.user.id !== profile.id && <FollowButton userId={session.user.id} otherUserId={profile.id} />}
-                    <Button isDisabled isIconOnly variant="flat" color="secondary"><Icon filled>share</Icon></Button>
-                </div>
-
-
                 <div className="flex flex-col">
                     <h2 className=" text-medium font-medium ">Overview</h2>
                                 
@@ -76,13 +70,14 @@ export default  function ProfileCard({ profile, session } : { profile: Profile, 
                     </div>
 
                 </div>
-            
+
+                <div className="flex items-center gap-2">
+                    {session?.user?.id && session.user.id !== profile.id && <FollowButton userId={session.user.id} otherUserId={profile.id} />}
+                    <Button isDisabled isIconOnly variant="flat" color="secondary"><Icon filled>share</Icon></Button>
+                </div>
+
             </div>
             
-        </div>
-
-        <div className="flex flex-col">
-            <h2 className="text-lg font-bold">Achievements</h2>
         </div>
 
 
