@@ -66,6 +66,8 @@ export default function LevelMain(
                 rankUp: true
             }))
         }
+
+        setIsLoading(false);
     }
 
     const addUserTopic = async (seconds: number, accuracy: number): Promise<User_Topic | void> => {
