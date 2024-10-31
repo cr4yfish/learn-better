@@ -12,7 +12,7 @@ The learning app that helps you learn anything you want.
     <img src="https://i.imgur.com/qSPt5SL.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jWbhecS.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/jkz577X.png" style="height: 500px; width: auto;" >
-    <img src="https://i.imgur.com/dD3LDbq.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/1kLMd45.png" style="height: 500px; width: auto;" >
 </div>
 
 ## TL;DR
