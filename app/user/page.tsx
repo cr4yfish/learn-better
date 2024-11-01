@@ -116,13 +116,7 @@ export default async function User() {;
         </div>
 
         <div className="flex flex-col">
-            <h2 className="text-lg font-bold">XP</h2>
             <XPChart xp={xp} />
-        </div>
-    
-
-        <div className="flex flex-col">
-            <h2 className="text-lg font-bold">Achievements</h2>
         </div>
 
 
