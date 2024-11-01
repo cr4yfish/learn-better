@@ -77,12 +77,11 @@ export default function Battles({ battles, userId, showButtons=true, userProfile
     
                 if(battleChanged) {
                     // update the battle
-                    const res = await updateBattle({
+                    await updateBattle({
                         id: battle.id,
                         completed: true,
                         winning_user: battle.winning_user
                     })
-                    console.log(res);
                     setLocalBattles([...localBattles]); // we were operating on a copy
 
                     battle.justChanged = true;

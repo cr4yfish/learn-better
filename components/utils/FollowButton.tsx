@@ -43,7 +43,6 @@ export default function FollowButton({ userId, otherUserId } : { userId: string,
             try {
                 // follow
                 setIsFollow(true);
-                console.log(userId, otherUserId);
                 await followUser({ userId, otherUserId });
             } catch (e) {
                 console.error("Error following user", e);
