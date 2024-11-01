@@ -43,13 +43,15 @@ export default async function EditCourse({ params: { course }} : { params: { cou
 
   return (
     <>
-    <div className="px-4 py-6 overflow-y-auto h-full flex flex-col max-h-screen">
+    <div className="px-4 py-6 overflow-y-auto h-full flex flex-col gap-4 max-h-screen">
+
       <div>
         <Link href="/">
           <Button variant="light" startContent={<Icon filled>arrow_back</Icon>}>Back</Button>
         </Link>
         
       </div>
+
       <EditCourseCard 
         userId={userCourse?.user?.id} 
         isNew={false} 
