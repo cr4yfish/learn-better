@@ -18,14 +18,14 @@ export default async function EditCourse({ params: { course }} : { params: { cou
 
   const session = await getCurrentUser();
 
-  if(!session) {
+  if(!session?.user?.id) {
     redirect("/auth");
   }
 
   let userCourse: User_Course | null = null;
 
   try {
-    userCourse = await getUserCourse(course);
+    userCourse = await getUserCourse(course, session.user.id);
   } catch (error) {
     console.error(error);
     redirect("/404");
