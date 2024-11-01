@@ -58,7 +58,7 @@ export default function Battles({ battles, userId } : { battles: Battle[], userI
                 </CardDescription>
                 <CardTitle>Your Battles</CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center justify-center">
+            <CardContent className="flex flex-col gap-2 items-center justify-center">
                 {localBattles.filter((b) => !b.completed).length == 0 && <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Battles</span>}
                 {localBattles.filter((b) => !b.completed).length > 0 &&
                 <>
