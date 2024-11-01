@@ -2,7 +2,7 @@
 
 import Battles from "@/components/training/Battles";
 import TrainButton from "@/components/training/TrainButton";
-import ViewTrainings from "@/components/training/ViewTrainings";
+import ViewWeakQuestions from "@/components/training/ViewWeakQuestions";
 import WeeklyGoal from "@/components/training/WeeklyGoal";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/utils/Button";
@@ -46,7 +46,7 @@ export default async function Training() {
                     </CardHeader>
                     <CardContent className="flex flex-row items-center gap-2">
                         <TrainButton weakQuestions={weakQuestions} />
-                        <ViewTrainings />
+                        <ViewWeakQuestions weakQuestions={weakQuestions} />
                     </CardContent>
                 </Card>
                 
