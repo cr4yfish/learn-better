@@ -11,6 +11,7 @@ import { Course_Section, Topic } from "@/types/db";
 import { ReactSortable } from "react-sortablejs";
 import { upsertCourseSection, deleteCourseSection } from "@/utils/supabase/courseSections";
 import { upsertCourseTopic, getCourseSectionTopics } from "@/utils/supabase/topics";
+import Link from "next/link";
 
 
 export default function CourseSectionCard(
@@ -56,20 +57,20 @@ export default function CourseSectionCard(
     }
 
     const handleDeleteCourseSection = async (section: Course_Section) => {
-    setIsCourseSectionDeleteLoading(true);
-    if(window.confirm("Are you sure you want to delete this section?")) {
-        const res = await deleteCourseSection(section.id);
-        if(res) {
-        // remove from state
-        const index = courseSections.findIndex((s) => s.id === section.id);
-        if(index !== -1) {
-            const newState = [...courseSections];
-            newState.splice(index, 1);
-            setCourseSections([...newState]);
+        setIsCourseSectionDeleteLoading(true);
+        if(window.confirm("Are you sure you want to delete this section?")) {
+            const res = await deleteCourseSection(section.id);
+            if(res) {
+            // remove from state
+            const index = courseSections.findIndex((s) => s.id === section.id);
+            if(index !== -1) {
+                const newState = [...courseSections];
+                newState.splice(index, 1);
+                setCourseSections([...newState]);
+            }
+            }
         }
-        }
-    }
-    setIsCourseSectionDeleteLoading(false);
+        setIsCourseSectionDeleteLoading(false);
     }
     
     const updateTopicsOrder = async () => {
@@ -113,7 +114,7 @@ export default function CourseSectionCard(
     <>
         <Card key={courseSection.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-0">
-            <span className=" font-bold">{courseSection.title}</span>
+                <span className=" font-bold">{courseSection.title}</span>
             </CardHeader>
             <CardFooter className="flex items-center justify-between gap-4">
                 <Button 
@@ -170,7 +171,7 @@ export default function CourseSectionCard(
                             variant={isOrderMode ? "solid" : "flat" }
                             isLoading={loadingOrder}
                             startContent={<Icon filled>{isOrderMode ? "save" : "sort"}</Icon>}
-                            >
+                        >
                             {isOrderMode ? "Save Order" : "Edit Order"}
                         </Button>   
                     </div>
@@ -181,18 +182,15 @@ export default function CourseSectionCard(
                                 <Card key={topic.id}>
                                     <CardHeader className="pb-0 font-medium">{topic.title}</CardHeader>
                                     <CardFooter className="flex items-center gap-4">
-                                        <Button 
-                                            color="warning" variant="flat" 
-                                            isDisabled
-                                            startContent={<Icon filled>edit</Icon>}
-                                            onClick={() => console.log("edit topic")}
-                                        >Edit</Button>
-                                        <Button 
-                                            color="danger" variant="flat"
-                                            isDisabled 
-                                            startContent={<Icon filled>delete</Icon>}
-                                            onClick={() => console.log("delete topic")}
-                                        >Delete</Button>
+                                        <Link href={`/level/edit/${topic.id}`}>
+                                            <Button 
+                                                color="warning" variant="flat" 
+                                                startContent={<Icon filled>edit</Icon>}
+                                                onClick={() => console.log("edit topic")}
+                                            >
+                                                Edit
+                                            </Button>
+                                        </Link>
                                     </CardFooter>
                                 </Card>
                             ))}
@@ -202,16 +200,16 @@ export default function CourseSectionCard(
 
                     { isOrderMode && (
                         <ReactSortable list={topics} setList={setTopics} className=" overflow-y-auto max-h-[50vh] ">
-                        {topics?.map((topic) => (
-                            <Card key={topic.id} className=" mb-2  cursor-move select-none">
-                            <CardHeader className="flex flex-row items-center justify-between pb-0">
-                                <span className=" font-bold">{topic.title}</span>
-                            </CardHeader>
-                            <CardBody className="flex flex-row items-center justify-end">
-                                <Icon>drag_indicator</Icon>
-                            </CardBody>
-                            </Card>
-                        ))}
+                            {topics?.map((topic) => (
+                                <Card key={topic.id} className=" mb-2  cursor-move select-none">
+                                <CardHeader className="flex flex-row items-center justify-between pb-0">
+                                    <span className=" font-bold">{topic.title}</span>
+                                </CardHeader>
+                                <CardBody className="flex flex-row items-center justify-end">
+                                    <Icon>drag_indicator</Icon>
+                                </CardBody>
+                                </Card>
+                            ))}
                         </ReactSortable>
                     )}
                 </>
@@ -221,13 +219,17 @@ export default function CourseSectionCard(
                     <Button 
                         color="warning" variant="flat" 
                         isDisabled={isEditingLoading || loadingOrder} onClick={() => setIsModalOpen(false)}
-                    >Cancel</Button>
+                    >
+                        Cancel
+                    </Button>
                     <Button 
                         color="primary" variant="solid" 
                         isLoading={isEditingLoading} 
                         isDisabled={loadingOrder}
                         onClick={handleSaveCourseSection}
-                    >Save</Button>
+                    >
+                        Save
+                    </Button>
                 </>
             }
         />
