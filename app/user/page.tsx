@@ -8,13 +8,13 @@ import { getCurrentUser } from "@/utils/supabase/auth";
 import { redirect } from "next/navigation";
 import { formatReadableDate } from "@/functions/helpers";
 import { Chip } from "@nextui-org/chip";
-import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import Settings from "@/components/user/Settings";
 import { getXP } from "@/utils/supabase/xp";
 import XPChart from "@/components/user/XPChart";
 import UserFriends from "@/components/user/UserFriends";
 import FindFriendsButton from "@/components/user/FindFriendsButton";
+import ShareProfileButton from "@/components/user/ShareProfileButton";
 
 export default async function User() {;
 
@@ -72,7 +72,7 @@ export default async function User() {;
 
                 <div className="flex items-center gap-2">
                     <FindFriendsButton userId={session.user.id} />
-                    <Button isDisabled isIconOnly variant="flat" color="secondary"><Icon filled>share</Icon></Button>
+                    <ShareProfileButton userId={session.user.id} />
                 </div>
 
 
