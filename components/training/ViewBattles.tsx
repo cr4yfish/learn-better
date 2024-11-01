@@ -29,7 +29,7 @@ export default function ViewBattles({ battles, userId } : { battles: Battle[], u
 
             body={
                 <>
-                {battles.map((battle) => (
+                {battles.filter((b) => b.completed).map((battle) => (
                     <BattleCard key={battle.id} battle={battle} userId={userId} />
                 ))}
                 </>
