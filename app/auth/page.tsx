@@ -83,9 +83,12 @@ export default async function Auth() {
                 <CardContent>
                     <p>Our platform is 100% open source, meaning you can contribute to it&apos;s development</p>
                 </CardContent>
-                <CardFooter>
-                    <Link href="https://github.com/cr4yfish/learn-better">
+                <CardFooter className="flex items-center gap-4 flex-wrap w-full">
+                    <Link target="_blank" href="https://github.com/cr4yfish/nouv">
                         <Button color="secondary" variant="flat" startContent={<Icon>link</Icon>}>Github</Button>
+                    </Link>
+                    <Link target="_blank" href="https://reddit.com/r/nouv_app">
+                        <Button color="secondary" variant="flat" startContent={<Icon>link</Icon>}>Reddit</Button>
                     </Link>
                 </CardFooter>
             </Card>
