@@ -16,7 +16,8 @@ export const getQuestions = cache(async(topicId: string): Promise<Question[]> =>
         topics (*),
         *
     
-    `).eq("topic", topicId);
+    `)
+    .eq("topic", topicId);
     if(error) { throw error; }
     
     return data.map((db: any) => {
@@ -37,6 +38,7 @@ export const getWeakQuestions = cache(async (): Promise<Weak_User_Questions[]> =
             questions (*),
             *
         `)
+        .gte("score", 50)
         .order("score", { ascending: false })
     
     if(error) { throw error; }
