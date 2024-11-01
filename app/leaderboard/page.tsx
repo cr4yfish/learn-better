@@ -27,7 +27,7 @@ export default async function Leaderboard() {
         <>
         <div className="flex flex-col px-4 py-6 gap-6">
             <div className="flex flex-col gap-4">
-                <h1 className=" font-bold text-4xl mb-0">Leaderboard</h1>
+                <h1 className=" font-bold text-2xl mb-0">Leaderboard</h1>
                 {nextRank && 
                     <Progress 
                         value={sessionState.profile?.total_xp} 
