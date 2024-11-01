@@ -5,11 +5,12 @@ import { redirect } from "next/navigation";
 import Navigation from "@/components/utils/Navigation";
 import { getCurrentUser } from "@/utils/supabase/auth";
 import { formatReadableDate } from "@/functions/helpers";
-import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import { getProfileById } from "@/utils/supabase/user";
 
 import FollowButton from "@/components/utils/FollowButton";
+import UserFriends from "@/components/user/UserFriends";
+import ShareProfileButton from "@/components/user/ShareProfileButton";
 
 export default async function User({ params: { userId } } : { params: { userId: string } }) {;
 
@@ -42,22 +43,14 @@ export default async function User({ params: { userId } } : { params: { userId: 
                     </div>
                     <div className="flex flex-row gap-8 mt-4 h-[48px]">
 
-                        <div className="flex flex-col min-h-full gap-1 h-full">
-                            <span className=" font-medium text-medium h-[28px]">5</span>
-                            <span className="text-tiny">Following</span>
-                        </div>
-
-                        <div className="flex flex-col min-h-full gap-1 h-full">
-                            <span className=" font-medium text-medium h-[28px]">7</span>
-                            <span className="text-tiny">Followers</span>
-                        </div>
+                        <UserFriends userId={userId} />
 
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
                     {session?.user?.id && session.user.id !== userId && <FollowButton userId={session.user.id} otherUserId={userId} />}
-                    <Button isDisabled isIconOnly variant="flat" color="secondary"><Icon filled>share</Icon></Button>
+                    <ShareProfileButton userId={userId} />
                 </div>
 
 
@@ -67,8 +60,8 @@ export default async function User({ params: { userId } } : { params: { userId: 
                     <div className="flex flex-row items-center flex-wrap gap-4">
                         
                         <div className="flex flex-row gap-1">
-                            <div>
-                                <Icon filled>mode_heat</Icon>
+                            <div className=" text-orange-500">
+                                <Icon color="orange-500" filled>mode_heat</Icon>
                             </div>
                             <div className="flex flex-col">
                                 <span>{profile.currentStreakDays}</span>
@@ -77,7 +70,7 @@ export default async function User({ params: { userId } } : { params: { userId: 
 
                                           
                         <div className="flex flex-row gap-1">
-                            <div>
+                            <div className="text-green-400">
                                 <Icon filled>hotel_class</Icon>
                             </div>
                             <div className="flex flex-col">
@@ -92,12 +85,6 @@ export default async function User({ params: { userId } } : { params: { userId: 
             
             </div>
             
-        </div>
-
-
-
-        <div className="flex flex-col">
-            <h2 className="text-lg font-bold">Achievements</h2>
         </div>
 
 
