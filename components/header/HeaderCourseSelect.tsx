@@ -77,7 +77,7 @@ export default function HeaderCourseSelect({ sessionState } : { sessionState: Se
                                 {(currentUserCourse?.is_admin || currentUserCourse?.is_collaborator) &&
                                     <>
                                     <Link href={`level/new/ai`}>
-                                        <Button color="primary" variant="flat" startContent={<Icon>auto_awesome</Icon>}>Create Level with AI</Button>
+                                        <Button color="secondary" variant="flat" startContent={<Icon>auto_awesome</Icon>}>Create Level with AI</Button>
                                     </Link>
                                     <Link href={`level/new`}>
                                         <Button color="secondary" variant="flat" startContent={<Icon>add</Icon>}>Create Level yourself</Button>
