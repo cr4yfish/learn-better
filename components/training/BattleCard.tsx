@@ -28,7 +28,7 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
     useEffect(() => {
         if(battle.winning_user == userId) {
             setStatus("won");
-        } else if(battle.winning_user == null) {
+        } else if(battle.winning_user == null && battle.completed) {
             setStatus("draw");
         } else if(battle.winning_user == battle.other_user.id) {
             setStatus("lost");
@@ -48,7 +48,7 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
         <>
         <Card 
             className={`
-                w-full border
+                w-full 
                 ${(status == "won") && "light:border-success dark:border-success"}
                 ${(status == "draw") && "light:border-white dark:border-white"}
                 ${(((status == "lost") || (status == "forfeit"))) && "light:border-danger dark:border-danger" }
