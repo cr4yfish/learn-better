@@ -117,6 +117,17 @@ export const getFriendStatus = cache(async({ userId, otherUserId } : { userId: s
     return data[0] as User_Follow;
 })
 
+export const searchProfiles = cache(async(searchQuery: string): Promise<Profile[]> => {
+    const { data, error } = await getClient()
+        .from("profiles")
+        .select(`*`)
+        .ilike("username", `%${searchQuery}%`)
+        .order("username", { ascending: true });
+    if(error) { throw error; }
+
+    return data as Profile[];
+})
+
 export const searchFriends = cache(async(searchQuery: string): Promise<Followed_Profile[]> => {
     const { data, error } = await getClient()
         .from("followed_profiles")

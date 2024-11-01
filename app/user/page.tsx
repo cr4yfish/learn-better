@@ -14,6 +14,7 @@ import Settings from "@/components/user/Settings";
 import { getXP } from "@/utils/supabase/xp";
 import XPChart from "@/components/user/XPChart";
 import UserFriends from "@/components/user/UserFriends";
+import FindFriendsButton from "@/components/user/FindFriendsButton";
 
 export default async function User() {;
 
@@ -70,7 +71,7 @@ export default async function User() {;
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <Button isDisabled variant="flat" color="secondary">Add friends</Button>
+                    <FindFriendsButton userId={session.user.id} />
                     <Button isDisabled isIconOnly variant="flat" color="secondary"><Icon filled>share</Icon></Button>
                 </div>
 
