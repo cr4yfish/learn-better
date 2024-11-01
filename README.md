@@ -1,6 +1,8 @@
 # Nouv - learn better
 The learning app that helps you learn anything you want.
 
+<a href="https://www.reddit.com/r/nouv_app/" target="_blank">r/nouv_app on Reddit</a>
+
 
 
 <div style="width: 100%; display: flex; justify-content: center; gap: 1rem;">
