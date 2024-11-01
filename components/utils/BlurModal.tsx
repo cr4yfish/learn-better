@@ -44,7 +44,7 @@ export default function BlurModal({
         } else {
             internalOnClose();
         }
-    }, [isOpen, internalOnOpen, internalOnClose])You got it wrong!You got it wrong!You got it wrong!You got it wrong!
+    }, [isOpen, internalOnOpen, internalOnClose])
 
     return (
         <Modal
