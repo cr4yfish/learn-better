@@ -14,8 +14,8 @@ export default function Layout({children} : {children: React.ReactNode}) {
 
         <div className="relative min-h-screen w-screen overflow-hidden flex items-center justify-center">
             
-            <Navbar className="absolute top-0 z-50" classNames={{
-                    wrapper: "bg-white/50 backdrop-blur-xl dark:bg-black/50",
+            <Navbar className="absolute top-0 z-50 w-full bg-white/50 backdrop-blur-xl dark:bg-black/50" classNames={{
+                    wrapper: "",
                 }}>
                 <NavbarBrand>
                     <span className="font-black text-primary">Nouv</span>
