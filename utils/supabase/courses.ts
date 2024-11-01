@@ -59,8 +59,9 @@ export const getUserCourses = cache(async(userID: string): Promise<User_Course[]
     });
 })
 
-export const getUserCourse = cache(async (courseID: string): Promise<User_Course> => {
+export const getUserCourse = cache(async (courseID: string, userId: string): Promise<User_Course> => {
     const { data, error } = await getClient().from("users_courses").select(`
+        *,
         courses (
             abbreviation,
             created_at,
@@ -81,16 +82,14 @@ export const getUserCourse = cache(async (courseID: string): Promise<User_Course
             users_courses (
                 joined_at
             )
-        ),
-        joined_at,
-        is_admin,
-        is_moderator,
-        is_collaborator
-    `).eq("course", courseID);
+        )
+    `)
+    .eq("user", userId)
+    .eq("course", courseID);
     if(error) { throw error; }
 
     const db = data[0] as any;
-
+    
     return {
         course: {
             abbreviation: db.courses.abbreviation,

@@ -17,12 +17,12 @@ export default async function Home() {
 
   const sessionState = await getCurrentUser();
 
-  if(!sessionState) {
+  if(!sessionState?.user?.id) {
     redirect("/auth")
   }
 
   const currentCourse = sessionState.settings.current_course;
-  const currentUserCourse = await getUserCourse(currentCourse.id);
+  const currentUserCourse = await getUserCourse(currentCourse.id, sessionState.user.id);
   const initTopics = await getCourseTopics(currentCourse.id, 0, 10);
 
   return (
@@ -31,7 +31,7 @@ export default async function Home() {
       <main className="flex flex-col items-center w-full h-screen ">
         <Header />
         <div id="scrollparent" className="relative w-full h-[90vh] overflow-y-auto pb-80">
-          <LevelScroller initUserCourse={currentUserCourse} initTopics={initTopics} />
+          <LevelScroller initUserCourse={currentUserCourse} initTopics={initTopics} userId={sessionState.user.id} />
         </div>
       </main>
     </CurrentCourseProvider>

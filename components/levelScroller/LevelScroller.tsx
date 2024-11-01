@@ -79,12 +79,12 @@ async function loadMoreTopics({
     }
 }
 
-async function courseToUserCourse(course: Course): Promise<User_Course> {
-    const res = await getUserCourse(course.id);
+async function courseToUserCourse(course: Course, userId: string): Promise<User_Course> {
+    const res = await getUserCourse(course.id, userId);
     return res;
 }
 
-export default function LevelScroller({ initUserCourse, initTopics } : { initUserCourse: User_Course, initTopics: Topic[] }) {
+export default function LevelScroller({ initUserCourse, initTopics, userId } : { initUserCourse: User_Course, initTopics: Topic[], userId: string }) {
 
     const [topics, setTopics] = useState<Topic[]>(initTopics)
     const [isAdmin, setIsAdmin] = useState(initUserCourse.is_admin || initUserCourse.is_collaborator || initUserCourse.is_moderator)
@@ -117,11 +117,12 @@ export default function LevelScroller({ initUserCourse, initTopics } : { initUse
         // If the current course is the init course and we have topics, dont do anything
         // -> this means we are still on first load and have the initTopics
         if((currentCourse.id == initUserCourse.course.id ) && (topics.length > 0)) {
+            setIsAdmin(initUserCourse.is_admin || initUserCourse.is_collaborator || initUserCourse.is_moderator)
             setCurrentCourse(initUserCourse.course);
             return;
         }
 
-        courseToUserCourse(currentCourse).then((res) => {
+        courseToUserCourse(currentCourse, userId).then((res) => {
             setTopics([]);
             setCursor(0);
             setCanLoadMore(true);
