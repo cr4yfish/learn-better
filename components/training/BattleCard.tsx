@@ -30,8 +30,10 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
             setStatus("won");
         } else if(battle.winning_user == null) {
             setStatus("draw");
-        } else {
+        } else if(battle.winning_user == battle.other_user.id) {
             setStatus("lost");
+        } else if(battle.is_forfeited) {
+            setStatus("forfeit");
         }
     }, [battle, battle.winning_user, userId])
 
@@ -49,7 +51,7 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
                 w-full border
                 ${(status == "won") && "light:border-success dark:border-success"}
                 ${(status == "draw") && "light:border-white dark:border-white"}
-                ${(status == "lost") && "light:border-danger dark:border-danger" }
+                ${(((status == "lost") || (status == "forfeit"))) && "light:border-danger dark:border-danger" }
             `} 
             onClick={() => setIsModalOpen(true)}
         >
