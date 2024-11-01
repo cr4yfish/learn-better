@@ -90,6 +90,18 @@ export default function Question({
         setMessages([])
     }, [question.answers_correct])
 
+    // de-select options when selecting more than the correct number of options
+    useEffect(() => {
+        if(questionState.selected.length > question.answers_correct.length) {
+            const newSelected = questionState.selected;
+            newSelected.shift();
+            setQuestionState((prevState) => ({
+                ...prevState,
+                selected: newSelected
+            }))
+        }
+    }, [question.answers_correct, questionState.selected])
+    
     const handleCheckAnswer = async () => {
 
         if(!session) {
