@@ -14,7 +14,7 @@ export default function TrainButton({ weakQuestions } : { weakQuestions: Weak_Us
     return (
         <Button 
             startContent={<Icon filled>exercise</Icon>} 
-            fullWidth size="lg" color="primary" variant="shadow"
+            fullWidth size="lg" color="secondary" variant="flat"
             onClick={() => {createTrainingLevel(weakQuestions); setIsLoading(true)}}
             isLoading={isLoading}
         >
