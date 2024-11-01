@@ -8,7 +8,6 @@ import { Question, Training } from "@/types/db";
 
 
 export const getTrainingById = cache(async (trainingId: string): Promise<{ training: Training, questions: Question[] }> => {
-
     const { data, error } = await createClient()
         .from("trainings")
         .select("*")
@@ -37,6 +36,23 @@ export const getTrainingById = cache(async (trainingId: string): Promise<{ train
             }
         })
     }
+})
+
+type GetTrainingsParams = {
+    from: number;
+    limit: number;
+}
+
+export const getTrainings = cache(async (params: GetTrainingsParams): Promise<Training[]> => {
+    const { data, error } = await createClient()
+        .from("trainings")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(params.from, params.from + params.limit - 1);
+    
+    if (error) { throw error; }
+
+    return data;
 })
 
 
