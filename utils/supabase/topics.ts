@@ -226,12 +226,12 @@ export async function addUsersTopics({
     return data;
 }
 
-export async function upvoteCourseTopic(topic: Topic, userId: string): Promise<Topic_Vote> {
+export async function upvoteCourseTopic(topicId: string, userId: string): Promise<Topic_Vote> {
     const { data, error } = await getClient().from("topics_votes").upsert([{
-        topic: topic.id,
+        topic: topicId,
         user: userId,
         vote: true
-    }]).eq("user", userId).eq("topic", topic.id).select().single();
+    }]).eq("user", userId).eq("topic", topicId).select().single();
 
     if(error) { throw error; }
 

@@ -288,4 +288,5 @@ export type Battle = {
     user_other_start_xp: number;
     is_forfeited: boolean;
     is_cancelled: boolean;
+    justChanged?: boolean; // only client side
 }

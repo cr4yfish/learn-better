@@ -124,7 +124,7 @@ export default function LevelMain(
 
                         <Link 
                             className="w-full" 
-                            href={`/${trainingMode ? "training" : "level"}/${trainingMode ? training?.id : level?.id}/complete?rankUp=${levelState.rankUp}`}
+                            href={`/complete/${trainingMode ? "training" : "level"}/${trainingMode ? training?.id : level?.id}?rankUp=${levelState.rankUp}`}
                         >
                             <Button 
                                 color="primary" 

@@ -27,7 +27,7 @@ export default function LevelCompleteMain(
     const handleUpvoteLevel = async () => {
         if(userTopic.topic && sessionState.user?.id) {
             setIsVoting(true);
-            const res = await upvoteCourseTopic(userTopic.topic, sessionState.user.id);
+            const res = await upvoteCourseTopic(userTopic.topic.id, sessionState.user.id);
             if(res) {
                 setIsVoted(true);
             }

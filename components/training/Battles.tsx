@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Battle } from "@/types/db";
+import { Battle, Profile } from "@/types/db";
 import { Card, CardContent, CardDescription, CardTitle, CardHeader, CardFooter } from "../ui/card";
 import { Button } from "../utils/Button";
 import Icon from "../utils/Icon";
 
 import BlurModal from "../utils/BlurModal";
 import FriendlistAutocomplete from "./FriendlistAutocomplete";
-import { createBattle } from "@/utils/supabase/battles";
+import { createBattle, updateBattle } from "@/utils/supabase/battles";
 import BattleCard from "./BattleCard";
 import ViewBattles from "./ViewBattles";
+import { getProfileById } from "@/utils/supabase/user";
 
 const xpGoalsToDifficulty = {
     easy: 1000,
@@ -19,7 +20,7 @@ const xpGoalsToDifficulty = {
     hard: 10000
 }
 
-export default function Battles({ battles, userId } : { battles: Battle[], userId: string }) {
+export default function Battles({ battles, userId, showButtons=true, userProfile } : { battles: Battle[], userId: string, showButtons?: boolean, userProfile: Profile }) {
     const [localBattles, setLocalBattles] = useState<Battle[]>(battles);
     const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("medium");
     const [otherUserId, setOtherUserId] = useState<string | null>(null);
@@ -48,6 +49,55 @@ export default function Battles({ battles, userId } : { battles: Battle[], userI
         return (difficulty.length > 0 && otherUserId != null);
     }
 
+    useEffect(() => {
+        const checkBattleCompleted = async (battle: Battle) => {
+            const foeProfile = await getProfileById(battle.other_user.id); 
+    
+            const ownXpGained = userProfile.total_xp - battle.user_init_start_xp;
+            const foeXpGained = foeProfile.total_xp - battle.user_other_start_xp;
+    
+            let battleChanged = false;
+    
+            if(!battle.completed) {
+                if( ownXpGained >= battle.xp_goal && foeXpGained < battle.xp_goal) {
+                    // battle just now won
+                    battle.completed = true;
+                    battle.winning_user = userId;
+                    battleChanged = true;
+                } else if (foeXpGained >= battle.xp_goal && ownXpGained < battle.xp_goal) {
+                    // battle just now lost
+                    battle.completed = true;
+                    battle.winning_user = battle.other_user.id;
+                    battleChanged = true
+                } else if (ownXpGained >= battle.xp_goal && foeXpGained >= battle.xp_goal) {
+                    // battle just now tied
+                    battle.completed = true;
+                    battleChanged = true;
+                }
+    
+                if(battleChanged) {
+                    // update the battle
+                    const res = await updateBattle({
+                        id: battle.id,
+                        completed: true,
+                        winning_user: battle.winning_user
+                    })
+                    console.log(res);
+                    setLocalBattles([...localBattles]); // we were operating on a copy
+
+                    battle.justChanged = true;
+                }
+            }
+         
+        }
+
+        if(localBattles.length > 0) {
+            localBattles.forEach((battle) => {
+                checkBattleCompleted(battle);
+            })
+        }
+    }, [localBattles, userId, userProfile])
+
     return (
         <>
         <Card>
@@ -60,25 +110,25 @@ export default function Battles({ battles, userId } : { battles: Battle[], userI
             </CardHeader>
             <CardContent className="flex flex-col gap-2 items-center justify-center">
                 {localBattles.filter((b) => !b.completed).length == 0 && <span className=" text-gray-700 dark:text-gray-300 ">No ongoing Battles</span>}
-                {localBattles.filter((b) => !b.completed).length > 0 &&
-                <>
-                {localBattles.filter((b) => !b.completed).map((battle) => (
+
+                {localBattles.filter((b) => (!b.completed || b.justChanged)).map((battle) => (
                     <BattleCard key={battle.id} battle={battle} userId={userId} />
                 ))}
-                </>
-                }
+                
             </CardContent>
-            <CardFooter className=" w-full flex flex-row items-center gap-2">
-                <Button 
-                    startContent={<Icon filled>swords</Icon>} 
-                    fullWidth size="lg" color="secondary" 
-                    variant="flat"
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    Start a Battle
-                </Button>
-                <ViewBattles battles={localBattles} userId={userId} />
-            </CardFooter>
+            { showButtons &&
+                <CardFooter className=" w-full flex flex-row items-center gap-2">
+                    <Button 
+                        startContent={<Icon filled>swords</Icon>} 
+                        fullWidth size="lg" color="secondary" 
+                        variant="flat"
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        Start a Battle
+                    </Button>
+                    <ViewBattles battles={localBattles} userId={userId} />
+                </CardFooter>
+            }
         </Card>
 
         <BlurModal 

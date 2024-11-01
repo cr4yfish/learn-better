@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Progress } from "@nextui-org/progress";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
@@ -23,6 +23,17 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isForfeited, setIsForfeited] = useState(false);
+    const [status, setStatus] = useState<"won" | "lost" | "draw" | "forfeit" | "active">("active");
+
+    useEffect(() => {
+        if(battle.winning_user == userId) {
+            setStatus("won");
+        } else if(battle.winning_user == null) {
+            setStatus("draw");
+        } else {
+            setStatus("lost");
+        }
+    }, [battle, battle.winning_user, userId])
 
     const handleForfeit = async () => {
         setIsLoading(true);
@@ -33,7 +44,15 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
 
     return (
         <>
-        <Card className=" w-full" onClick={() => setIsModalOpen(true)}>
+        <Card 
+            className={`
+                w-full border
+                ${(status == "won") && "light:border-success dark:border-success"}
+                ${(status == "draw") && "light:border-white dark:border-white"}
+                ${(status == "lost") && "light:border-danger dark:border-danger" }
+            `} 
+            onClick={() => setIsModalOpen(true)}
+        >
             <CardHeader className=" pb-3">
                 <CardDescription>{battle.xp_goal} XP</CardDescription>
                 <CardTitle>{battle.other_user.username}</CardTitle>
@@ -94,6 +113,7 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
                 </>
             }
         />
+        {battle.justChanged && <span className=" w-full text-xs text-start text-gray-500 dark:text-gray-400 ">Battle updated</span>}
         </>
     )
 }

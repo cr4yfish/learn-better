@@ -10,6 +10,7 @@ import Navigation from "@/components/utils/Navigation"
 import { getSession } from "@/utils/supabase/auth";
 import { getBattles } from "@/utils/supabase/battles";
 import { getWeakQuestions } from "@/utils/supabase/questions";
+import { getProfileById } from "@/utils/supabase/user";
 import { getTimeSpentByUser, getWeeklyGoalByUser } from "@/utils/supabase/weeklyGoals";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { redirect } from "next/navigation";
@@ -27,6 +28,7 @@ export default async function Training() {
     const weeklyGoal = await getWeeklyGoalByUser(session.user.id);
     const secondsSpentByUser = await getTimeSpentByUser(session.user.id);
     const battles = await getBattles(session.user.id);
+    const userProfile = await getProfileById(session.user.id);
     
     return (
         <>
@@ -60,7 +62,7 @@ export default async function Training() {
                     </CardContent>
                 </Card>
 
-                <Battles battles={battles} userId={session.user.id} />
+                <Battles battles={battles} userId={session.user.id} userProfile={userProfile} />
 
                 <Card>
                     <CardHeader>
