@@ -44,7 +44,7 @@ export default function BlurModal({
         } else {
             internalOnClose();
         }
-    }, [isOpen, internalOnOpen, internalOnClose])
+    }, [isOpen, internalOnOpen, internalOnClose])You got it wrong!You got it wrong!You got it wrong!You got it wrong!
 
     return (
         <Modal
@@ -57,6 +57,7 @@ export default function BlurModal({
             onClose={() => { internalOnClose(); updateOpen(false) }}
             onOpenChange={onOpenChange}
             backdrop="blur"
+            className="max-h-screen overflow-y-auto"
             classNames={{
                 base: " bg-content1/70 dark:bg-content1/50  dark:backdrop-blur-xl",
                 body: "bg-transparent"
