@@ -290,3 +290,23 @@ export type Battle = {
     is_cancelled: boolean;
     justChanged?: boolean; // only client side
 }
+
+export type Report_Type = {
+    id: string;
+    created_at?: string;
+    title: string;
+    description: string;
+    priority: number;
+}
+
+export type Report_Question = {
+    id: string;
+    created_at?: string;
+    question: Question;
+    user?: User;
+    description: string;
+    resolved: boolean;
+    resolve_note?: string;
+    resolved_at?: string;
+    report_type?: Report_Type;
+}

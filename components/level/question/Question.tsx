@@ -14,6 +14,7 @@ import BlurModal from "@/components/utils/BlurModal";
 import { addUserQuestion } from "@/utils/supabase/questions";
 import Icon from "@/components/utils/Icon";
 import { areArraysEqual as arraysAreEqual, shuffleArray } from "@/functions/helpers";
+import QuestionReportButton from "./QuestionReportButton";
 
 
 export default function Question({
@@ -44,18 +45,50 @@ export default function Question({
     });
     const [isExplained, setIsExplained] = useState(false);
     
+    // update prompt
     useEffect(() => {
         setInput(`Please explain the correct answer and if my answer is wrong, then also why it is wrong. The Question Title: ${question.title}. The Question Description: ${question.question}. The Correct Answer Options: [${question.answers_correct.join(", ")}]. All the Answer Options: [${question.answer_options.join(", ")}]. The Answers options I chose: [${questionState.selected.join(", ")}]`)
     }, [
-            question.title, question.question, question.answer_options,
-            question.answers_correct, questionState.selected, setInput
-        ])
+        question.title, question.question, question.answer_options,
+        question.answers_correct, questionState.selected, setInput
+    ])
 
+    // restart time when question changes
     useEffect(() => {
         stopwatch.stop();
         stopwatch.start();
         return () => { stopwatch.stop() }
     }, [question.question, stopwatch])
+
+    // start the timer
+    useEffect(() => {
+        stopwatch.start();
+
+        // cleanup
+        return () => {
+            stopwatch.stop();
+        }
+    }, [stopwatch])
+
+    // shuffle the options when the question changes
+    useEffect(() => {
+        const randomOptions = shuffleArray(question.answer_options)
+        setQuestionState((prevState) => ({
+            ...prevState,
+            options: randomOptions
+        }))
+    }, [question.answer_options])
+
+    // reset the question state when the question changes
+    useEffect(() => {
+        setQuestionState((prevState) => ({
+            ...prevState,
+            selected: [],
+            correct: "initial"
+        }))
+
+        setMessages([])
+    }, [question.answers_correct])
 
     const handleCheckAnswer = async () => {
 
@@ -154,34 +187,6 @@ export default function Question({
         setIsExplained(false);
     }
 
-    useEffect(() => {
-        stopwatch.start();
-
-        // cleanup
-        return () => {
-            stopwatch.stop();
-        }
-    }, [stopwatch])
-
-    useEffect(() => {
-        const randomOptions = shuffleArray(question.answer_options)
-        setQuestionState((prevState) => ({
-            ...prevState,
-            options: randomOptions
-        }))
-    }, [question.answer_options])
-
-    useEffect(() => {
-        // reset the question state when the question changes
-        setQuestionState((prevState) => ({
-            ...prevState,
-            selected: [],
-            correct: "initial"
-        }))
-
-        setMessages([])
-    }, [question.answers_correct])
-
     return (
         <>
         <div className="flex flex-col prose dark:prose-invert gap-6 overflow-visible pb-20">
@@ -279,7 +284,12 @@ export default function Question({
                 isDismissable: false,
                 hideCloseButton: true,
             }}
-            header={<>{questionState.correct == "correct" ? "Correct!" : "Wrong!"}</>}
+            header={
+                <>
+                {questionState.correct == "correct" ? "Correct!" : "Wrong!"}
+                <QuestionReportButton question={question} userId={session?.user?.id} />
+                </>
+            }
             body={
                 <div className=" min-h-full">
                     <span>{questionState.correct == "correct" ? "You got it right!" : "You got it wrong!"}</span>
