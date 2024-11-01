@@ -13,12 +13,13 @@ import Icon from "@/components/utils/Icon";
 import Settings from "@/components/user/Settings";
 import { getXP } from "@/utils/supabase/xp";
 import XPChart from "@/components/user/XPChart";
+import UserFriends from "@/components/user/UserFriends";
 
 export default async function User() {;
 
     const session = await getCurrentUser();
 
-    if(!session) {
+    if(!session?.user?.id) {
         redirect("/auth");
     }
 
@@ -41,7 +42,7 @@ export default async function User() {;
                         
                         <div className="flex flex-col text-tiny dark:text-gray-300">
                             <span>{session.user?.email}</span>
-                            <span>Joined {formatReadableDate(session.user?.created_at ?? "")}</span>
+                            <span>Joined {formatReadableDate(session.user.created_at ?? "")}</span>
                         </div>
                     </div>
                     <div className="flex flex-row gap-8 mt-4 h-[48px]">
@@ -63,15 +64,7 @@ export default async function User() {;
                             <span className="text-tiny">Courses</span>
                         </div>
 
-                        <div className="flex flex-col min-h-full gap-1 h-full">
-                            <span className=" font-medium text-medium h-[28px]">5</span>
-                            <span className="text-tiny">Following</span>
-                        </div>
-
-                        <div className="flex flex-col min-h-full gap-1 h-full">
-                            <span className=" font-medium text-medium h-[28px]">7</span>
-                            <span className="text-tiny">Followers</span>
-                        </div>
+                        <UserFriends userId={session.user.id} />
 
                     </div>
                 </div>

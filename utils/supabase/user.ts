@@ -69,10 +69,30 @@ export const getFriends = cache(async(userId: string): Promise<Profile[]> => {
         .select(`
             *,
             users_follow_user_fkey1 (*),
-            users_follow_other_user_fkey1 (*),
+            users_follow_other_user_fkey1 (*)
         `)
-        .eq("user_id", userId)
-        .eq("friends", true)
+        .eq("user", userId)
+        ;
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            ...db,
+            user: db.users_follow_user_fkey1 as Profile,
+            other_user: db.users_follow_other_user_fkey1 as Profile
+        }
+    });
+})
+
+export const getFollowers = cache(async(userId: string): Promise<Profile[]> => {
+    const { data, error } = await getClient()
+        .from("users_follow")
+        .select(`
+            *,
+            users_follow_user_fkey1 (*),
+            users_follow_other_user_fkey1 (*)
+        `)
+        .eq("other_user", userId)
         ;
     if(error) { throw error; }
 
