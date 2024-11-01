@@ -33,7 +33,7 @@ export default async function User({ params: { userId } } : { params: { userId: 
                 <div className="flex flex-col w-full">
                     <div className="flex flex-col w-full">
                         <div className="flex justify-between items-center w-full">
-                            <h2 className="text-lg font-bold">{profile?.username}</h2>
+                            <h2 className="text-2xl font-bold">{profile?.username}</h2>
                         </div>
                         
                         <div className="flex flex-col text-tiny dark:text-gray-300">

@@ -37,7 +37,7 @@ export default async function User() {;
                 <div className="flex flex-col w-full">
                     <div className="flex flex-col w-full">
                         <div className="flex justify-between items-center w-full">
-                            <h2 className="text-lg font-bold">Hi, {session.profile?.username}</h2>
+                            <h2 className="text-2xl font-bold">Hi, {session.profile?.username}</h2>
                             <Settings sessionState={session} />
                         </div>
                         
