@@ -71,6 +71,7 @@
   left: 0;
   position: absolute;
   height: 100vh;
+  width: 100% !important;
 }
 
 .noise > div > div {
@@ -85,6 +86,10 @@
 .noise-content {
   height: 100% !important;
   min-height: max-content !important;
+}
+
+.card-noise canvas {
+  width: 100% !important;
 }
 
 .swiper-wrapper, .swiper-slide, .swiper {

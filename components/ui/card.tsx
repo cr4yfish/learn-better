@@ -17,7 +17,7 @@ const Card = React.forwardRef<
     )}
     {...props}
   >
-    <Noise opacity={.5} className=" absolute w-full h-full top-0 left-0 opacity-15 dark:opacity-50 " />
+    <Noise opacity={.5} className=" card-noise absolute w-full h-full top-0 left-0 opacity-15 dark:opacity-50 " />
       {children}
   </div>
 ))
