@@ -27,25 +27,16 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
         });
     }
 
-    const saveCourse = async (courseToSave: Course) => {
+    const saveCourse = async (courseToSave: Partial<Course>) => {
         if(!userId) return;
 
         setIsLoading(true);
 
         courseToSave.id = (course && !isNew) ? course.id : uuidv4();
 
-        courseToSave.creator = {
-            id: userId,
-            // thse arent used, so whatever
-            app_metadata: {},
-            user_metadata: {},
-            created_at: new Date().toISOString(),
-            aud: ""
-        };
-
         courseToSave.is_official = (course && !isNew) ? course.is_official : false;
 
-        const res = await upsertCourse(courseToSave);
+        const res = await upsertCourse(courseToSave, userId);
 
         if(res.id && isNew) {
 

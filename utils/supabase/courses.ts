@@ -270,13 +270,13 @@ export async function updateCurrentCourse(userID: string, courseID: string): Pro
     return { id: data.id };
 }
 
-export async function upsertCourse(course: Course): Promise<{ id: string }> {
+export async function upsertCourse(course: Partial<Course>, userId: string): Promise<{ id: string }> {
     const dbEntry = {
         id: course.id,
         title: course.title,
         abbreviation: course.abbreviation,
         description: course.description,
-        creator: course.creator.id,
+        creator: userId,
         is_official: course.is_official,
         institution: course.institution?.id ?? null,
         is_public: course.is_public ?? true,
