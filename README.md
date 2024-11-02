@@ -145,6 +145,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] ~~Plain text~~ - idk if that's useful
 - [x] AI explanation for questions
 - [ ] Personalized Teacher AI per course
+    - [x] Basic AI for answering questions
+    - [x] Give AI access to course data
+    - [ ] Give AI some useful features
 - [ ] ~~AI Helper for creating questions & levels (mostly for writing help)~~ - Just use the first feature
 
 ## Data Privacy
