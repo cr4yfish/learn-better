@@ -101,12 +101,15 @@ export type Course = {
     title: string;
     abbreviation: string;
     description: string;
-    creator: User;
+    creator: Profile;
     is_official: boolean;
     is_public?: boolean;
     institution?: Institution;
     votes?: number;
     members?: number;
+    course_sections_count?: number;
+    topics_count?: number;
+    questions_count?: number;
 }
 
 export type Institution = {

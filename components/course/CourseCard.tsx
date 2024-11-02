@@ -183,6 +183,15 @@ export default function CourseCard ({
                         </Button>
                     </Link>
                 }
+                <Link href={`/course/${course.id}`}>
+                    <Button
+                        variant="flat"
+                        color="secondary"
+                        startContent={<Icon downscale color="secondary" filled>open_in_new</Icon>}
+                    >
+                        Details
+                    </Button>
+                </Link>
             </>
             }
         />

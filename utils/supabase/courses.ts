@@ -118,19 +118,10 @@ export const getCourses = cache(async ({
     const { data, error } = await getClient()
         .from("courses")
         .select(`
-            abbreviation,
-            created_at,
-            creator,
-            description,
-            id,
+            *,
             institutions (
-                id,
-                title,
-                abbreviation,
-                description
+                *
             ),
-            title,
-            is_official,
             courses_votes (
                 vote
             ),
@@ -144,18 +135,37 @@ export const getCourses = cache(async ({
 
     return data.map((db: any) => {
         return {
-            abbreviation: db.abbreviation,
-            created_at: db.created_at,
-            creator: db.creator,
-            description: db.description,
-            id: db.id,
+            ...db,
             institution: db.institutions,
-            title: db.title,
-            is_official: db.is_official,
             votes: (db.courses_votes as {vote: boolean}[]).length,
             members: (db.users_courses as {joined_at: string}[]).length
         }
     })
+})
+
+export const getCourseById = cache(async (courseID: string): Promise<Course> => {
+    const { data, error } = await getClient().from("courses").select(`
+        *,
+        courses_votes (
+                vote
+            ),
+        users_courses (
+            joined_at
+        ),
+        creator ( username ),
+        course_sections ( id ),
+        topics ( id, questions ( id ) )
+    `).eq("id", courseID).single();
+    if(error) { throw error; }
+
+    return {
+        ...data,
+        votes: (data.courses_votes as {vote: boolean}[]).length,
+        members: (data.users_courses as {joined_at: string}[]).length,
+        course_sections_count: data.course_sections.length,
+        topics_count: data.topics.length,
+        questions_count: data.topics.reduce((acc: number, topic: any) => acc + topic.questions.length, 0)
+    } as Course
 })
 
 export const searchCourseSections = cache(async (searchQuery: string, course: Course, from=0, limit=10): Promise<Course_Section[]> => {
