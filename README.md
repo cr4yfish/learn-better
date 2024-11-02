@@ -147,6 +147,18 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [ ] Personalized Teacher AI per course
 - [ ] ~~AI Helper for creating questions & levels (mostly for writing help)~~ - Just use the first feature
 
+## Data Privacy
+I'm a EU-based Developer, so I'm building it with GDRP in mind. 
+Altough, as you can take from the roadmap above, I didn't get to the part of implementing Privacy-focused features yet.
+
+I'm using the free tier of Mistral, so every time you use the "Explain Answer" feature, all Data related to the Question and your answer gets send to Mistral and is used by them to train the Model. 
+The only user-generated Data here is which answer option you chose, not even your username or anything like that.
+
+All other Data, exept for your password is visible in clear-text format for me in the Database. 
+Sounds scary but pretty normal for any application really. (also I still didn't get around to hash user-provided Gemini API keys yet, so enter that on your own volition right now - I promise i won't do aynthing with it tho lol). 
+
+* If you delete your account, all data you generated gets permanently removed automatically.
+
 ## Open Source & Contributions
 This project is 100% open source. 
 Please don't judge my code too harshly, I'm on a tight schedule and I'm doing my best.
