@@ -14,7 +14,7 @@ type TeacherButtonProps = {
 }
 
 export default function TeacherButton(props: TeacherButtonProps) {
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <>
