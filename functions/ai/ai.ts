@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createMistral } from "@ai-sdk/mistral";
-import { convertToCoreMessages, LanguageModelV1, Message, streamObject, streamText, UserContent } from "ai"; 
+import { convertToCoreMessages, Message, streamObject, streamText, UserContent } from "ai"; 
 import { downloadObject } from "../../utils/supabase/storage";
 import { multipleLevelSchema } from "./schemas";
 
