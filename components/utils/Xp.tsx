@@ -13,7 +13,7 @@ export default function Xp({ xp, isLoaded } : { xp?: number, isLoaded: boolean }
                 startContent={<Icon filled color="green-500" >hotel_class</Icon>}
                 className="flex items-center justify-center gap-2"
             >
-                <div className="text-2xl font-semibold text-green-500 ">{xp ?? 0}</div>
+                <div className="text-2xl font-semibold text-green-500 ">{xp?.toLocaleString() ?? 0}</div>
             </Button>
         </Skeleton>
         </>
