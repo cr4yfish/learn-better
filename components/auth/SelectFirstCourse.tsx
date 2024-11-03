@@ -37,12 +37,12 @@ export default function SelectFirstCourse({ sessionState, initCourses, joinedCou
     }, [userCourses, sessionState, joinedCourses]);
 
     return (
-        <>
-        <CourseSearch sessionState={sessionState} />
-        <div className="flex flex-col gap-4 w-full">
-            <CoursesShowcaseSwiper session={sessionState} courses={initCourses} />
+        <div className="flex flex-col gap-4">
+            <CourseSearch sessionState={sessionState} />
+            <div className="flex flex-col gap-4 w-full">
+                <CoursesShowcaseSwiper session={sessionState} courses={initCourses} />
+            </div>
         </div>
-        </>
     )
 
 }
