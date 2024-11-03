@@ -65,6 +65,8 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
                         type="password"
                         endContent={<div className=" h-full flex items-center justify-center"><Icon filled >key</Icon></div>} 
                         onChange={e => setSettings({...settings, gemini_api_key: e.target.value})}
+                        isDisabled
+                        description="The API is still stored in plain text. I'm working on a secure way to store it."
                     />
                 </Skeleton>
                 <Switch classNames={{ label: "text-black dark:text-white" }} isSelected={settings.theme_is_dark} onValueChange={handleThemeChange}  >Dark Mode</Switch>
