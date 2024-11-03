@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useStopwatch } from "react-use-precision-timer";
 
 import { Button } from "@/components/utils/Button";
@@ -17,6 +16,7 @@ import { tryRankUp } from "@/utils/supabase/ranks";
 import { extendOrAddStreak } from "@/utils/supabase/streaks";
 import { addUsersTopics } from "@/utils/supabase/topics";
 import { completeTraining } from "@/utils/supabase/trainings";
+import ConditionalLink from "../utils/ConditionalLink";
 
 export default function LevelMain(
     { session, level, questions, initLevelState, trainingMode=false, training } : 
@@ -37,7 +37,7 @@ export default function LevelMain(
     }, [levelState.answeredQuestions])
 
     const handleCompleteLevel = async () => {
-        if(!session.user?.id || !session.profile?.total_xp) return;
+        if(!session.user?.id || session.profile?.total_xp == null) return;
         stopwatch.pause();
         setIsLoading(true);
 
@@ -71,7 +71,7 @@ export default function LevelMain(
     }
 
     const addUserTopic = async (seconds: number, accuracy: number): Promise<User_Topic | void> => {
-        if(!session.user?.id || !session.profile?.total_xp || trainingMode || !level) return;
+        if(!session.user?.id || session.profile?.total_xp == null || trainingMode || !level) return;
         const newTopic = {
             userID: session.user.id,
             topicID: level.id,
@@ -122,8 +122,8 @@ export default function LevelMain(
                             {trainingMode && <p>You have completed this training.</p>}
                         </div>
 
-                        <Link 
-                            className="w-full" 
+                        <ConditionalLink 
+                            active={!isLoading}
                             href={`/complete/${trainingMode ? "training" : "level"}/${trainingMode ? training?.id : level?.id}?rankUp=${levelState.rankUp}`}
                         >
                             <Button 
@@ -134,7 +134,7 @@ export default function LevelMain(
                             >
                                 Continue
                             </Button>
-                        </Link>
+                        </ConditionalLink>
                         
                     </div>
                 )}
