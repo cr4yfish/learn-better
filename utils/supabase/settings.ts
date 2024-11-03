@@ -24,8 +24,8 @@ export const getSettings = cache(async(userID: string): Promise<Settings> => {
 })
 
 interface UpsertSettingsParams extends Partial<Settings> {
-    userId: string;
-    currentCourseId: string;
+    userId?: string;
+    currentCourseId?: string;
 }
 
 export async function upsertSettings(settings: UpsertSettingsParams): Promise<{ id: string }> {
