@@ -15,7 +15,6 @@ import { addUserQuestion } from "@/utils/supabase/questions";
 import Icon from "@/components/utils/Icon";
 import { areArraysEqual as arraysAreEqual, shuffleArray } from "@/functions/helpers";
 import QuestionReportButton from "./QuestionReportButton";
-import { triggerVibration } from "@/functions/helpers";
 
 export default function Question({
     question, setLevelState, session, levelState, questions
@@ -146,8 +145,6 @@ export default function Question({
             questions: prevState.questions.map(q => q.id == question.id ? { id: q.id, completed: completed } : q),
             answeredQuestions: ++prevState.answeredQuestions,
         }))
-
-        triggerVibration();
 
         setIsModalOpen(true)
         setIsLoading(false)
