@@ -282,7 +282,7 @@ export default function Question({
                 isDisabled={questionState.selected.length == 0 || questionState.correct != "initial"}
                 isLoading={isLoading}
                 size="lg"
-                onClick={handleCheckAnswer}
+                onClick={() => {triggerVibration(); handleCheckAnswer(); }}
             >
                     {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
             </Button>
