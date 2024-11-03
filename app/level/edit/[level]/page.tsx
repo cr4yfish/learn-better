@@ -41,7 +41,7 @@ export default async function EditLevel({ params: { level } }: { params: { level
                         <Icon filled>arrow_back</Icon>
                     </Button>
                 </Link>
-                <h1 className=" font-bold text-3xl">{topic.title}</h1>
+                <h1 className=" font-bold text-2xl">{topic.title}</h1>
             </div>
 
 
