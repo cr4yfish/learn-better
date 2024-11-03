@@ -127,6 +127,11 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Buy a domain
 
 ### Future Features
+- [ ] Full offline Mode
+    - [ ] Downloadable Course Content
+    - [ ] Full download of frontend
+    - [ ] Fallback for online features
+    - [ ] Syncing of offline progress
 - [ ] Course Collaboration  
 - [ ] Friend Quests
 - [ ] Importing Levels & Questions from other sources
