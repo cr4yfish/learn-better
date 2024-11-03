@@ -4,11 +4,11 @@ import { redirect } from "next/navigation";
 import { Progress } from "@nextui-org/progress";
 
 import Navigation from "@/components/utils/Navigation";
-import LeaderboardCard from "@/components/user/LeaderBoardCard";
 
 import { getCurrentUser } from "@/utils/supabase/auth";
 import { getProfilesInRank } from "@/utils/supabase/user";
 import { getRanks } from "@/utils/supabase/ranks";
+import LeaderboardScroller from "@/components/leaderboard/LeaderboardScroller";
 
 export default async function Leaderboard() {
 
@@ -18,14 +18,19 @@ export default async function Leaderboard() {
         redirect("/auth");
     }
 
-    const profiles = await getProfilesInRank(sessionState.profile?.rank?.id);
+    const initProfiles = await getProfilesInRank({
+        rankID: sessionState.profile?.rank?.id,
+        offset: 0,
+        limit: 20
+    });
+
     const ranks = await getRanks();
 
     const nextRank = ranks.find(rank => rank.xp_threshold > sessionState.profile!.total_xp);
 
     return (
         <>
-        <div className="flex flex-col px-4 py-6 gap-6">
+        <div className="flex flex-col px-4 py-6 gap-6 max-h-screen relative overflow-y-hidden">
             <div className="flex flex-col gap-4">
                 <h1 className=" font-bold text-2xl mb-0">Leaderboard</h1>
                 {nextRank && 
@@ -48,12 +53,16 @@ export default async function Leaderboard() {
                 </div>
                 
             </div>
-
-            <div className="flex flex-col gap-2">
-                {profiles.map((profile, index) => (
-                    <LeaderboardCard key={index} profile={profile} sessionState={sessionState} position={index+1} />
-                ))}
+            
+            <div className="w-full max-h-full relative overflow-y-auto pb-20">
+                <LeaderboardScroller
+                    sessionState={sessionState}
+                    ranks={ranks}
+                    nextRank={nextRank!}
+                    initProfilesInRank={initProfiles}
+                />
             </div>
+            
         </div>
         <Navigation activeTitle="Leaderboard" />
         </>

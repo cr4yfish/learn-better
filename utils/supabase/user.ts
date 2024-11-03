@@ -43,8 +43,15 @@ export const getProfiles = cache(async(): Promise<Profile[]> => {
     return data;
 })
 
-export const getProfilesInRank = cache(async(rankID?: string): Promise<Profile[]> => {
-    let localRankID = rankID;
+
+type ProfilesInRankProps = {
+    rankID?: string;
+    offset: number;
+    limit: number;
+}
+
+export const getProfilesInRank = cache(async(props: ProfilesInRankProps): Promise<Profile[]> => {
+    let localRankID = props.rankID;
     if(!localRankID) {
         localRankID = (await getCurrentUserRank()).id;
     }
@@ -52,7 +59,11 @@ export const getProfilesInRank = cache(async(rankID?: string): Promise<Profile[]
     const { data, error } = await getClient().from("profiles").select(`
         *,
         ranks (*)    
-    `).eq("rank", localRankID).order("total_xp", { ascending: false });
+    `)
+        .eq("rank", localRankID)
+        .order("total_xp", { ascending: false })
+        .range(props.offset, props.offset + props.limit - 1);
+        
     if(error) { throw error; }
 
     return data.map((profile: any) => {

@@ -1,13 +1,13 @@
-"use server";
+
 
 import { Card, CardBody } from "@nextui-org/card";
 
 import { Profile } from "@/types/db";
 
-import Username from "./Username";
+import Username from "@/components/user/Username";
 import { SessionState } from "@/types/auth";
 
-export default async function LeaderboardCard({ profile, sessionState, position } : { profile: Profile, sessionState: SessionState, position: number }) {
+export default function LeaderboardCard({ profile, sessionState, position } : { profile: Profile, sessionState: SessionState, position: number }) {
 
     return (
         <>
