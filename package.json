@@ -81,6 +81,7 @@
     "react-toastify": "^10.0.5",
     "react-use-precision-timer": "^3.5.5",
     "recharts": "^2.13.0",
+    "remark-gfm": "^4.0.0",
     "sortablejs": "^1.15.3",
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.4",
