@@ -35,7 +35,7 @@ export default function CourseSectionAutocomplete({ setCourseSection, course } :
 
     return (
         <Autocomplete
-            className="max-w-xs"
+            className="max-w-xs z-50"
             variant="bordered"
             label="Pick a Course Section"
             placeholder="Select a Course Section"
@@ -43,6 +43,7 @@ export default function CourseSectionAutocomplete({ setCourseSection, course } :
             required
             isRequired
             isLoading={list.isLoading}
+            description="Select a course section to add content to"
             items={list.items}
             inputValue={list.filterText}
             onInputChange={list.setFilterText}

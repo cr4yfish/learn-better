@@ -55,7 +55,7 @@ export default function AddContentModal(props: Props) {
                                 Add a new level
                             </Button>
                         </Link>
-                        <Link href={"/level/new/ai"}>
+                        <Link href={`/level/new/ai?courseId=${props.course.id}`}>
                             <Button
                                 color="primary"
                                 startContent={<Icon color="fuchsia-950" filled>auto_awesome</Icon>}

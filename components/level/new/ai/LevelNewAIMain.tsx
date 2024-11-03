@@ -26,18 +26,29 @@ import { upsertQuestion } from "@/utils/supabase/questions";
 import CourseSectionAutocomplete from "@/components/courseSection/CourseSectionAutocomplete";
 import { QuestionTypes } from "@/utils/constants/question_types";
 
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+  } from "@/components/ui/drawer"
+  
 
-export default function LevelNewAIMain({ sessionState } : { sessionState: SessionState }) {
+
+export default function LevelNewAIMain({ sessionState, course } : { sessionState: SessionState, course: Course }) {
     const [apiKey, setApiKey] = useState<string | null>(sessionState.settings.gemini_api_key ?? null);
     const [filename, setFilename] = useState<string | null>(null);
-    const [course, setCourse] = useState<Course | null>(null);
     const [courseSection, setCourseSection] = useState<Course_Section | null>(null);
     const [numLevels, setNumLevels] = useState<number>(1);
 
     const [isAddingLoading, setIsAddingLoading] = useState<boolean>(false);
     const [isAdded, setIsAdded] = useState<boolean>(false);
 
-    const { object, submit, isLoading } = useObject({
+    const { object, submit, isLoading, stop } = useObject({
         api: "/api/ai/createLevels",
         schema: multipleLevelSchema,
         headers: {
@@ -49,6 +60,7 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
         },
         onFinish: async () => {
             await deleteObject({ filename: filename!, path: "", bucketName: "documents" });
+            setFilename(null);
         }
     })
 
@@ -121,74 +133,109 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
         setIsAdded(true);
     }
 
-
-
+    const handleReset = () => {
+        // reload page
+        window.location.reload();
+    }
 
     return (
         <>
-        <div className="z-50 flex items-center justify-center ">
-            <Card shadow="lg" className="relative flex w-full flex-col items-center gap-4 h-full">
-                <CardHeader className="flex flex-col justify-start items-start pb-0">
-                    <h1 className=" font-bold text-2xl">Generate new levels with AI</h1>
-                    <p>Use AI to create multiple new levels from a PDF</p>
-                </CardHeader>
-                <CardBody className="flex flex-col gap-2 pt-0 pb-0">
-                    {<Input 
+        <div className="flex flex-col">
+            <h1 className=" font-bold text-2xl">Generate new levels with AI</h1>
+        </div>
+        <CourseSectionAutocomplete 
+            setCourseSection={(courseSection) => setCourseSection(courseSection)} 
+            course={course}
+        />
+
+        <Drawer>
+            <DrawerTrigger className="w-fit py-6" asChild>
+                <Button isDisabled={!courseSection} variant="solid" color="primary" >Open config</Button>
+            </DrawerTrigger>
+            <DrawerContent>
+                <DrawerHeader>
+                </DrawerHeader>
+                <div className="flex flex-col px-4 gap-4">
+                    <Input 
                         label="Your Gemini API Key" 
                         value={apiKey ?? ""} 
+                        isRequired
                         type="password"
                         onValueChange={(value) => setApiKey(value)} 
-                    />}
-                    <CourseAutocomplete setCourse={(course) => setCourse(course)} />
-                    <CourseSectionAutocomplete 
-                        setCourseSection={(courseSection) => setCourseSection(courseSection)} 
-                        course={course}
                     />
+
                     <Input 
                         label="Number of Levels" 
                         type="number" 
                         isRequired
+                        description="The AI will try to match this, but no guarantee"
                         className=" max-w-[200px]" 
                         value={numLevels.toString()} 
                         onValueChange={(value) => setNumLevels(parseInt(value))} 
                     />
-                    <div className="flex flex-wrap gap-2 items-center">
-                        <UppyFileUpload 
-                            session={sessionState} 
-                            label="Upload source from PDF" 
-                            setFileNameCalback={(filename) => setFilename(filename)} 
-                        />
-                        <ScraperForm 
-                            setFilenameCallback={(filename) => setFilename(filename)} 
-                        />
+                    <div className="flex flex-col gap-1">
+                        <p className=" text-sm text-gray-700 dark:text-gray-400 " >{filename == null ? "Upload a Source from either a PDF or a URL" : `Uploaded '${filename}'`}</p>
+                        <div className="flex flex-wrap gap-2 items-center">
+                            <UppyFileUpload 
+                                session={sessionState} 
+                                label="Upload PDF" 
+                                setFileNameCalback={(filename) => setFilename(filename)}
+                                isDisabled={filename !== null} 
+                            />
+                            <ScraperForm 
+                                setFilenameCallback={(filename) => setFilename(filename)} 
+                                isDisabled={filename !== null}
+                            />
+                        </div>
+                     </div>
+                </div>
+
+                <DrawerFooter>
+                    <div className="flex flex-row items-center gap-1">
+                        <Button 
+                            isDisabled={!sessionState || (!object && !filename) || isAddingLoading || !course} 
+                            isLoading={isLoading || isAddingLoading} 
+                            onClick={() => {
+                                if(!object) {
+                                    submit(""); 
+                                    setIsAdded(false)
+                                } else {
+                                    handleAddContentToCourse()
+                                }
+                               
+                            }} 
+                            color="primary"
+                            size="lg"
+                            fullWidth
+                            variant={"solid"} 
+                            startContent={<Icon filled>auto_awesome</Icon>}
+                        >
+                            {!object ? "Generate" : "Add to Course"}
+                        </Button>
+                        {isLoading ?
+                            <Button isIconOnly size="lg" variant="light" color="danger" onClick={stop}>
+                                <Icon>stop</Icon>
+                            </Button> 
+                            : 
+                            <Button 
+                                isIconOnly variant="light" 
+                                color="warning" isDisabled={!object || isAddingLoading || isLoading} 
+                                size="lg" onClick={handleReset}
+                            >
+                                <Icon>refresh</Icon>
+                            </Button>
+                        }
                     </div>
 
-                </CardBody>
-                <CardFooter className="flex flex-row items-center gap-4">
-                    <Button 
-                        isDisabled={!sessionState || !filename || isAddingLoading || !course} 
-                        isLoading={isLoading} 
-                        onClick={() => {submit(""); setIsAdded(false)}} 
-                        color="primary"
-                        variant={"shadow"} 
-                        startContent={<Icon filled>auto_awesome</Icon>}
-                    >
-                        {object ? "Generate again" : "Generate Levels"}
-                    </Button>
-                    {object && 
-                        <Button 
-                            color="primary" 
-                            variant="shadow" 
-                            isLoading={isAddingLoading} 
-                            isDisabled={!sessionState || !filename || isLoading}
-                            onClick={handleAddContentToCourse}
-                        >
-                            {isAdded ? "Saved Levels" : "Add new Levels"}
+                    <DrawerClose asChild>
+                        <Button variant="flat" >
+                            Close
                         </Button>
-                        }
-                </CardFooter>
-            </Card>               
-        </div>
+                    </DrawerClose>
+                </DrawerFooter>
+            </DrawerContent>
+             
+        </Drawer>
 
 
         <div className="flex flex-col gap-4  h-full overflow-y-auto">

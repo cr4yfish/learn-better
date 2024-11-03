@@ -8,7 +8,7 @@ import Icon from "@/components/utils/Icon"
 import BlurModal from "./BlurModal";
 import { uploadTextObject } from "@/utils/supabase/storage";
 
-export default function ScraperForm({ setFilenameCallback } : { setFilenameCallback: (filename: string) => void }) {
+export default function ScraperForm({ setFilenameCallback, isDisabled } : { setFilenameCallback: (filename: string) => void, isDisabled?: boolean }) {
     const [url, setUrl] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [status, setStatus] = useState<string>("");
@@ -64,8 +64,9 @@ export default function ScraperForm({ setFilenameCallback } : { setFilenameCallb
             variant="flat"
             endContent={<Icon filled>link</Icon>}
             onClick={() => setIsModalOpen(true)}
+            isDisabled={isDisabled}
         >
-            Upload source from URL
+            Upload URL
         </Button>
 
         <BlurModal 

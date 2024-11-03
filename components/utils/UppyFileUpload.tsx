@@ -19,7 +19,7 @@ import Icon from "./Icon";
 import { Button } from "./Button";
 import BlurModal from "./BlurModal";
 
-export default function UppyFileUpload({ session, label, setFileNameCalback } : { session: SessionState | null, label?: string, setFileNameCalback?: (fileName: string) => void }) {
+export default function UppyFileUpload({ session, label, setFileNameCalback, isDisabled } : { session: SessionState | null, label?: string, setFileNameCalback?: (fileName: string) => void, isDisabled?: boolean }) {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -70,6 +70,7 @@ export default function UppyFileUpload({ session, label, setFileNameCalback } : 
                 isIconOnly={!label}
                 color='primary' 
                 size='md' 
+                isDisabled={isDisabled}
                 className='mr-2 text-primary-600 dark:text-primary' 
                 variant="flat"
                 onClick={() => setIsModalOpen(true)}

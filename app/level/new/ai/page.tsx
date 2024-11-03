@@ -9,10 +9,22 @@ import { getCurrentUser } from "@/utils/supabase/auth";
 import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 import LevelNewAIMain from "@/components/level/new/ai/LevelNewAIMain";
+import { getCourseById } from "@/utils/supabase/courses";
+
+type Props = {
+    searchParams: { [key: string]: string }
+}
 
 
-export default async function CreateLevelWithAI() {
+export default async function CreateLevelWithAI(props: Props) {
+    const urlSearchParams = new URLSearchParams(props.searchParams);
+    const courseId = urlSearchParams.get("courseId");
 
+    if(!courseId) {
+        redirect("/");
+    }
+
+    const course = await getCourseById(courseId);
 
     const session = await getCurrentUser();
 
@@ -28,7 +40,7 @@ export default async function CreateLevelWithAI() {
             </div>
 
  
-            <LevelNewAIMain sessionState={session} />
+            <LevelNewAIMain sessionState={session} course={course} />
 
         </div>
         </>

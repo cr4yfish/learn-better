@@ -76,7 +76,7 @@ export default function HeaderCourseSelect({ sessionState } : { sessionState: Se
 
                                 {(currentUserCourse?.is_admin || currentUserCourse?.is_collaborator) &&
                                     <>
-                                    <Link href={`level/new/ai`}>
+                                    <Link href={`level/new/ai?courseId=${currentUserCourse.course.id}`}>
                                         <Button color="secondary" variant="flat" startContent={<Icon>auto_awesome</Icon>}>Create Level with AI</Button>
                                     </Link>
                                     <Link href={`level/new?courseId=${currentUserCourse.course.id}`}>
