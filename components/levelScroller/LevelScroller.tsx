@@ -3,17 +3,15 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import InfiniteScroll from "react-infinite-scroller";
-import Link from "next/link";
 
 import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
-import Icon from "@/components/utils/Icon";
 import CourseSectionBanner from "./CourseSectionBanner";
-import { Button } from "@/components/utils/Button";
 import { getCourseTopics } from "@/utils/supabase/topics";
 
 import { useCurrentCourse } from "@/hooks/SharedCourse";
 import { getUserCourse } from "@/utils/supabase/courses";
+import AddContentModal from "./AddContentModal";
 
 /**
  * 
@@ -212,23 +210,10 @@ export default function LevelScroller({ initUserCourse, initTopics, userId } : {
                 <div className="flex flex-col gap-2">
                     {isAdmin && (
                         <div className="flex flex-col gap-2 items-center justify-center">
-                            <Link href={"/level/new"}>
-                                <Button 
-                                    color="primary" 
-                                    startContent={<Icon color="fuchsia-950" filled>add</Icon>} 
-                                >
-                                    Add a new level
-                                </Button>
-                            </Link>
-                            <span className="text-tiny">or</span>
-                            <Link href={"/level/new/ai"}>
-                                <Button
-                                    color="primary"
-                                    startContent={<Icon color="fuchsia-950" filled>auto_awesome</Icon>}
-                                >
-                                    Create levels with AI
-                                </Button>
-                            </Link>
+                            <AddContentModal 
+                                course={currentCourse || initUserCourse.course}
+                            />
+
                         </div>
                     )}
                 </div>
