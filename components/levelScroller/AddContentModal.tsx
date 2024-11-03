@@ -47,7 +47,7 @@ export default function AddContentModal(props: Props) {
                     </div>
                     
                     <div className="flex flex-col gap-2">
-                        <Link href={"/level/new"}>
+                        <Link href={`/level/new?courseId=${props.course.id}`}>
                             <Button 
                                 color="primary" 
                                 startContent={<Icon color="fuchsia-950" filled>add</Icon>} 
