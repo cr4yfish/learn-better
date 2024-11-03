@@ -133,7 +133,7 @@ export default function LevelNewAIMain({ sessionState } : { sessionState: Sessio
                     <p>Use AI to create multiple new levels from a PDF</p>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-2 pt-0 pb-0">
-                    {false && <Input 
+                    {<Input 
                         label="Your Gemini API Key" 
                         value={apiKey ?? ""} 
                         type="password"
