@@ -42,12 +42,12 @@ export default function Streak({ streak, streakHanging, userId } : { streak: num
         <Popover
             backdrop="blur"
         >
-            <Skeleton isLoaded={streak ? true : false} className="rounded-full " >
+            <Skeleton isLoaded={streak !== undefined} className="rounded-full " >
                 <PopoverTrigger>
                     <Button variant="light" startContent={(
                         <Icon 
                             filled 
-                            color={`${streakHanging ? "neutral-600" : "orange-400"}`}
+                            color={`${(streakHanging || streak == 0) ? "neutral-600" : "orange-400"}`}
                         >
                             mode_heat
                         </Icon>
@@ -55,7 +55,7 @@ export default function Streak({ streak, streakHanging, userId } : { streak: num
                     className="flex items-center justify-center gap-2"
                     >
                         <div 
-                            className={`text-2xl font-semibold ${streakHanging ? "text-neutral-600" : "text-orange-400"}`}
+                            className={`text-2xl font-semibold ${(streakHanging || streak == 0) ? "text-neutral-600" : "text-orange-400"}`}
                         >
                             {streak}
                         </div>

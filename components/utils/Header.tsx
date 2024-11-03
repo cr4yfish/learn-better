@@ -43,7 +43,7 @@ export default async function Header() {
                     streakHanging={sessionState.currentStreak ? checkStreakHanging(sessionState.currentStreak) : false}
                     userId={sessionState.user?.id}
                 />
-                <Xp xp={sessionState.profile?.total_xp} isLoaded={sessionState.profile?.total_xp ? true : false} />
+                <Xp xp={sessionState.profile?.total_xp} isLoaded={sessionState.profile?.total_xp !== null} />
             </div>
         </div>
 
