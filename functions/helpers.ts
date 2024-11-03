@@ -104,5 +104,13 @@ export const theme = {
 }
 
 export function areArraysEqual(array1: string[], array2: string[]) {
-    return array1.length === array2.length && array1.every((value, index) => array2.some((v) => v.toLowerCase() === value.toLowerCase()));
+    return array1.length === array2.length && array1.every((value) => array2.some((v) => v.toLowerCase() === value.toLowerCase()));
+}
+
+export const triggerVibration = (ms=200) => {
+    if (navigator.vibrate) {
+        navigator.vibrate(ms); // Vibrate for 200ms
+    } else {
+        console.warn('Vibration API not supported');
+    }
 }
