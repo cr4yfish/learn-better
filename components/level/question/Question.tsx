@@ -15,6 +15,8 @@ import { addUserQuestion } from "@/utils/supabase/questions";
 import Icon from "@/components/utils/Icon";
 import { areArraysEqual as arraysAreEqual, shuffleArray } from "@/functions/helpers";
 import QuestionReportButton from "./QuestionReportButton";
+import { addExplainAnswerTokens } from "@/utils/supabase/user";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Question({
     question, setLevelState, session, levelState, questions
@@ -33,13 +35,27 @@ export default function Question({
         correct: "initial"
     })
     const stopwatch = useStopwatch();
+    const { toast } = useToast();
 
     const { messages, handleSubmit, setInput, isLoading: isMistralLoading, setMessages } = useChat({
         keepLastMessageOnError: true,
         api: "/api/ai/questionHelper",
         initialInput: "",
-        onFinish: () => {
-            setIsExplained(true)
+        onFinish: async (m, { usage }) => {
+            setIsExplained(true);
+
+            // add tokens to explain answer
+            try {
+                if(!session?.profile) throw new Error("User profile not found");
+                await addExplainAnswerTokens(session.profile, usage.totalTokens);
+            } catch (error) {
+                console.error(error);
+                toast({
+                    title: "Error",
+                    description: "Could not add tokens to explain answer",
+                    variant: "destructive"
+                })
+            }
         }
     });
     const [isExplained, setIsExplained] = useState(false);

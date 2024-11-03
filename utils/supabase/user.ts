@@ -178,3 +178,33 @@ export const unFollowUser = async({ userId, otherUserId } : { userId: string, ot
 
     return true;
 }
+
+export async function addTeacherTokens(profile: Profile, tokens: number): Promise<Profile> {
+    const { data, error} = await getClient()
+        .from("profiles")
+        .update({
+            id: profile.id,
+            used_teacher_tokens: profile.used_teacher_tokens + tokens
+        })
+        .eq("id", profile.id)
+        .single();
+
+    if(error) { throw error; }
+
+    return data as Profile;
+}
+
+export async function addExplainAnswerTokens(profile: Profile, tokens: number): Promise<Profile> {
+    const { data, error} = await getClient()
+        .from("profiles")
+        .update({
+            id: profile.id,
+            used_explain_answer_tokens: profile.used_explain_answer_tokens + tokens
+        })
+        .eq("id", profile.id)
+        .single();
+
+    if(error) { throw error; }
+
+    return data as Profile;
+}

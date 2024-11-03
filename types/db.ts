@@ -11,6 +11,8 @@ export type Profile = {
     total_xp: number;
     rank: Rank;
     currentStreakDays?: number;
+    used_teacher_tokens: number;
+    used_explain_answer_tokens: number;
 }
 
 export type Followed_Profile = {

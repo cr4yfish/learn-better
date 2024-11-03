@@ -11,6 +11,8 @@ import Icon from "../utils/Icon";
 import Message from "./Message";
 import { Course, Profile } from "@/types/db";
 import { Spinner } from "@nextui-org/spinner";
+import { addTeacherTokens } from "@/utils/supabase/user";
+import { useToast } from "@/hooks/use-toast";
 
 type TeacherAIProps = {
     course: Course,
@@ -18,6 +20,7 @@ type TeacherAIProps = {
 }
 
 export default function TeacherChat(props: TeacherAIProps) {
+    const { toast } = useToast();
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         keepLastMessageOnError: true,
         api: "/api/ai/teacher",
@@ -34,13 +37,27 @@ export default function TeacherChat(props: TeacherAIProps) {
                 ` ,
             }
         ],
-        onFinish: () => {
+
+        onFinish: async (m, { usage }) => {
             if(scrollRef.current) {
                 scrollRef.current.scrollTo({
                     top: scrollRef.current.scrollHeight,
                     behavior: "smooth"
                 })
             }
+
+            // add tokens to the user
+            try {
+                await addTeacherTokens(props.userProfile, usage.totalTokens);
+            } catch (error) {
+                console.error("Failed to add teacher tokens to user", error);
+                toast({
+                    title: "Failed to add teacher tokens",
+                    description: "Failed to add teacher tokens to user. Please try again later.",
+                    variant: "destructive"
+                });
+            }
+
         }
     })
 
