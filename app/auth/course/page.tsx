@@ -21,7 +21,11 @@ export default async function SelectCourse() {
 
     return (
         <>
-            <h1 className="text-4xl font-bold text-center">Join a course to get started</h1>
+        <div className="flex flex-col gap-2 mb-4 mt-8">
+            <h1 className="text-3xl font-bold">Join a course to get started</h1>
+            <p className=" text-tiny">Just choose anything if there are none that interest you. Creating new ones directly will be available soon here.</p>
+        </div>
+
             <UserCoursesProvider>
                 <SelectFirstCourse sessionState={sessionState} initCourses={courses} joinedCourses={sessionState.courses} />
             </UserCoursesProvider>
