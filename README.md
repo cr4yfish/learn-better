@@ -164,6 +164,9 @@ Altough, as you can take from the roadmap above, I didn't get to the part of imp
 I'm using the free tier of Mistral, so every time you use the "Explain Answer" feature, all Data related to the Question and your answer gets send to Mistral and is used by them to train the Model. 
 The only user-generated Data here is which answer option you chose, not even your username or anything like that.
 
+Edit:
+For the Teacher AI, your username and the course you're currently in gets send to the AI, so it can give you more personalized answers. Again, Mistral Free Tier, so this data is used by Mistral to train their Models.
+
 All other Data, exept for your password is visible in clear-text format for me in the Database. 
 Sounds scary but pretty normal for any application really. (also I still didn't get around to hash user-provided Gemini API keys yet, so enter that on your own volition right now - I promise i won't do aynthing with it tho lol). 
 
