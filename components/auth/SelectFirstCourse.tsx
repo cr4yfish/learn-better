@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
-
+import { redirect } from "next/navigation";
 
 import CourseSearch from "@/components/course/CourseSearch";
 import CoursesShowcaseSwiper from "@/components/course/CoursesShowcaseSwiper";
 
 import { SessionState } from "@/types/auth";
-import { Course } from "@/types/db";
-import { redirect } from "next/navigation";
+import { Course, User_Course } from "@/types/db";
+
 import { useUserCourses } from "@/hooks/SharedUserCourses";
 import { upsertSettings } from "@/utils/supabase/settings";
 
 
-export default function SelectFirstCourse({ sessionState, initCourses } : { sessionState: SessionState, initCourses: Course[] }) {
+export default function SelectFirstCourse({ sessionState, initCourses, joinedCourses } : { sessionState: SessionState, initCourses: Course[], joinedCourses: User_Course[] }) {
     const { userCourses } = useUserCourses();
 
     if(!sessionState.user?.id) {
@@ -28,13 +28,13 @@ export default function SelectFirstCourse({ sessionState, initCourses } : { sess
     }
 
     useEffect(() => {
-        if(userCourses.length > 0) {
+        if(userCourses.length > 0 || joinedCourses.length > 0) {
             // save to settings and redirect user
-            addCourseToSettings(sessionState.user!.id, userCourses[0].course.id).then(() => {
-                redirect("/");
+            addCourseToSettings(sessionState.user!.id, userCourses[0]?.course?.id || joinedCourses[0]?.course?.id).then(() => {
+                window.location.href = "/";
             })
         }
-    }, [userCourses, sessionState]);
+    }, [userCourses, sessionState, joinedCourses]);
 
     return (
         <>

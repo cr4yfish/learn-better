@@ -23,6 +23,12 @@ export default async function Home() {
   }
 
   const currentCourse = sessionState.settings.current_course;
+
+  if(!currentCourse) {
+    // redirect to course selection
+    redirect("/auth/course");
+  }
+
   const currentUserCourse = await getUserCourse(currentCourse.id, sessionState.user.id);
   const initTopics = await getCourseTopics(currentCourse.id, 0, 10);
 

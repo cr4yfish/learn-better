@@ -23,7 +23,7 @@ export default async function SelectCourse() {
         <>
             <h1 className="text-4xl font-bold text-center">Join a course to get started</h1>
             <UserCoursesProvider>
-                <SelectFirstCourse sessionState={sessionState} initCourses={courses} />
+                <SelectFirstCourse sessionState={sessionState} initCourses={courses} joinedCourses={sessionState.courses} />
             </UserCoursesProvider>
         </>
     )
