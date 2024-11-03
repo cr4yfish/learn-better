@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { User, AuthResponse } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
-import { createClient as getClient } from "./server/server";
+import { createAdminClient, createClient as getClient } from "./server/server";
 import { getUserCourses } from "./courses";
 import { getCurrentStreak } from "./streaks";
 import { getSettings } from "./settings";
@@ -151,4 +151,17 @@ export async function upsertProfile(profile: Profile): Promise<{ id: string }> {
 
 export async function userPasswordLogin(email: string, password: string) {
     return await getClient().auth.signInWithPassword({ email, password });
+}
+
+export async function deleteAccount() {
+
+    // cross check
+    const { data: { user } } = await getClient().auth.getUser();
+
+    if(!user?.id) {
+        throw new Error("User not found");
+    }
+
+    // delete user
+    return await createAdminClient().auth.admin.deleteUser(user.id)
 }

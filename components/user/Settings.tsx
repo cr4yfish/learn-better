@@ -9,6 +9,7 @@ import Icon from "../utils/Icon";
 import { SessionState } from "@/types/auth";
 import EditProfileCard from "./EditProfileCard";
 import LoginButton from "./LoginButton";
+import DeleteAccountButton from "../auth/DeleteAccountButton";
 
 
 export default function Settings({ sessionState } : { sessionState: SessionState }) {
@@ -38,6 +39,7 @@ export default function Settings({ sessionState } : { sessionState: SessionState
             }
             footer={
                 <>
+                    <DeleteAccountButton />
                     <LoginButton sessionState={sessionState} />
                 </>
             }
