@@ -5,13 +5,11 @@ import { experimental_useObject as useObject } from "ai/react"
 import { v4 as uuidv4 } from "uuid";
 
 import { Input } from "@nextui-org/input";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 import { Button } from "@/components/utils/Button";
 import UppyFileUpload from "@/components/utils/UppyFileUpload";
 import ScraperForm from "@/components/utils/ScraperForm";
-import CourseAutocomplete from "@/components/course/CourseAutocomplete";
 import Icon from "@/components/utils/Icon";
 
 
@@ -30,7 +28,6 @@ import {
     Drawer,
     DrawerClose,
     DrawerContent,
-    DrawerDescription,
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
@@ -154,6 +151,7 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
+                    <DrawerTitle>AI Configuration</DrawerTitle>
                 </DrawerHeader>
                 <div className="flex flex-col px-4 gap-4">
                     <Input 
