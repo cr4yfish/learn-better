@@ -4,43 +4,53 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server/server'
 
-export async function login(formData: FormData) {
+type LoginParams = {
+  email: string
+  password: string
+}
+
+type LoginResponse = {
+  hasAuthError: boolean
+  authError: string
+}
+
+export async function login({ email, password }: LoginParams): Promise<LoginResponse> {
   const supabase = createClient()
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
-    console.error(error)
-    redirect('/error')
+    return { hasAuthError: true, authError: error.message }
   }
 
   redirect('/')
 }
 
-export async function signup(formData: FormData) {
+type SignUpParams = {
+  username: string
+  email: string
+  password: string
+}
+
+type SignUpResponse = {
+  hasAuthError: boolean
+  authError: string
+  hasProgresError: boolean
+  postgresError: string
+}
+
+export async function signup({ username, email, password }: SignUpParams): Promise<SignUpResponse> {
   const supabase = createClient()
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const username = formData.get("username") as string;
-
-  const { data: { user }, error } = await supabase.auth.signUp(data)
+  const { data: { user }, error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
-    console.error(error)
-    redirect('/error')
+    return { 
+      hasAuthError: true, 
+      authError: error.message, 
+      hasProgresError: false, 
+      postgresError: '' 
+    }
   }
 
   // get lowest rank id -> sort by xp_threshold
@@ -61,7 +71,12 @@ export async function signup(formData: FormData) {
   ]).select().single();
 
   if(dbResult.error) {
-    throw dbResult.error;
+    return { 
+      hasAuthError: false, 
+      authError: '', 
+      hasProgresError: true, 
+      postgresError: dbResult.error.message 
+    };
   }
 
   const settingsResult = await supabase.from("settings").insert([
@@ -73,7 +88,12 @@ export async function signup(formData: FormData) {
   ]).select().single();
     
   if(settingsResult.error) {
-    throw settingsResult.error
+    return { 
+      hasAuthError: false, 
+      authError: '', 
+      hasProgresError: true, 
+      postgresError: settingsResult.error.message
+     }
   }
 
   redirect('/auth/course')

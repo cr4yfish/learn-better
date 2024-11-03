@@ -1,14 +1,11 @@
 "use server"
 
-import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 
-import { Input } from "@nextui-org/input"
 import { Link as NextUILink } from "@nextui-org/link";
 
-import { signup } from "../actions"
-import { Button } from "@/components/utils/Button"
 import { getUser } from "@/utils/supabase/auth";
 import { redirect } from "next/navigation";
+import SignupCard from "@/components/auth/SignupCard";
 
 export default async function Signup() {
 
@@ -21,21 +18,7 @@ export default async function Signup() {
     return (
         <div className="flex flex-col gap-4 relative">
             <h1 className="text-4xl font-bold text-center">Welcome to Nouv!</h1>
-            <form className="w-full">
-                <Card>
-                    <CardHeader className="text-lg font-bold">
-                        <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex flex-col gap-2 relative z-50">
-                        <Input name="username" type="text" label="Username" required />
-                        <Input name="email" type="email" label="Email" required />
-                        <Input name="password" type="password" label="Password" required />
-                    </CardContent>
-                    <CardFooter>
-                        <Button fullWidth color="primary" type="submit" formAction={signup} >Sign up</Button>
-                    </CardFooter>
-                </Card>
-            </form>
+            <SignupCard isSignUp />
             <NextUILink href="/auth/login">Login instead</NextUILink>
         </div>
     )
