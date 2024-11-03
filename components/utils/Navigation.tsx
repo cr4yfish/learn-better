@@ -27,13 +27,15 @@ export default async function Navigation({ activeTitle } : { activeTitle: Links 
 
     return (
         <>
-        <div className=" absolute bottom-0 light:bg-white/50 dark:bg-black/50 z-50 backdrop-blur-xl rounded-t-xl flex justify-center items-center w-full p-6">
-            <div className="flex items-center justify-evenly w-full max-w-[960px] gap-4">
-                <LinkComponent title="Home" href="/" icon="home" activeTitle={activeTitle} />
-                <LinkComponent title="Leaderboard" href="/leaderboard" icon="leaderboard" activeTitle={activeTitle} />
-                <LinkComponent title="Training" href="/training" icon="exercise" activeTitle={activeTitle} />
-                <LinkComponent title="Community" href="/community" icon="communities" activeTitle={activeTitle} />
-                <LinkComponent title="Profile" href="/user" icon="account_circle" activeTitle={activeTitle} />
+        <div className=" absolute bottom-0 w-full flex justify-center items-center z-50 px-4 pb-2 ">
+            <div className=" relative light:bg-white/50 dark:bg-black/50 z-50 backdrop-blur-xl rounded-full flex justify-center items-center w-full p-6 py-5">
+                <div className="flex items-center justify-evenly w-full max-w-[960px] gap-4">
+                    <LinkComponent title="Home" href="/" icon="home" activeTitle={activeTitle} />
+                    <LinkComponent title="Leaderboard" href="/leaderboard" icon="leaderboard" activeTitle={activeTitle} />
+                    <LinkComponent title="Training" href="/training" icon="exercise" activeTitle={activeTitle} />
+                    <LinkComponent title="Community" href="/community" icon="communities" activeTitle={activeTitle} />
+                    <LinkComponent title="Profile" href="/user" icon="account_circle" activeTitle={activeTitle} />
+                </div>
             </div>
         </div>
         </>
