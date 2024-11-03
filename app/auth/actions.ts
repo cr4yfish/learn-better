@@ -1,6 +1,5 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server/server'
@@ -18,10 +17,10 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
+    console.error(error)
     redirect('/error')
   }
 
-  revalidatePath('/', 'layout')
   redirect('/')
 }
 
@@ -40,6 +39,7 @@ export async function signup(formData: FormData) {
   const { data: { user }, error } = await supabase.auth.signUp(data)
 
   if (error) {
+    console.error(error)
     redirect('/error')
   }
 
@@ -76,6 +76,5 @@ export async function signup(formData: FormData) {
     throw settingsResult.error
   }
 
-  revalidatePath('/', 'layout')
   redirect('/auth/course')
 }

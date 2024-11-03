@@ -23,15 +23,27 @@ export const getSettings = cache(async(userID: string): Promise<Settings> => {
     };
 })
 
-export async function upsertSettings(settings: Settings): Promise<{ id: string }> {
-    if(!settings.user?.id) {
+interface UpsertSettingsParams extends Partial<Settings> {
+    userId: string;
+    currentCourseId: string;
+}
+
+export async function upsertSettings(settings: UpsertSettingsParams): Promise<{ id: string }> {
+    if(!settings.user?.id && !settings.userId) {
         throw new Error("No user ID provided");
     }
+
+    const userId = settings.user?.id || settings.userId;
+    const currentCourseId = settings.current_course?.id || settings.currentCourseId;
+
     delete (settings as any).courses;
+    delete (settings as any).currentCourseId;
+    delete (settings as any).userId;
+
     const { data, error } = await getClient().from("settings").upsert([{
         ...settings,
-        current_course: settings.current_course?.id,
-        user: settings.user.id
+        current_course: currentCourseId,
+        user: userId
     }]).select().single();
     if(error) { throw error; }
     return { id: data.id };
