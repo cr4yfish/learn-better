@@ -7,7 +7,7 @@ import { formatSeconds } from "@/functions/helpers"
 export default function LevelCompleteStats({ xp, seconds, accuracy } : { xp: number, seconds: number, accuracy: number }) {
 
     return (
-        <>
+        <div className="flex flex-col gap-4">
             <Card className=" w-full py-2  border light:border-success dark:border-success text-success font-bold text-lg">
                 <CardContent className="flex flex-row items-center w-full justify-between py-4">
                     <span className=" text-success">Stars found</span>
@@ -39,6 +39,6 @@ export default function LevelCompleteStats({ xp, seconds, accuracy } : { xp: num
                 </CardContent>
             </Card>
 
-        </>
+        </div>
     )
 }
