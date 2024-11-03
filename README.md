@@ -16,6 +16,7 @@ The learning app that helps you learn anything you want.
     <img src="https://i.imgur.com/jkz577X.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/1kLMd45.png" style="height: 500px; width: auto;" >
     <img src="https://i.imgur.com/7fMMwSs.png" style="height: 500px; width: auto;" >
+    <img src="https://i.imgur.com/Ws0Fy1c.png" style="height: 500px; width: auto;" > 
 </div>
 
 ## TL;DR
