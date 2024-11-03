@@ -16,7 +16,7 @@ function validateEmail(email: string) {
 }
 
 function validatePassword(password: string) {
-    return (password.length >= 8 && password.length < 72) ? true : undefined;
+    return (password.length >= 8 && password.length <= 72) ? true : undefined;
 }
 
 export default function SignupCard({ isSignUp } : { isSignUp: boolean }) {
