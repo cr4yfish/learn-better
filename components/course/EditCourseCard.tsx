@@ -13,7 +13,7 @@ import Icon from "../utils/Icon";
 import { Button } from "@/components/utils/Button";
 import { upsertCourse, joinCourse } from "@/utils/supabase/courses";
 
-export default function EditCourseCard({ userId, isNew, course } : { userId: string | undefined, isNew: boolean, course?: Course | undefined }) {
+export default function EditCourseCard({ userId, isNew, course, callback=() => {}, shouldRedirect=true } : { userId: string | undefined, isNew: boolean, course?: Course | undefined, callback?: (newCourseId: string) => void, shouldRedirect?: boolean }) {
     const [newCourse, setNewCourse] = useState<Course>(course ?? {} as Course);
     const [isLoading, setIsLoading] = useState(false);
     const [done, setDone] = useState(false);
@@ -48,12 +48,13 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
             });
 
             if(dbRes) {
+                callback(res.id);
                 setDone(true);
-                redirect(`/course/${res.id}`);
+                if(shouldRedirect) redirect(`/course/${res.id}`);
             }
         } else if(res.id) {
             setDone(true);
-            redirect(`/course/${res.id}`);
+            if(shouldRedirect) redirect(`/course/${res.id}`);
         }
 
         setIsLoading(false);
@@ -68,7 +69,7 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
     return (
         <>
         <div className="flex flex-col pt-0 gap-4">
-            <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg"><h1 className="font-bold text-4xl">{isNew ? "New course" : course?.title}</h1></Skeleton>
+            <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg"><h1 className="font-bold text-4xl">{isNew ? (newCourse?.title || "New course") : course?.title}</h1></Skeleton>
             
             <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg">
                 <Input 
@@ -107,6 +108,8 @@ export default function EditCourseCard({ userId, isNew, course } : { userId: str
                 variant="flat"
                 className="text-primary"
                 isLoading={isLoading}
+                size="lg"
+                fullWidth
                 startContent={<Icon filled>{done ? "check_circle" : isNew ? "add" : "save"}</Icon>}
                 isDisabled={done}
                 onClick={() => saveCourse(newCourse)}

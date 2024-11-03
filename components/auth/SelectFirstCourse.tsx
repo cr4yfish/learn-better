@@ -1,30 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 import CourseSearch from "@/components/course/CourseSearch";
 import CoursesShowcaseSwiper from "@/components/course/CoursesShowcaseSwiper";
+import BlurModal from "../utils/BlurModal";
 
 import { SessionState } from "@/types/auth";
 import { Course, User_Course } from "@/types/db";
 
 import { useUserCourses } from "@/hooks/SharedUserCourses";
 import { upsertSettings } from "@/utils/supabase/settings";
-
+import { Button } from "../utils/Button";
+import EditCourseCard from "../course/EditCourseCard";
+import Icon from "../utils/Icon";
 
 export default function SelectFirstCourse({ sessionState, initCourses, joinedCourses } : { sessionState: SessionState, initCourses: Course[], joinedCourses: User_Course[] }) {
     const { userCourses } = useUserCourses();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     if(!sessionState.user?.id) {
         redirect("/auth");
-    }
-
-    const addCourseToSettings = async (userId: string, courseId: string) => {
-        await upsertSettings({
-            userId: userId,
-            currentCourseId: courseId
-        })
     }
 
     useEffect(() => {
@@ -36,13 +33,55 @@ export default function SelectFirstCourse({ sessionState, initCourses, joinedCou
         }
     }, [userCourses, sessionState, joinedCourses]);
 
+    const addCourseToSettings = async (userId: string, courseId: string) => {
+        await upsertSettings({
+            userId: userId,
+            currentCourseId: courseId
+        })
+    }
+
+    const handleNewCourse = (newCourseId: string) => {
+        addCourseToSettings(sessionState.user!.id, newCourseId);
+        window.location.href = "/";
+        setIsModalOpen(false);
+    }
+
     return (
+        <>
         <div className="flex flex-col gap-4">
+            <Button startContent={<Icon>add</Icon>} size="lg" color="secondary" variant="flat" onClick={() => setIsModalOpen(true)}>Create a new Course</Button>
             <CourseSearch sessionState={sessionState} />
             <div className="flex flex-col gap-4 w-full">
                 <CoursesShowcaseSwiper session={sessionState} courses={initCourses} />
             </div>
         </div>
+
+        <BlurModal 
+            isOpen={isModalOpen}
+            updateOpen={setIsModalOpen}
+            settings={{
+                hasHeader: true,
+                hasBody: true,
+                hasFooter: true,
+            }}
+            header={<>Create a Course</>}
+            body={
+            <>
+                <EditCourseCard 
+                    userId={sessionState.user!.id}
+                    isNew={true}
+                    shouldRedirect={false}
+                    callback={handleNewCourse}
+                />
+            </>
+            }
+            footer={
+            <>
+                
+            </>
+            }
+        />
+        </>
     )
 
 }

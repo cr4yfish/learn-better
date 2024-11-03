@@ -23,7 +23,7 @@ export default async function SelectCourse() {
         <>
         <div className="flex flex-col gap-2 mb-4 mt-8">
             <h1 className="text-3xl font-bold">Join a course to get started</h1>
-            <p className=" text-tiny">Just choose anything if there are none that interest you. Creating new ones directly will be available soon here.</p>
+            <p className=" text-tiny">You can join or create more Courses later</p>
         </div>
 
             <UserCoursesProvider>
