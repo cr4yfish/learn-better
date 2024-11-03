@@ -29,7 +29,7 @@ export default async function LeaderboardCard({ profile, sessionState, position 
                     }
                     <Username profile={profile} sessionState={sessionState} />
                 </div>
-                <span>{profile?.total_xp} XP</span>
+                <span>{profile?.total_xp.toLocaleString()} XP</span>
             </CardBody>
         </Card>
         </>

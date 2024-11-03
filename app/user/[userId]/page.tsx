@@ -74,7 +74,7 @@ export default async function User({ params: { userId } } : { params: { userId: 
                                 <Icon filled>hotel_class</Icon>
                             </div>
                             <div className="flex flex-col">
-                                <span>{profile.total_xp}</span>
+                                <span>{profile.total_xp.toLocaleString()}</span>
                             </div>
                         </div>
 

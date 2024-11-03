@@ -56,7 +56,7 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
             onClick={() => setIsModalOpen(true)}
         >
             <CardHeader className=" pb-3">
-                <CardDescription>{battle.xp_goal} XP</CardDescription>
+                <CardDescription>{battle.xp_goal.toLocaleString()} XP</CardDescription>
                 <CardTitle>{battle.other_user.username}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1 pt-0">
@@ -88,7 +88,7 @@ export default function BattleCard({ battle, userId } : { battle: Battle, userId
                         </div>
                         <div className="flex flex-row items-center gap-1">
                             <Icon>hotel_class</Icon>
-                            {battle.xp_goal} XP to win
+                            {battle.xp_goal.toLocaleString()} XP to win
                         </div>
                         <div className="flex flex-row items-center gap-1">
                             <Icon>schedule</Icon>

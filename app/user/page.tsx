@@ -96,7 +96,7 @@ export default async function User() {;
                                 <Icon filled>hotel_class</Icon>
                             </div>
                             <div className="flex flex-col">
-                                <span>{session.profile?.total_xp}</span>
+                                <span>{session.profile?.total_xp.toLocaleString()}</span>
                             </div>
                         </div>
 
