@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import InfiniteScroll from "react-infinite-scroller";
+import { motion } from "framer-motion";
 
 import { Course, Course_Section, Topic, User_Course } from "@/types/db"
 import Level from "./Level"
@@ -12,6 +13,18 @@ import { getCourseTopics } from "@/utils/supabase/topics";
 import { useCurrentCourse } from "@/hooks/SharedCourse";
 import { getUserCourse } from "@/utils/supabase/courses";
 import AddContentModal from "./AddContentModal";
+
+const list = {
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.05,
+      },
+    }),
+    hidden: { opacity: 0, y: -10 },
+}
+
 
 /**
  * 
@@ -193,13 +206,21 @@ export default function LevelScroller({ initUserCourse, initTopics, userId } : {
                             {(index == 0 || topic.course_section.id !== topics[index-1]?.course_section.id) && (
                                 <CourseSectionBanner courseSection={topic.course_section} />
                             )}
-                            <Level 
-                                topic={topic} 
-                                active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
-                                isNext={checkIsNext(topic, index)}
-                                offset={handleGetOffset(index)}
-                                isAdmin={isAdmin}
-                            />
+                            <motion.div
+                                key={topic.id}
+                                custom={index}
+                                initial="hidden"
+                                animate="visible"
+                                variants={list}
+                            >
+                                <Level 
+                                    topic={topic} 
+                                    active={topic.completed || topics[index - 1]?.completed || index === 0 || false}
+                                    isNext={checkIsNext(topic, index)}
+                                    offset={handleGetOffset(index)}
+                                    isAdmin={isAdmin}
+                                />
+                            </motion.div>
                         </div>            
                     ))}
 
