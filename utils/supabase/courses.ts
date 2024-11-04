@@ -138,7 +138,10 @@ export const getCourses = cache(async (params: GetCoursesParams): Promise<Course
             votes: db.course_votes_count,
             members: db.user_courses_count,
             tags: db.courses_tags.map((tag: any) => tag.course_tags),
-            category: db.course_categories
+            category: db.course_categories,
+            course_sections_count: db.course_sections_count,
+            topics_count: db.topics_count,
+            question_count: db.questions_count
         }
     })
 })

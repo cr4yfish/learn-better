@@ -158,6 +158,26 @@ export default function CourseCard ({
             <>
                 <p className="font-semibold">{course?.title}</p>
                 <p>{course?.description}</p>
+                <div className="flex flex-row items-center gap-2 flex-wrap">
+                    <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>
+                        {course.members}
+                    </Chip>
+                    <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>
+                        {course.votes}
+                    </Chip>
+                    {course.category &&
+                        <Chip startContent={<Icon downscale>folder</Icon>} variant="flat" color="secondary" size="sm" className="text-tiny ">
+                            {course.category?.title}
+                        </Chip>
+                    }
+                    {course.tags && course.tags.map((tag, index) => (
+                        <Chip startContent={<Icon downscale>tag</Icon>} key={index} variant="flat" color="secondary" size="sm" className="text-tiny">
+                            {tag.title}
+                        </Chip>
+                    ))}
+                    <Chip  variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon downscale filled>flag</Icon>}>{course.topics_count}</Chip>
+                    <Chip  variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon downscale filled>question_mark</Icon>}>{course.questions_count}</Chip>
+                </div>
             </>
             }
             footer={
