@@ -126,7 +126,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 ### Beta Features
 - [ ] Redesign UI & Refactor Code
     - [ ] Improve UI/UX - WIP
-    - [ ] Add animations
+    - [ ] Add animations - WIP
     - [x] Move as much as possible to Server Rendering
 - [x] Buy a domain
 
