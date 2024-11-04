@@ -1,4 +1,4 @@
-
+"use client";
 
 import { Card, CardBody } from "@nextui-org/card";
 
@@ -6,12 +6,18 @@ import { Profile } from "@/types/db";
 
 import Username from "@/components/user/Username";
 import { SessionState } from "@/types/auth";
+import { useState } from "react";
 
 export default function LeaderboardCard({ profile, sessionState, position } : { profile: Profile, sessionState: SessionState, position: number }) {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     return (
         <>
-        <Card key={profile.id} className=" w-full" isPressable>
+        <Card key={profile.id} className=" w-full" isPressable onClick={() => setIsModalOpen(true)}
+            classNames={{
+                base: " light:bg-white dark:bg-transparent dark:bg-neutral-800/25 dark:border-gray-700 border-gray-200",
+            }}
+        >
             <CardBody className=" w-full flex flex-row justify-between items-center dark:text-gray-200 text-gray-800">
                 <div className="h-full flex flex-row items-center">
                     { 
@@ -28,7 +34,12 @@ export default function LeaderboardCard({ profile, sessionState, position } : { 
                                 </span>
                         </div>
                     }
-                    <Username profile={profile} sessionState={sessionState} />
+                    <Username 
+                        profile={profile} 
+                        sessionState={sessionState} 
+                        isOpen={isModalOpen}
+                        setOpen={setIsModalOpen}
+                    />
                 </div>
                 <span>{profile?.total_xp.toLocaleString()} XP</span>
             </CardBody>

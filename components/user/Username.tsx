@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { User } from "@nextui-org/user";
 
 import { Profile } from "@/types/db";
@@ -10,29 +8,33 @@ import ProfileCard from "./ProfileCard";
 import { SessionState } from "@/types/auth";
 
 
+type Props = {
+    profile: Profile,
+    sessionState: SessionState,
+    isOpen: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export default function Username({ profile, sessionState } : { profile: Profile, sessionState: SessionState }) {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+export default function Username(props: Props) {
 
     return (
         <>
         <User
             className=""
-            onClick={() => setIsModalOpen(true)}
-            name={profile.username}
-            avatarProps={{ src: profile?.avatarLink }}
+            name={props.profile.username}
+            avatarProps={{ src: props.profile?.avatarLink }}
         />
 
         <BlurModal 
-            isOpen={isModalOpen}
-            updateOpen={setIsModalOpen}
+            isOpen={props.isOpen}
+            updateOpen={props.setOpen}
             settings={{
                 hasHeader: true,
                 hasBody: true,
                 hasFooter: true,
             }}
-            header={<>{profile?.username}s&apos; Profile</>}
-            body={<ProfileCard profile={profile} session={sessionState} />}
+            header={<>{props.profile?.username}s&apos; Profile</>}
+            body={<ProfileCard profile={props.profile} session={props.sessionState} />}
             footer={<></>}
         />
 
