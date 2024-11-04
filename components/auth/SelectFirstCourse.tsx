@@ -52,7 +52,7 @@ export default function SelectFirstCourse({ sessionState, initCourses, joinedCou
             <Button startContent={<Icon>add</Icon>} size="lg" color="secondary" variant="flat" onClick={() => setIsModalOpen(true)}>Create a new Course</Button>
             <CourseSearch sessionState={sessionState} />
             <div className="flex flex-col gap-4 w-full">
-                <CoursesShowcaseSwiper session={sessionState} courses={initCourses} />
+                <CoursesShowcaseSwiper session={sessionState} courses={initCourses} label="Popular Courses" />
             </div>
         </div>
 
