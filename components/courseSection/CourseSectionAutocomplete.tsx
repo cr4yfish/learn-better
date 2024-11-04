@@ -43,7 +43,6 @@ export default function CourseSectionAutocomplete({ setCourseSection, course } :
             required
             isRequired
             isLoading={list.isLoading}
-            description="Select a course section to add content to"
             items={list.items}
             inputValue={list.filterText}
             onInputChange={list.setFilterText}
