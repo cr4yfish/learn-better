@@ -17,7 +17,7 @@ export default async function SelectCourse() {
         redirect("/auth");
     }
 
-    const courses = await getCourses({ from: 0, limit: 10 });
+    const courses = await getCourses({ from: 0, limit: 10, orderBy: "course_votes_count", isAscending: false });
 
     return (
         <>
