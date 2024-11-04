@@ -53,6 +53,10 @@ The main reason for this project is that I would love to have an App like Duolin
 * Mistral/NVIDIA Nemo
 
 ## Roadmap
+
+Missing some Question Types for your perfect Course? Add them here:
+[Suggest a Question Type](https://github.com/cr4yfish/nouv/issues/11)
+
 I tried ordering stuff in a logical order, but I might still jump around a bit.
 
 Features marked with a question mark are not yet decided on, and might be dropped.
