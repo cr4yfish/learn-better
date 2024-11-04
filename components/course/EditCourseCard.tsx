@@ -1,24 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { redirect } from "next/navigation";
 
 import { Input } from "@nextui-org/input"
 import { Switch } from "@nextui-org/switch"
-import { Skeleton } from "@nextui-org/skeleton";
 
-import { Course } from "@/types/db";
+import { Course, Course_Category } from "@/types/db";
 
 import Icon from "../utils/Icon";
 import { Button } from "@/components/utils/Button";
-import { upsertCourse, joinCourse } from "@/utils/supabase/courses";
+import { upsertCourse } from "@/utils/supabase/courses";
+import EditCourseCategory from "./EditCourseCategory";
 
-export default function EditCourseCard({ userId, isNew, course, callback=() => {}, shouldRedirect=true } : { userId: string | undefined, isNew: boolean, course?: Course | undefined, callback?: (newCourseId: string) => void, shouldRedirect?: boolean }) {
-    const [newCourse, setNewCourse] = useState<Course>(course ?? {} as Course);
+type Props = {
+    userId: string | undefined,
+    course: Course
+}
+
+export default function EditCourseCard(props: Props) {
+    const [newCourse, setNewCourse] = useState<Course>(props.course);
     const [isLoading, setIsLoading] = useState(false);
     const [done, setDone] = useState(false);
 
-    const updateNewCourseValue = (key: string, value: string | boolean) => {
+    const updateNewCourseValue = (key: string, value: string | boolean | Course_Category) => {
         setNewCourse((prev) => {
             return {
                 ...prev,
@@ -28,78 +31,61 @@ export default function EditCourseCard({ userId, isNew, course, callback=() => {
     }
 
     const saveCourse = async (courseToSave: Partial<Course>) => {
-        if(!userId) return;
+        if(!props.userId) return;
 
         setIsLoading(true);
 
-        courseToSave.id = (course && !isNew) ? course.id : uuidv4();
+        courseToSave.id = props.course.id 
 
-        courseToSave.is_official = (course && !isNew) ? course.is_official : false;
+        courseToSave.is_official = false;
+        
 
-        const res = await upsertCourse(courseToSave, userId);
+        const res = await upsertCourse(courseToSave, props.userId);
 
-        if(res.id && isNew) {
-
-            // subscribe to the course
-            const dbRes = await joinCourse(res.id, userId, {
-                is_admin: true,
-                is_moderator: true,
-                is_collaborator: true,
-            });
-
-            if(dbRes) {
-                callback(res.id);
-                setDone(true);
-                if(shouldRedirect) redirect(`/course/${res.id}`);
-            }
-        } else if(res.id) {
+        if(res.id) {
             setDone(true);
-            if(shouldRedirect) redirect(`/course/${res.id}`);
         }
 
         setIsLoading(false);
     }
 
     useEffect(() => {
-        if(course) {
-            setNewCourse(course);
+        console.log(props.course)
+        if(props.course) {
+            setNewCourse(props.course);
         }
-    }, [course])
+    }, [props.course])
 
     return (
         <>
         <div className="flex flex-col pt-0 gap-4">
-            <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg"><h1 className="font-bold text-4xl">{isNew ? (newCourse?.title || "New course") : course?.title}</h1></Skeleton>
+            <h1 className="font-bold text-4xl">{newCourse?.title}</h1>
             
-            <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg">
-                <Input 
-                    label="Course Title" 
-                    value={newCourse?.title}
-                    onValueChange={(value) => updateNewCourseValue("title", value)}
-                />
-            </Skeleton>
+            <Input 
+                label="Course Title" 
+                value={newCourse?.title}
+                onValueChange={(value) => updateNewCourseValue("title", value)}
+            />
 
-            <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg">
-                <Input 
-                    label="Course Abbreviation"
-                    value={newCourse?.abbreviation}
-                    onValueChange={(value) => updateNewCourseValue("abbreviation", value)} 
-                    maxLength={6} 
-                />
-            </Skeleton>
+            <Input 
+                label="Course Abbreviation"
+                value={newCourse?.abbreviation}
+                onValueChange={(value) => updateNewCourseValue("abbreviation", value)} 
+                maxLength={6} 
+            />
 
-            <Skeleton isLoaded={(isNew || course) ? true : false} className="rounded-lg">
-                <Input 
-                    label="Course Description" 
-                    defaultValue={newCourse?.description}
-                    onValueChange={(value) => updateNewCourseValue("description", value)} 
-                />
-            </Skeleton>
+            <Input 
+                label="Course Description" 
+                defaultValue={newCourse?.description}
+                onValueChange={(value) => updateNewCourseValue("description", value)} 
+            />
+        
+           <EditCourseCategory 
+                category={newCourse?.category} 
+                setCategory={(category) => updateNewCourseValue("category", category)} 
+            />
 
-            <Switch 
-                isSelected={course?.is_public}
-                onValueChange={(value) => updateNewCourseValue("is_public", value ? true : false)}
-                >
+            <Switch onValueChange={(value) => updateNewCourseValue("is_public", value ? true : false)}  >
                     Public Course
             </Switch>
             <div className="flex items-center gap-4">
@@ -110,22 +96,22 @@ export default function EditCourseCard({ userId, isNew, course, callback=() => {
                 isLoading={isLoading}
                 size="lg"
                 fullWidth
-                startContent={<Icon filled>{done ? "check_circle" : isNew ? "add" : "save"}</Icon>}
+                startContent={<Icon filled>{done ? "check_circle" : "save"}</Icon>}
                 isDisabled={done}
                 onClick={() => saveCourse(newCourse)}
             >
-                {isNew ? done ? "Created" : "Create" : done ? "Saved" : "Save"}
+                {done ? "Saved" : "Save"}
             </Button>
-            {!isNew && 
-                <Button
-                    color="danger"
-                    variant="faded"
-                    isDisabled
-                    startContent={<Icon filled>delete</Icon>}
-                >
-                    Delete Course
-                </Button>
-            }
+           
+            <Button
+                color="danger"
+                size="lg"
+                variant="faded"
+                isDisabled
+            >
+                Delete Course
+            </Button>
+            
             </div>
 
         </div>

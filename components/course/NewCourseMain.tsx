@@ -8,15 +8,18 @@ import { Progress } from "@nextui-org/progress";
 import { Input, Textarea } from "@nextui-org/input"
 import { Switch } from "@nextui-org/switch"
 
-import { Course } from "@/types/db";
+import { Course, Course_Category } from "@/types/db";
 import { useToast } from "@/hooks/use-toast";
 import Icon from "../utils/Icon";
 import { Button } from "@/components/utils/Button";
 import { upsertCourse, joinCourse } from "@/utils/supabase/courses";
 import ConditionalLink from "../utils/ConditionalLink";
+import CourseCategoryAutocomplete from "./CourseCategoryAutocomplete";
 
 type Props = {
     userId: string | undefined;
+    dontRedirect?: boolean;
+    callback?: (courseId: string) => Promise<void>;
 }
 
 const animateProps = {
@@ -30,7 +33,7 @@ const stepText = [
     "What is the Course called?",
     "Describe the Course",
     "Abbreviate the Course",
-    "Make the Course Public?",
+    "Course Settings",
     "Review",
 ]
 
@@ -47,7 +50,7 @@ export default function NewCourseMain(props: Props) {
         setProgress(step * 33.3);
     }, [step])
 
-    const updateNewCourseValue = (key: string, value: string | boolean) => {
+    const updateNewCourseValue = (key: string, value: string | boolean | Course_Category) => {
         setNewCourse((prev) => {
             return {
                 ...prev,
@@ -65,16 +68,18 @@ export default function NewCourseMain(props: Props) {
         courseToSave.is_official = false;
         
         try {
+            console.log(courseToSave, props)
             const res = await upsertCourse(courseToSave, props.userId);
-
+            console.log(res)
             if(res.id) {
                 // subscribe to the course
                 try {
-                    await joinCourse(res.id, props.userId, {
+                    const joinedCourse = await joinCourse(res.id, props.userId, {
                         is_admin: true,
                         is_moderator: true,
                         is_collaborator: true,
                     });
+                    console.log(joinedCourse)
 
                 } catch (e) {
                     console.error(e);
@@ -84,7 +89,12 @@ export default function NewCourseMain(props: Props) {
                         variant: "destructive"
                     })
                 } finally {
-                    redirect(`/course/${res.id}`);
+                    if(props.dontRedirect && props.callback) {
+                        console.log("callback")
+                        props.callback(res.id);
+                    } else  {
+                        redirect(`/course/${res.id}`);
+                    }
                 }
             }
             
@@ -112,6 +122,7 @@ export default function NewCourseMain(props: Props) {
                 if(!newCourse.abbreviation) return;
                 break;
             case 3:
+                if(!newCourse.category) return;
                 break;
         }
         setStep((prev) => prev + 1);
@@ -164,9 +175,9 @@ export default function NewCourseMain(props: Props) {
                 <motion.div {...animateProps}>
                     <Input 
                         label="Course Abbreviation" variant="underlined"  classNames={{ input: "text-2xl ", label: " pb-[8px] " }}
-                        value={newCourse?.abbreviation} size="lg" endContent={<span>{newCourse.abbreviation?.length || 0}/6</span>}
+                        value={newCourse?.abbreviation} size="lg" endContent={<span>{newCourse.abbreviation?.length || 0}/5</span>}
                         onValueChange={(value) => updateNewCourseValue("abbreviation", value)} 
-                        maxLength={6} 
+                        maxLength={5} 
                     />
                 </motion.div>
             }
@@ -176,6 +187,7 @@ export default function NewCourseMain(props: Props) {
                     <Switch onValueChange={(value) => updateNewCourseValue("is_public", value ? true : false)} >
                         Public Course
                     </Switch>
+                    <CourseCategoryAutocomplete setCategory={(category) => updateNewCourseValue("category", category)} />
                 </motion.div>
             }
 
@@ -198,15 +210,17 @@ export default function NewCourseMain(props: Props) {
                             <span className=" text-tiny">Public</span>
                             <p>{newCourse.is_public ? "Yes" : "No"}</p>
                         </div>
+                        <div className="flex flex-col">
+                            <span className=" text-tiny">Category</span>
+                            <p>{newCourse.category?.title}</p>
+                        </div>
                     </div>
-             
                 </motion.div>
             }
 
             { step == 4 ?
                 <Button
                     color="primary"
-                    variant="shadow"
                     isLoading={isLoading}
                     size="lg"
                     fullWidth

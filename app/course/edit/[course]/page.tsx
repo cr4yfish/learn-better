@@ -54,9 +54,7 @@ export default async function EditCourse({ params: { course }} : { params: { cou
 
       <EditCourseCard 
         userId={userCourse?.user?.id} 
-        isNew={false} 
         course={userCourse?.course} 
-        shouldRedirect={false}
       />
       
       <CourseEditmain userCourse={userCourse} initCourseSections={courseSections} />

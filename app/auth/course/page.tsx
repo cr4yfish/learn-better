@@ -27,7 +27,11 @@ export default async function SelectCourse() {
         </div>
 
             <UserCoursesProvider>
-                <SelectFirstCourse sessionState={sessionState} initCourses={courses} joinedCourses={sessionState.courses} />
+                <SelectFirstCourse 
+                    sessionState={sessionState} 
+                    initCourses={courses} 
+                    joinedCourses={sessionState.courses} 
+                />
             </UserCoursesProvider>
         </>
     )

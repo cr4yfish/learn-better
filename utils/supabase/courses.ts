@@ -63,25 +63,11 @@ export const getUserCourse = cache(async (courseID: string, userId: string): Pro
     const { data, error } = await getClient().from("users_courses").select(`
         *,
         courses (
-            abbreviation,
-            created_at,
-            creator,
-            description,
-            id,
-            institutions (
-                id,
-                title,
-                abbreviation,
-                description
-            ),
-            title,
-            is_official,
-            courses_votes (
-                vote
-            ),
-            users_courses (
-                joined_at
-            )
+            institutions ( * ),
+            courses_votes ( vote ),
+            users_courses ( joined_at ),
+            course_categories ( * ),
+            *
         )
     `)
     .eq("user", userId)
@@ -91,22 +77,14 @@ export const getUserCourse = cache(async (courseID: string, userId: string): Pro
     const db = data[0] as any;
     
     return {
+        ...db,
         course: {
-            abbreviation: db.courses.abbreviation,
-            created_at: db.courses.created_at,
-            creator: db.courses.creator,
-            description: db.courses.description,
-            id: db.courses.id,
+            ...db.courses,
             institution: db.courses.institutions,
-            title: db.courses.title,
-            is_official: db.courses.is_official,
+            category: db.courses.course_categories,
             votes: (db.courses.courses_votes as {vote: boolean}[]).length,
             members: (db.courses.users_courses as {joined_at: string}[]).length
         },
-        joined_at: db.joined_at,
-        is_admin: db.is_admin,
-        is_moderator: db.is_moderator,
-        is_collaborator: db.is_collaborator
     }
 
 })
@@ -244,6 +222,44 @@ export const searchCourses = cache(async (searchQuery: string, from=0, limit=10)
     })
 })
 
+export const searchCourseTags = cache(async (searchQuery: string, from=0, limit=10): Promise<Course[]> => {
+    const { data, error } = await getClient()
+        .from("course_tags")
+        .select(`
+            *
+        `)
+        .or(`title.ilike.*${searchQuery}*`)
+        .order("created_at", { ascending: false }) // need this for range behavior
+        .range(from, from + limit - 1);
+        
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            ...db
+        }
+    })
+})
+
+export const searchCourseCategories = cache(async (searchQuery: string, from=0, limit=10): Promise<Course[]> => {
+    const { data, error } = await getClient()
+        .from("course_categories")
+        .select(`
+            *
+        `)
+        .or(`title.ilike.*${searchQuery}*`)
+        .order("created_at", { ascending: false }) // need this for range behavior
+        .range(from, from + limit - 1);
+        
+    if(error) { throw error; }
+
+    return data.map((db: any) => {
+        return {
+            ...db
+        }
+    })
+})
+
 export const getOwnCourseVote = cache(async (courseID: string, userID: string): Promise<Course_Vote | null> =>  {
     try {
         const { data, error } = await getClient().from("courses_votes").select().eq("user", userID).eq("course", courseID).single();
@@ -283,6 +299,7 @@ export async function upsertCourse(course: Partial<Course>, userId: string): Pro
         is_official: course.is_official,
         institution: course.institution?.id ?? null,
         is_public: course.is_public ?? true,
+        category: course.category?.id ?? null,
     }
 
     const { data, error } = await getClient().from("courses").upsert([dbEntry]).select().single();

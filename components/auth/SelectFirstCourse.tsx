@@ -13,25 +13,31 @@ import { Course, User_Course } from "@/types/db";
 import { useUserCourses } from "@/hooks/SharedUserCourses";
 import { upsertSettings } from "@/utils/supabase/settings";
 import { Button } from "../utils/Button";
-import EditCourseCard from "../course/EditCourseCard";
 import Icon from "../utils/Icon";
+import NewCourseMain from "../course/NewCourseMain";
 
-export default function SelectFirstCourse({ sessionState, initCourses, joinedCourses } : { sessionState: SessionState, initCourses: Course[], joinedCourses: User_Course[] }) {
+type Props = {
+    sessionState: SessionState;
+    initCourses: Course[];
+    joinedCourses: User_Course[];
+}
+
+export default function SelectFirstCourse(props: Props) {
     const { userCourses } = useUserCourses();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    if(!sessionState.user?.id) {
+    if(!props.sessionState.user?.id) {
         redirect("/auth");
     }
 
     useEffect(() => {
-        if(userCourses.length > 0 || joinedCourses.length > 0) {
+        if(userCourses.length > 0 || props.joinedCourses.length > 0) {
             // save to settings and redirect user
-            addCourseToSettings(sessionState.user!.id, userCourses[0]?.course?.id || joinedCourses[0]?.course?.id).then(() => {
-                window.location.href = "/";
+            addCourseToSettings(props.sessionState.user!.id, userCourses[0]?.course?.id || props.joinedCourses[0]?.course?.id).then(() => {
+               //window.location.href = "/";
             })
         }
-    }, [userCourses, sessionState, joinedCourses]);
+    }, [userCourses, props.sessionState, props.joinedCourses]);
 
     const addCourseToSettings = async (userId: string, courseId: string) => {
         await upsertSettings({
@@ -40,8 +46,8 @@ export default function SelectFirstCourse({ sessionState, initCourses, joinedCou
         })
     }
 
-    const handleNewCourse = (newCourseId: string) => {
-        addCourseToSettings(sessionState.user!.id, newCourseId);
+    const handleNewCourse = async (newCourseId: string) => {
+        await addCourseToSettings(props.sessionState.user!.id, newCourseId);
         window.location.href = "/";
         setIsModalOpen(false);
     }
@@ -50,9 +56,9 @@ export default function SelectFirstCourse({ sessionState, initCourses, joinedCou
         <>
         <div className="flex flex-col gap-4">
             <Button startContent={<Icon>add</Icon>} size="lg" color="secondary" variant="flat" onClick={() => setIsModalOpen(true)}>Create a new Course</Button>
-            <CourseSearch sessionState={sessionState} />
+            <CourseSearch sessionState={props.sessionState} />
             <div className="flex flex-col gap-4 w-full">
-                <CoursesShowcaseSwiper session={sessionState} courses={initCourses} label="Popular Courses" />
+                <CoursesShowcaseSwiper session={props.sessionState} courses={props.initCourses} label="Popular Courses" />
             </div>
         </div>
 
@@ -67,10 +73,10 @@ export default function SelectFirstCourse({ sessionState, initCourses, joinedCou
             header={<>Create a Course</>}
             body={
             <>
-                <EditCourseCard 
-                    userId={sessionState.user!.id}
-                    isNew={true}
-                    shouldRedirect={false}
+
+                <NewCourseMain 
+                    userId={props.sessionState.user.id} 
+                    dontRedirect
                     callback={handleNewCourse}
                 />
             </>
