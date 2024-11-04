@@ -13,12 +13,10 @@ import Icon from "../utils/Icon";
 
 import { getCurrentUser } from "@/utils/supabase/auth";
 
-import { getCourses } from "@/utils/supabase/courses";
 
 export default async function CommunityMain() {
 
     const session = await getCurrentUser();
-    const courses = await getCourses({ from: 0, limit: 5 });
 
     if(!session) {
         redirect('/auth');
@@ -41,7 +39,7 @@ export default async function CommunityMain() {
                 </Suspense>
 
                 <Suspense fallback={<div>Loading Courses......</div>}>
-                    <Courses sessionState={session} courses={courses} />
+                    <Courses sessionState={session} />
                 </Suspense>
             </div>
         </UserCoursesProvider>

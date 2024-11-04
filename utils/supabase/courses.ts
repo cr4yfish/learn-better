@@ -111,34 +111,34 @@ export const getUserCourse = cache(async (courseID: string, userId: string): Pro
 
 })
 
-export const getCourses = cache(async ({
-    from = 0,
-    limit = 10
-} : { from?: number, limit?: number }): Promise<Course[]> => {
+type GetCoursesParams = {
+    from: number;
+    limit: number;
+    orderBy: string;
+    isAscending: boolean;
+}
+
+export const getCourses = cache(async (params: GetCoursesParams): Promise<Course[]> => {
     const { data, error } = await getClient()
-        .from("courses")
+        .from("courses_with_counts")
         .select(`
             *,
             institutions (
                 *
             ),
-            courses_votes (
-                vote
-            ),
-            users_courses (
-                joined_at
-            )
+            course_votes_count,
+            user_courses_count
         `)
-        .order("created_at", { ascending: false })
-        .range(from, from + limit - 1);
+        .order(params.orderBy, { ascending: params.isAscending })
+        .range(params.from, params.from + params.limit - 1);
     if(error) { throw error; }
 
     return data.map((db: any) => {
         return {
             ...db,
             institution: db.institutions,
-            votes: (db.courses_votes as {vote: boolean}[]).length,
-            members: (db.users_courses as {joined_at: string}[]).length
+            votes: db.course_votes_count,
+            members: db.user_courses_count
         }
     })
 })

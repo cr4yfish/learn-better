@@ -13,11 +13,11 @@ import CourseCard from "./CourseCard";
 import { Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
 
-export default function CoursesShowcaseSwiper({ session, courses } : { session: SessionState, courses: Course[] }) {
+export default function CoursesShowcaseSwiper({ session, courses, label } : { session: SessionState, courses: Course[], label: string }) {
 
     return (
-        <>
-            <h2 className=" font-bold">Newest Courses</h2>
+        <div className=" w-full flex flex-col gap-1">
+            <h2 className=" font-bold">{label}</h2>
             <Swiper
                 modules={[Scrollbar]}
                 spaceBetween={15}
@@ -36,6 +36,6 @@ export default function CoursesShowcaseSwiper({ session, courses } : { session: 
                     </SwiperSlide>
                 ))}
             </Swiper>
-        </>
+        </div>
     )
 }
