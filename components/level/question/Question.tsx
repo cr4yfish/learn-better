@@ -283,6 +283,7 @@ export default function Question({
                         animate="visible"
                         variants={list}
                         custom={0}
+                        className="w-full"
                     >
                         <Option
                             size="lg"
@@ -311,6 +312,7 @@ export default function Question({
                         animate="visible"
                         variants={list}
                         custom={1}
+                        className="w-full"
                     >
                         <Option
                             size="lg"

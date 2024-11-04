@@ -19,6 +19,7 @@ export default function Option(
     return (
         <Card
             isPressable
+            fullWidth
             onPress={() => active && setQuestionState(!(state == "selected"))}
             className={`
                 flex flex-row items-center justify-start gap-2 border dark:border-primary/15 text-gray-500 dark:text-gray-300
