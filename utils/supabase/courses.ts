@@ -123,11 +123,9 @@ export const getCourses = cache(async (params: GetCoursesParams): Promise<Course
         .from("courses_with_counts")
         .select(`
             *,
-            institutions (
-                *
-            ),
-            course_votes_count,
-            user_courses_count
+            institutions (*),
+            courses_tags ( course_tags (*), *),
+            course_categories (*)
         `)
         .order(params.orderBy, { ascending: params.isAscending })
         .range(params.from, params.from + params.limit - 1);
@@ -138,7 +136,9 @@ export const getCourses = cache(async (params: GetCoursesParams): Promise<Course
             ...db,
             institution: db.institutions,
             votes: db.course_votes_count,
-            members: db.user_courses_count
+            members: db.user_courses_count,
+            tags: db.courses_tags.map((tag: any) => tag.course_tags),
+            category: db.course_categories
         }
     })
 })

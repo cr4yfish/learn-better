@@ -112,6 +112,8 @@ export type Course = {
     course_sections_count?: number;
     topics_count?: number;
     questions_count?: number;
+    category?: Course_Category;
+    tags?: Course_Tag[];
 }
 
 export type Institution = {
@@ -314,4 +316,24 @@ export type Report_Question = {
     resolve_note?: string;
     resolved_at?: string;
     report_type?: Report_Type;
+}
+
+export type Course_Category = {
+    id: string;
+    created_at?: string;
+    title: string;
+    description: string;
+}
+
+export type Course_Tag = {
+    id: string;
+    created_at?: string;
+    title: string;
+    description: string;
+}
+
+export type Courses_Tags = {
+    created_at?: string;
+    course: Course;
+    tag: Course_Tag;
 }

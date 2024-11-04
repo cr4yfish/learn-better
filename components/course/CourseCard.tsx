@@ -113,14 +113,23 @@ export default function CourseCard ({
                 <p>{course.description}</p>
             </CardContent>
 
-            <CardFooter className="flex items-center gap-2 pt-2">
+            <CardFooter className="flex items-center gap-2 pt-2 flex-wrap">
                 <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>
                     {course.members}
                 </Chip>
                 <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>
                     {course.votes}
                 </Chip>
-
+                {course.category &&
+                    <Chip startContent={<Icon downscale>folder</Icon>} variant="flat" color="secondary" size="sm" className="text-tiny ">
+                        {course.category?.title}
+                    </Chip>
+                }
+                {course.tags && course.tags.map((tag, index) => (
+                    <Chip startContent={<Icon downscale>tag</Icon>} key={index} variant="flat" color="secondary" size="sm" className="text-tiny">
+                        {tag.title}
+                    </Chip>
+                ))}
             </CardFooter>
             
         </Card>
