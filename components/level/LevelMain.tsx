@@ -129,6 +129,7 @@ export default function LevelMain(
                             <Button 
                                 color="primary" 
                                 variant="shadow" 
+                                size="lg"
                                 className="w-full font-bold"
                                 isLoading={isLoading}
                             >
