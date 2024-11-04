@@ -3,6 +3,7 @@ import { useChat } from "ai/react";
 import { useStopwatch } from "react-use-precision-timer";
 import { v4 as uuidv4 } from "uuid";
 import Markdown from "react-markdown";
+import { motion } from "framer-motion";
 
 import { Question as QuestionType } from "@/types/db";
 import { SessionState } from "@/types/auth";
@@ -17,6 +18,18 @@ import { areArraysEqual as arraysAreEqual, shuffleArray } from "@/functions/help
 import QuestionReportButton from "./QuestionReportButton";
 import { addExplainAnswerTokens } from "@/utils/supabase/user";
 import { useToast } from "@/hooks/use-toast";
+
+
+const list = {
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.05,
+      },
+    }),
+    hidden: { opacity: 0, y: -10 },
+}
 
 export default function Question({
     question, setLevelState, session, levelState, questions
@@ -34,6 +47,7 @@ export default function Question({
         selected: [],
         correct: "initial"
     })
+    const [switchingQuestion, setSwitchingQuestion] = useState(false);
     const stopwatch = useStopwatch();
     const { toast } = useToast();
 
@@ -183,7 +197,8 @@ export default function Question({
 
     const handleNextQuestion = () => {
         setIsLoading(true);
-        
+        setSwitchingQuestion(true);
+
         // get next question
         const nextQuestion = questions.at(levelState.currentQuestionIndex + 1);
 
@@ -201,6 +216,7 @@ export default function Question({
                 setIsLoading(false);
                 setIsModalOpen(false);
                 setIsExplained(false);
+                setSwitchingQuestion(false);
                 return;
             }
         } 
@@ -212,6 +228,11 @@ export default function Question({
         setIsModalOpen(false);
         setIsLoading(false);
         setIsExplained(false);
+
+        setTimeout(() => {
+            setSwitchingQuestion(false);
+        }, 100);
+        
     }
 
     return (
@@ -224,81 +245,119 @@ export default function Question({
 
             <div className="flex flex-col gap-2 overflow-visible">
                 <span className=" text-tiny">{question?.type?.title == "Multiple Choice" ? `Choose ${question.answers_correct.length} options` : question.type.description}</span>
-                {question.type.title == "Multiple Choice" && question.answer_options.map((option: string, index: number) => (
-                    <Option 
-                        state={getOptionState(questionState, option)}
-                        setQuestionState={() => setQuestionState((prevState) => {
-                            if(prevState.selected.includes(option)) {
-                                return {
-                                    ...prevState,
-                                    selected: prevState.selected.filter(selectedOption => selectedOption != option)
-                                }
-                            } else {
-                                return {
-                                    ...prevState,
-                                    selected: [...prevState.selected, option]
-                                }
-                            }
-                        })}
+                {!switchingQuestion && question.type.title == "Multiple Choice" && question.answer_options.map((option: string, index: number) => (
+                    <motion.div 
+                        initial="hidden"
+                        animate="visible"
+                        variants={list}
+                        custom={index}
                         key={index}
-                        active={questionState.correct == "initial"}
-                        >
-                        {option}
-                    </Option>
+                    >
+                        <Option 
+                            state={getOptionState(questionState, option)}
+                            setQuestionState={() => setQuestionState((prevState) => {
+                                if(prevState.selected.includes(option)) {
+                                    return {
+                                        ...prevState,
+                                        selected: prevState.selected.filter(selectedOption => selectedOption != option)
+                                    }
+                                } else {
+                                    return {
+                                        ...prevState,
+                                        selected: [...prevState.selected, option]
+                                    }
+                                }
+                            })}
+                            key={index}
+                            active={questionState.correct == "initial"}
+                            >
+                            {option}
+                        </Option>
+                    </motion.div>
                 ))}
                 
                 {question.type.title == "Boolean" && (
                     <>
-                    <Option
-                        size="lg"
-                        state={getOptionState(questionState, "True")}
-                        setQuestionState={() => setQuestionState((prevState) => {
-                            if(prevState.selected.includes("True")) {
-                                return {
-                                    ...prevState,
-                                    selected: prevState.selected.filter(selectedOption => selectedOption != "True")
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={list}
+                        custom={0}
+                    >
+                        <Option
+                            size="lg"
+                            state={getOptionState(questionState, "True")}
+                            setQuestionState={() => setQuestionState((prevState) => {
+                                if(prevState.selected.includes("True")) {
+                                    return {
+                                        ...prevState,
+                                        selected: prevState.selected.filter(selectedOption => selectedOption != "True")
+                                    }
+                                } else {
+                                    return {
+                                        ...prevState,
+                                        selected: ["True"]
+                                    }
                                 }
-                            } else {
-                                return {
-                                    ...prevState,
-                                    selected: ["True"]
+                            })}
+                            active={questionState.correct == "initial"}
+                        >
+                            Statement is <b>True</b>
+                        </Option>
+                    </motion.div>
+
+                    <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={list}
+                        custom={1}
+                    >
+                        <Option
+                            size="lg"
+                            state={getOptionState(questionState, "False")}
+                            setQuestionState={() => setQuestionState((prevState) => {
+                                if(prevState.selected.includes("False")) {
+                                    return {
+                                        ...prevState,
+                                        selected: prevState.selected.filter(selectedOption => selectedOption != "False")
+                                    }
+                                } else {
+                                    return {
+                                        ...prevState,
+                                        selected: ["False"]
+                                    }
                                 }
-                            }
-                        })}
-                        active={questionState.correct == "initial"}
-                    >Statement is <b>True</b></Option>
-                    <Option
-                        size="lg"
-                        state={getOptionState(questionState, "False")}
-                        setQuestionState={() => setQuestionState((prevState) => {
-                            if(prevState.selected.includes("False")) {
-                                return {
-                                    ...prevState,
-                                    selected: prevState.selected.filter(selectedOption => selectedOption != "False")
-                                }
-                            } else {
-                                return {
-                                    ...prevState,
-                                    selected: ["False"]
-                                }
-                            }
-                        })}
-                        active={questionState.correct == "initial"}
-                    >Statement is <b>False</b></Option>
+                            })}
+                            active={questionState.correct == "initial"}
+                        >
+                            Statement is <b>False</b>
+                        </Option>
+                    </motion.div>
                     </>
                 )}
 
             </div>
-
-            <Button 
-                color={questionState.correct == "initial" ? "primary" : (questionState.correct == "correct" ? "success" : "danger")}
-                isDisabled={questionState.selected.length == 0 || questionState.correct != "initial"}
-                isLoading={isLoading}
-                size="lg"
-                onClick={handleCheckAnswer}
-            >
-                    {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
-            </Button>
+            
+            { !switchingQuestion &&
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={list}
+                    custom={question.answer_options.length +1}
+                    className="w-full"
+                >
+                    <Button 
+                        color={questionState.correct == "initial" ? "primary" : (questionState.correct == "correct" ? "success" : "danger")}
+                        isDisabled={questionState.selected.length == 0 || questionState.correct != "initial"}
+                        isLoading={isLoading}
+                        size="lg"
+                        fullWidth
+                        onClick={handleCheckAnswer}
+                    >
+                            {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
+                    </Button>
+                </motion.div>
+            }
         </div>
 
         <BlurModal
