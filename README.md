@@ -146,7 +146,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Captcha for user sign ups
     - [ ] Add Email Verification
 - [ ] Privacy Settings
-    - [ ] Private Courses
+    - [x] Private Courses
     - [ ] Private User Profiles
 - [ ] Localization? - Only if there are enough users to justify it
     - [ ] Multi-language support
