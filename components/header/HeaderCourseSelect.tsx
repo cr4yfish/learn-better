@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
 import { Button } from "../utils/Button";
 import BlurModal from "../utils/BlurModal";
@@ -65,31 +66,30 @@ export default function HeaderCourseSelect({ sessionState } : { sessionState: Se
 
                     <div className="flex flex-col gap-1">
                         <span className=" text-sm">Your options</span>
-                        
-                            <div className="flex flex-row items-center gap-2 overflow-x-auto max-w-full pb-2">
+                        <ScrollShadow  orientation="horizontal" className="flex flex-row items-center gap-2 overflow-x-auto max-w-full pb-2">
 
-                                { currentUserCourse?.is_admin &&
-                                    <Link href={`course/edit/${currentCourse?.id}`}>
-                                        <Button variant="flat" color="warning" startContent={<Icon filled>edit</Icon>}>Edit</Button>
-                                    </Link>
-                                }
+                            { currentUserCourse?.is_admin &&
+                                <Link href={`course/edit/${currentCourse?.id}`}>
+                                    <Button variant="flat" color="warning" startContent={<Icon filled>edit</Icon>}>Edit</Button>
+                                </Link>
+                            }
 
-                                {(currentUserCourse?.is_admin || currentUserCourse?.is_collaborator) &&
-                                    <>
-                                    <Link href={`level/new/ai?courseId=${currentUserCourse.course.id}`}>
-                                        <Button color="secondary" variant="flat" startContent={<Icon>auto_awesome</Icon>}>Create Level with AI</Button>
-                                    </Link>
-                                    <Link href={`level/new?courseId=${currentUserCourse.course.id}`}>
-                                        <Button color="secondary" variant="flat" startContent={<Icon>add</Icon>}>Create Level yourself</Button>
-                                    </Link>
-                                    </>
-                                 }
+                            {(currentUserCourse?.is_admin || currentUserCourse?.is_collaborator) &&
+                                <>
+                                <Link href={`level/new/ai?courseId=${currentUserCourse.course.id}`}>
+                                    <Button color="secondary" variant="flat" startContent={<Icon>auto_awesome</Icon>}>Create Level with AI</Button>
+                                </Link>
+                                <Link href={`level/new?courseId=${currentUserCourse.course.id}`}>
+                                    <Button color="secondary" variant="flat" startContent={<Icon>add</Icon>}>Create Level yourself</Button>
+                                </Link>
+                                </>
+                            }
 
-                                 { !currentUserCourse?.is_admin && !currentUserCourse?.is_collaborator && !currentUserCourse?.is_moderator &&
-                                    <span className=" text-tiny italic text-gray-700 dark:text-gray-400">You have no options</span>
-                                 }
+                            { !currentUserCourse?.is_admin && !currentUserCourse?.is_collaborator && !currentUserCourse?.is_moderator &&
+                                <span className=" text-tiny italic text-gray-700 dark:text-gray-400">You have no options</span>
+                            }
 
-                            </div>
+                        </ScrollShadow>
                        
                     </div>
 
