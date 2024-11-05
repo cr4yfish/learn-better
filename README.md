@@ -170,7 +170,7 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Multiple Choice & Single Choice
 - [x] True/False
 - [x] Match the Cards
-- [ ] Fill in the Blanks
+- [x] Fill in the Blanks
 - [ ] Listening?
 - [ ] Speaking?
 
