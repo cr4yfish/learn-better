@@ -93,7 +93,7 @@ export default function NewCourseMain(props: Props) {
                         console.log("callback")
                         props.callback(res.id);
                     } else  {
-                        redirect(`/course/${res.id}`);
+                        window.location.href = `/course/${res.id}`;
                     }
                 }
             }
