@@ -14,7 +14,7 @@ export const QuestionTypes: Record<"multiple_choice" | "boolean" | "fill_in_the_
     },
     "fill_in_the_blank": {
         id: "6335b9a6-2722-4ece-a142-4749f57e6fed",
-        title: "Fill in the Blank",
+        title: "Fill in the blank",
         description: "Fill in the blank with the correct answer.",
     },
     "match_the_words": {
