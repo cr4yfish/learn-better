@@ -14,10 +14,24 @@ export type LevelState = {
     }[]
 }
 
+export type Correct = "correct" | "wrong" | "initial"
+
 export type QuestionState = {
     options: string[],
+    answers: string[],
     selected: string[],
-    correct: "correct" | "wrong" | "initial"
+    correct: Correct
+}
+
+export type Match = {
+    option: string,
+    match: string,
+    correct: Correct
+}
+
+export type MatchCardsState = {
+    options: string[],
+    matches: Match[],
 }
 
 export type OptionState = "selected" | "unselected" | "correct" | "wrong"

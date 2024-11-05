@@ -7,19 +7,21 @@ import React from "react";
 import { OptionState } from "@/types/client";
 
 export default function Option(
-    { children, state, setQuestionState, active, size="md" } : 
+    { children, state, setQuestionState, active, size="md", isDisabled } : 
     { 
         children: React.ReactNode,
         state: OptionState
         setQuestionState: (state: boolean) => void,
         active: boolean,
-        size?: "md" | "lg"
+        size?: "md" | "lg",
+        isDisabled?: boolean
     }) {
     
     return (
         <Card
             isPressable
             fullWidth
+            isDisabled={isDisabled}
             onPress={() => active && setQuestionState(!(state == "selected"))}
             className={`
                 flex flex-row items-center justify-start gap-2 border dark:border-primary/15 text-gray-500 dark:text-gray-300

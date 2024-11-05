@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 import { Question as QuestionType } from "@/types/db";
 import { SessionState } from "@/types/auth";
-import { LevelState } from "@/types/client";
+import { Correct, LevelState, Match, MatchCardsState } from "@/types/client";
 import { QuestionState, OptionState } from "@/types/client";
 import { Button } from "@/components/utils/Button";
 import Option from "./Option";
@@ -44,9 +44,17 @@ export default function Question({
     const [isLoading, setIsLoading] = useState(false)
     const [questionState, setQuestionState] = useState<QuestionState>({
         options: question.answer_options,
+        answers: question.answers_correct,
         selected: [],
         correct: "initial"
     })
+    const [matchCardsState, setMatchCardsState] = useState<MatchCardsState>({
+        options: [...question.answer_options, ...question.answers_correct],
+        matches: []
+    })
+    
+    const [currentMatch, setCurrentMatch] = useState<Match | null>(null);
+
     const [switchingQuestion, setSwitchingQuestion] = useState(false);
     const stopwatch = useStopwatch();
     const { toast } = useToast();
@@ -99,102 +107,7 @@ export default function Question({
         }
     }, [stopwatch])
 
-    // shuffle the options when the question changes
-    useEffect(() => {
-        const randomOptions = shuffleArray(question.answer_options)
-        setQuestionState((prevState) => ({
-            ...prevState,
-            options: randomOptions
-        }))
-    }, [question.answer_options])
-
-    // reset the question state when the question changes
-    useEffect(() => {
-        setQuestionState((prevState) => ({
-            ...prevState,
-            selected: [],
-            correct: "initial"
-        }))
-
-        setMessages([])
-    }, [question.answers_correct])
-
-    // de-select options when selecting more than the correct number of options
-    useEffect(() => {
-        if(questionState.selected.length > question.answers_correct.length) {
-            const newSelected = questionState.selected;
-            newSelected.shift();
-            setQuestionState((prevState) => ({
-                ...prevState,
-                selected: newSelected
-            }))
-        }
-    }, [question.answers_correct, questionState.selected])
     
-    const handleCheckAnswer = async () => {
-
-        if(!session) {
-            alert("You must be logged in to answer questions");
-            return;
-        }
-
-        setIsLoading(true)
-
-        stopwatch.pause();
-
-        let xp = 0;
-        let completed = false;
-
-        if (arraysAreEqual(question.answers_correct, questionState.selected)) {
-            setQuestionState({...questionState, correct: "correct"})
-            xp = 100;
-            completed = true;
-        } else {
-            setQuestionState({...questionState, correct: "wrong"})
-        }            
-        
-        await addUserQuestion({
-            try_id: uuidv4(),
-            user: session.user?.id as string,
-            question: question.id,
-            completed: completed,
-            xp: xp,
-            accuracy: completed ? 100 : 0,
-            seconds: Math.round(stopwatch.getElapsedRunningTime()/1000),
-            last_tried_at: new Date().toISOString()
-        })
-
-        stopwatch.stop(); // reset the timer
-        
-        setLevelState((prevState) => ({
-            ...prevState,
-            progress: prevState.progress + 1,
-            totalQuestions: completed ? prevState.totalQuestions : ++prevState.totalQuestions,
-            xp: prevState.xp + xp,
-            correctQuestions: completed ? ++prevState.correctQuestions : prevState.correctQuestions,
-            questions: prevState.questions.map(q => q.id == question.id ? { id: q.id, completed: completed } : q),
-            answeredQuestions: ++prevState.answeredQuestions,
-        }))
-
-        setIsModalOpen(true)
-        setIsLoading(false)
-    }
-
-    const getOptionState = (questionState: QuestionState, option: string): OptionState => {
-
-        if(questionState.correct == "initial" && questionState.selected.includes(option)) { 
-            return "selected";
-        } 
-        else if(questionState.correct == "correct" && questionState.selected.includes(option)) {
-            return "correct";
-        }
-        else if(questionState.correct == "wrong" && questionState.selected.includes(option)) {
-            return "wrong";
-        }
-
-        return "unselected"
-    }
-
     const handleNextQuestion = () => {
         setIsLoading(true);
         setSwitchingQuestion(true);
@@ -235,6 +148,224 @@ export default function Question({
         
     }
 
+    // shuffle the options when the question changes
+    useEffect(() => {
+        const randomOptions = shuffleArray(question.answer_options)
+        const randomAnswers = shuffleArray(question.answers_correct)
+        setQuestionState((prevState) => ({
+            ...prevState,
+            options: randomOptions,
+            answers: randomAnswers
+        }))
+    }, [question.answer_options])
+
+    // reset the question state when the question changes
+    useEffect(() => {
+        setQuestionState((prevState) => ({
+            ...prevState,
+            selected: [],
+            correct: "initial"
+        }))
+
+        setMatchCardsState((prevState) => ({
+            ...prevState,
+            matches: []
+        }))
+
+        setCurrentMatch(null);
+
+        setMessages([])
+    }, [question.answers_correct])
+
+    const handleCheckAnswer = async () => {
+
+        if(!session) {
+            alert("You must be logged in to answer questions");
+            return;
+        }
+
+        setIsLoading(true)
+
+        stopwatch.pause();
+
+        let xp = 0;
+        let completed = false;
+        let accuracy = 0;
+
+        if(question.type.title !== "Match the Cards") {
+            if (arraysAreEqual(question.answers_correct, questionState.selected)) {
+                setQuestionState({...questionState, correct: "correct"})
+                xp = 100;
+                completed = true;
+                accuracy = 100;
+            } else {
+                setQuestionState({...questionState, correct: "wrong"})
+            }            
+        } else {
+            if(matchCardsState.matches.length == question.answer_options.length) {
+                const numCorrect = matchCardsState.matches.filter(match => match.correct == "correct").length;
+
+                accuracy = Math.round((numCorrect / question.answer_options.length) * 100);
+                console.log(accuracy)
+                if(numCorrect == question.answer_options.length) {
+                    xp = 100;
+                    completed = true;
+                }
+            }
+        }
+
+        await addUserQuestion({
+            try_id: uuidv4(),
+            user: session.user?.id as string,
+            question: question.id,
+            completed: completed,
+            xp: xp,
+            accuracy: accuracy,
+            seconds: Math.round(stopwatch.getElapsedRunningTime()/1000),
+            last_tried_at: new Date().toISOString()
+        })
+
+        stopwatch.stop(); // reset the timer
+        
+        setLevelState((prevState) => ({
+            ...prevState,
+            progress: prevState.progress + 1,
+            totalQuestions: completed ? prevState.totalQuestions : ++prevState.totalQuestions,
+            xp: prevState.xp + xp,
+            correctQuestions: completed ? ++prevState.correctQuestions : prevState.correctQuestions,
+            questions: prevState.questions.map(q => q.id == question.id ? { id: q.id, completed: completed } : q),
+            answeredQuestions: ++prevState.answeredQuestions,
+        }))
+
+        setIsModalOpen(true)
+        setIsLoading(false)
+    }
+
+    // Multiple Choice & Boolean type question
+
+        // de-select options when selecting more than the correct number of options
+        useEffect(() => {
+            if(questionState.selected.length > question.answers_correct.length) {
+                const newSelected = questionState.selected;
+                newSelected.shift();
+                setQuestionState((prevState) => ({
+                    ...prevState,
+                    selected: newSelected
+                }))
+            }
+        }, [question.answers_correct, questionState.selected])
+        
+        const getOptionStateMultipleChoice = (questionState: QuestionState, option: string): OptionState => {
+
+            if(questionState.correct == "initial" && questionState.selected.includes(option)) { 
+                return "selected";
+            } 
+            else if(questionState.correct == "correct" && questionState.selected.includes(option)) {
+                return "correct";
+            }
+            else if(questionState.correct == "wrong" && questionState.selected.includes(option)) {
+                return "wrong";
+            }
+
+            return "unselected"
+        }
+
+    //
+    
+    // Match the Cards type question
+        
+        const getOptionStateMatchCards = (option: string): OptionState => {
+
+            if(matchCardsState.matches.length != 0) {
+                
+                const match = matchCardsState.matches.find(match => (match.option == option || match.match == option));
+
+                if(match) {
+                    if(match.correct == "initial") {
+                        return "selected";
+                    } 
+                    if(match.correct == "correct") {
+                        return "correct";
+                    }
+                    if(match.correct == "wrong") {
+                        return "wrong";
+                    }
+                }
+            }
+
+            if(!currentMatch) return "unselected";
+
+            if(currentMatch.option == option || currentMatch.match == option) {
+
+                if(currentMatch.correct == "initial") {
+                    return "selected";
+                } 
+         
+                if(currentMatch.correct == "correct") {
+                    return "correct";
+                }
+    
+                if(currentMatch.correct == "wrong") {
+                    return "wrong";
+                }   
+    
+            }
+
+            return "unselected";
+            
+        }
+
+        const handleSelectMatch = (match: string) => {
+            if(!currentMatch) return;
+
+            const matchIndex = question.answers_correct.indexOf(match);
+            const optionIndex = question.answer_options.indexOf(currentMatch.option);
+
+            let correct: Correct = "wrong";
+
+            if(matchIndex === optionIndex) {
+                correct = "correct";
+            }
+
+            const newMatch: Match = {
+                option: currentMatch.option,
+                match: match,
+                correct: correct
+            }
+
+            setMatchCardsState((prevState) => {
+                return {
+                    ...prevState,
+                    matches: [...prevState.matches, newMatch]
+                }
+            })
+
+            setCurrentMatch((prevState) => {
+                if(prevState == null) return {
+                    option: currentMatch.option,
+                    match: match,
+                    correct: correct
+                }
+
+                return {
+                    ...prevState,
+                    match: match,
+                    correct: correct
+                }
+            })
+
+        }
+    
+        useEffect(() => {
+            if(matchCardsState.matches.length == question.answer_options.length) {
+                setTimeout(() => {
+                    handleCheckAnswer();
+                }, 500);
+            }
+        }, [matchCardsState])
+
+    //
+
     return (
         <>
         <div className="flex flex-col prose dark:prose-invert gap-6 overflow-visible pb-20">
@@ -245,6 +376,7 @@ export default function Question({
 
             <div className="flex flex-col gap-2 overflow-visible">
                 <span className=" text-tiny">{question?.type?.title == "Multiple Choice" ? `Choose ${question.answers_correct.length} options` : question.type.description}</span>
+                
                 {!switchingQuestion && question.type.title == "Multiple Choice" && question.answer_options.map((option: string, index: number) => (
                     <motion.div 
                         initial="hidden"
@@ -254,7 +386,7 @@ export default function Question({
                         key={index}
                     >
                         <Option 
-                            state={getOptionState(questionState, option)}
+                            state={getOptionStateMultipleChoice(questionState, option)}
                             setQuestionState={() => setQuestionState((prevState) => {
                                 if(prevState.selected.includes(option)) {
                                     return {
@@ -275,6 +407,60 @@ export default function Question({
                         </Option>
                     </motion.div>
                 ))}
+
+                {!switchingQuestion && question.type.title == "Match the Cards" && (
+                    <div className="flex flex-row justify-between items-center gap-2">
+
+                        <div className="flex flex-col w-[45%] gap-2">
+                            {questionState.options?.map((option: string, index: number) => (
+                                <motion.div 
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={list}
+                                    custom={index}
+                                    key={index}
+                                >
+                                    <Option 
+                                        state={getOptionStateMatchCards(option)}
+                                        setQuestionState={() => {
+                                            setCurrentMatch({ option: option, match: "", correct: "initial" })
+                                        }}
+                                        key={index}
+                                        active={matchCardsState.matches.find(match => (match.option == option) && match.correct != "initial") == undefined }
+                                        isDisabled={matchCardsState.matches.find(match => match.option == option) != undefined}
+                                    >
+                                        {option}
+                                    </Option>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        <div className="flex flex-col w-[45%] gap-2">
+                            {questionState.answers?.map((option: string, index: number) => (
+                                <motion.div
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={list}
+                                    custom={index}
+                                    key={index}
+                                >
+                                    <Option
+                                        state={getOptionStateMatchCards(option)}
+                                        setQuestionState={() => {
+                                            handleSelectMatch(option)
+                                        }}
+                                        key={index}
+                                        isDisabled={matchCardsState.matches.find(match => match.match == option) != undefined}
+                                        active={currentMatch?.option !== undefined}
+                                        >
+                                        {option}
+                                    </Option>
+                                </motion.div>    
+                            ))}
+                        </div>
+
+                    </div>
+                )}
                 
                 {question.type.title == "Boolean" && (
                     <>
@@ -287,7 +473,7 @@ export default function Question({
                     >
                         <Option
                             size="lg"
-                            state={getOptionState(questionState, "True")}
+                            state={getOptionStateMultipleChoice(questionState, "True")}
                             setQuestionState={() => setQuestionState((prevState) => {
                                 if(prevState.selected.includes("True")) {
                                     return {
@@ -316,7 +502,7 @@ export default function Question({
                     >
                         <Option
                             size="lg"
-                            state={getOptionState(questionState, "False")}
+                            state={getOptionStateMultipleChoice(questionState, "False")}
                             setQuestionState={() => setQuestionState((prevState) => {
                                 if(prevState.selected.includes("False")) {
                                     return {
@@ -340,7 +526,7 @@ export default function Question({
 
             </div>
             
-            { !switchingQuestion &&
+            { !switchingQuestion && question.type.title != "Match the Cards" &&
                 <motion.div
                     initial="hidden"
                     animate="visible"

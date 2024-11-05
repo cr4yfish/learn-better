@@ -13,6 +13,7 @@ import { upsertQuestion, deleteQuestion } from "@/utils/supabase/questions";
 import { QuestionTypes } from "@/utils/constants/question_types";
 import EditMultipleChoice from "./questionTypes/EditMultipleChoice";
 import EditBoolean from "./questionTypes/EditBoolean";
+import EditMatchCards from "./questionTypes/EditMatchCards";
 
 export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key:  keyof Question, value: string & string[] & Topic & Question_Type) => void , removeQuestion: (question: Question) => void  }) {
     const [integrity, setIntegrity] = useState(true);
@@ -56,6 +57,7 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
 
     const handleUpdateValue = (key: keyof Question,value: string | string[]) => {
         setIntegrity(false);
+        console.log("Update value:",key, value)
         updateValue(key, value as string & string[] & Topic & Question_Type);
     }
 
@@ -91,6 +93,16 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
                         question={question} 
                         handleUpdateValue={handleUpdateValue}
                     />
+                }
+
+                {question.type.id == QuestionTypes.match_the_words.id &&
+                <>
+                    <EditMatchCards
+                        question={question} 
+                        handleUpdateValue={handleUpdateValue}
+                        handleOptionValueChange={handleOptionValueChange}
+                    />
+                </>
                 }
 
                 {question.type.id == QuestionTypes.fill_in_the_blank.id &&

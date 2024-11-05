@@ -207,6 +207,7 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
                                 <SelectItem key={"5570443a-63bb-4158-b86a-a2cef3457cf0"} value="1">Multiple Choice</SelectItem>
                                 <SelectItem key={"33b2c6e5-df24-4812-a042-b5bed4583bc0"} value="2">Boolean</SelectItem>
                                 <SelectItem key={"6335b9a6-2722-4ece-a142-4749f57e6fed"} value="3">Fill in the blank</SelectItem>
+                                <SelectItem key={"7babe7ed-3e4c-408d-87e2-0420877d34c9"} value="3">Match the Words</SelectItem>
                             </SelectSection>
                         </Select>
                         <Input

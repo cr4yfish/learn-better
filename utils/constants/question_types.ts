@@ -1,7 +1,7 @@
 import { Question_Type } from "@/types/db";
 
 
-export const QuestionTypes: Record<"multiple_choice" | "boolean" | "fill_in_the_blank", Question_Type> = {
+export const QuestionTypes: Record<"multiple_choice" | "boolean" | "fill_in_the_blank" | "match_the_words", Question_Type> = {
     "multiple_choice": {
         id: "5570443a-63bb-4158-b86a-a2cef3457cf0",
         title: "Multiple Choice",
@@ -17,4 +17,9 @@ export const QuestionTypes: Record<"multiple_choice" | "boolean" | "fill_in_the_
         title: "Fill in the Blank",
         description: "Fill in the blank with the correct answer.",
     },
+    "match_the_words": {
+        id: "7babe7ed-3e4c-408d-87e2-0420877d34c9",
+        title: "Match the Cards",
+        description: "Match Cards"
+    }
 }

@@ -61,11 +61,12 @@ export function fortnite(date: Date): Date {
 
 // Fisher-Yates (Knuth) Shuffle algorithm
 export function shuffleArray<T>(array: T[]) {
-    for (let i = array.length - 1; i > 0; i--) {
+    const copyArray = [...array];
+    for (let i = copyArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [copyArray[i], copyArray[j]] = [copyArray[j], copyArray[i]];
     }
-    return array;
+    return copyArray;
 }
 
 export function getAnonkey(): string {
