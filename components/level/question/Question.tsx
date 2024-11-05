@@ -150,6 +150,7 @@ export default function Question({
 
     // shuffle the options when the question changes
     useEffect(() => {
+        if(question.type.title == "Fill in the blank") return;
         const randomOptions = shuffleArray(question.answer_options)
         const randomAnswers = shuffleArray(question.answers_correct)
         setQuestionState((prevState) => ({
@@ -192,7 +193,7 @@ export default function Question({
         let completed = false;
         let accuracy = 0;
 
-        if(question.type.title !== "Match the Cards") {
+        if(question.type.title == "Multiple Choice" || question.type.title == "Boolean") {
             if (arraysAreEqual(question.answers_correct, questionState.selected)) {
                 setQuestionState({...questionState, correct: "correct"})
                 xp = 100;
@@ -201,17 +202,49 @@ export default function Question({
             } else {
                 setQuestionState({...questionState, correct: "wrong"})
             }            
-        } else {
+        } else if(question.type.title == "Match the Cards"){
             if(matchCardsState.matches.length == question.answer_options.length) {
                 const numCorrect = matchCardsState.matches.filter(match => match.correct == "correct").length;
 
                 accuracy = Math.round((numCorrect / question.answer_options.length) * 100);
-                console.log(accuracy)
+
                 if(numCorrect == question.answer_options.length) {
                     xp = 100;
                     completed = true;
                 }
             }
+        } else if(question.type.title == "Fill in the blank") {
+            const correct = question.answers_correct;
+            const selected = questionState.selected;
+
+            
+            completed = true;
+            let numCorrect = 0;
+
+            correct.forEach((word, index) => {
+                if(!selected[index]) return;
+
+                if(selected[index] == word) {
+                    console.log("hit")
+                    numCorrect++; 
+                } else {
+                    console.log("wrong!", word, index, selected[index])
+                    completed = false;
+                }
+            })
+
+            accuracy = Math.round((numCorrect / question.answer_options.length) * 100);
+
+            if(completed) {
+                xp = 100;
+            }
+
+        } 
+        
+        else {
+            // unknown question type
+            console.error("Unknown question type", question.type.title)
+            return;
         }
 
         await addUserQuestion({
@@ -366,6 +399,43 @@ export default function Question({
 
     //
 
+    // Fill in the blank type question
+
+        const handleFill = (option: string) => {
+
+            const newSelected = questionState.selected;
+
+            if(newSelected.length == 0) {
+                newSelected.length = question.answers_correct.length;
+                const firstOptionsIndex = question.answers_correct.findIndex((word) => question.answer_options.includes(word))
+                newSelected[firstOptionsIndex] = option;
+            } else {
+                const nextIndex = question.answers_correct.findIndex((word, index) => question.answer_options.includes(word) && !newSelected[index])
+                newSelected[nextIndex] = option;
+            }
+            
+
+            setQuestionState((prevState) => {
+                return {
+                    ...prevState,
+                    selected: newSelected
+                }
+            })
+        }
+
+        const handleRemoveFill = (index: number) => {
+            const newSelected = questionState.selected;
+            newSelected[index] = "";
+            setQuestionState((prevState) => {
+                return {
+                    ...prevState,
+                    selected: newSelected
+                }
+            })
+        }
+    
+    //
+
     return (
         <>
         <div className="flex flex-col prose dark:prose-invert gap-6 overflow-visible pb-20">
@@ -462,6 +532,70 @@ export default function Question({
                     </div>
                 )}
                 
+                {!switchingQuestion && question.type.title == "Fill in the blank" && (
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-row flex-wrap gap-1">
+                            {question.answers_correct.map((answer: string, index: number) => (
+                                question.answer_options.includes(answer) ?
+                                (<motion.span 
+                                    key={index}
+                                    id={answer}
+                                    layout
+                                    layoutId={answer}
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={list}
+                                    custom={index}
+                                >
+                                    <Button 
+                                        size="sm" 
+                                        color="secondary"
+                                        variant="flat"
+                                        onClick={() => handleRemoveFill(index)}
+                                    >
+                                        {questionState.selected[index]}
+                                    </Button>
+                                </motion.span>) :
+                                (<motion.span 
+                                    key={index}
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={list}
+                                    custom={index}
+                                >
+                                    {answer}
+                                </motion.span>)
+                            ))}
+                        </div>
+
+                        
+                        <div className="flex flex-row flex-wrap gap-2">
+                            {question.answer_options.map((option: string, index: number) => (
+                                !questionState.selected.includes(option) &&
+                                <motion.div
+                                    id={option}
+                                    layout
+                                    layoutId={option}
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={list}
+                                    custom={index}
+                                    key={index}
+                                >
+                                    <Button
+                                        variant="flat" color="secondary" size="sm"
+                                        isDisabled={questionState.selected.includes(option)}
+                                        onClick={() => handleFill(option)}
+                                    >
+                                        {option}
+                                    </Button>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                    </div>
+                )}
+
                 {question.type.title == "Boolean" && (
                     <>
                     <motion.div
@@ -536,13 +670,19 @@ export default function Question({
                 >
                     <Button 
                         color={questionState.correct == "initial" ? "primary" : (questionState.correct == "correct" ? "success" : "danger")}
-                        isDisabled={questionState.selected.length == 0 || questionState.correct != "initial"}
+                        isDisabled={
+                                questionState.selected.length == 0 || 
+                                questionState.correct != "initial" || 
+                                (question.type.title == "Fill in the blank" &&
+                                    (questionState.selected.filter((word) => word !== "").length != question.answer_options.length)
+                                )
+                        }
                         isLoading={isLoading}
                         size="lg"
                         fullWidth
                         onClick={handleCheckAnswer}
                     >
-                            {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
+                        {questionState.correct == "initial" ? "Check Answer" : (questionState.correct == "correct" ? "Correct!" : "Wrong!")}
                     </Button>
                 </motion.div>
             }

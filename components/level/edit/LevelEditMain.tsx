@@ -199,7 +199,6 @@ export default function LevelEditMain({ initTopic, initQuestions } : { initTopic
                             selectionMode="single"
                             selectedKeys={[selectedQuestionType?.id]}
                             defaultSelectedKeys={["5570443a-63bb-4158-b86a-a2cef3457cf0"]}
-                            disabledKeys={["6335b9a6-2722-4ece-a142-4749f57e6fed"]}
                             value={topic.title}
                             onSelectionChange={(e) => e.currentKey && handleQuestionTypeSelectChange(e)}
                         >

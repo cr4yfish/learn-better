@@ -34,4 +34,13 @@ export type MatchCardsState = {
     matches: Match[],
 }
 
+
+export type FillBlankState = {
+    selected: {
+        word: string,
+        index: number
+    }[],
+    nextIndex: number,
+}
+
 export type OptionState = "selected" | "unselected" | "correct" | "wrong"

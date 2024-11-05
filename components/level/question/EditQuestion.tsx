@@ -14,6 +14,7 @@ import { QuestionTypes } from "@/utils/constants/question_types";
 import EditMultipleChoice from "./questionTypes/EditMultipleChoice";
 import EditBoolean from "./questionTypes/EditBoolean";
 import EditMatchCards from "./questionTypes/EditMatchCards";
+import EditFillBlank from "./questionTypes/EditFillBlank";
 
 export default function EditQuestion({ question, updateValue, removeQuestion } : { question: Question, updateValue: (key:  keyof Question, value: string & string[] & Topic & Question_Type) => void , removeQuestion: (question: Question) => void  }) {
     const [integrity, setIntegrity] = useState(true);
@@ -57,7 +58,6 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
 
     const handleUpdateValue = (key: keyof Question,value: string | string[]) => {
         setIntegrity(false);
-        console.log("Update value:",key, value)
         updateValue(key, value as string & string[] & Topic & Question_Type);
     }
 
@@ -106,8 +106,13 @@ export default function EditQuestion({ question, updateValue, removeQuestion } :
                 }
 
                 {question.type.id == QuestionTypes.fill_in_the_blank.id &&
-                    <><span>This Question type is not supported yet. Please choose a different one.</span></>
+                    <EditFillBlank
+                        question={question} 
+                        handleUpdateValue={handleUpdateValue}
+                        handleOptionValueChange={handleOptionValueChange}
+                    />
                 }
+
             </CardBody>
             <CardFooter className="flex flex-row items-center gap-4"> 
 
