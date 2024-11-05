@@ -166,6 +166,14 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [ ] Give AI some useful features
 - [ ] ~~AI Helper for creating questions & levels (mostly for writing help)~~ - Just use the first feature
 
+### Question Types
+- [x] Multiple Choice & Single Choice
+- [x] True/False
+- [x] Match the Cards
+- [ ] Fill in the Blanks
+- [ ] Listening?
+- [ ] Speaking?
+
 ## Data Privacy
 I'm a EU-based Developer, so I'm building it with GDRP in mind. 
 Altough, as you can take from the roadmap above, I didn't get to the part of implementing Privacy-focused features yet.
