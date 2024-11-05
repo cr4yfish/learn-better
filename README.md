@@ -5,7 +5,7 @@ The learning app that helps you learn anything you want.
 
 <a href="https://www.reddit.com/r/nouv_app/" target="_blank">r/nouv_app on Reddit</a>
 
-<a href="https://lemmy.world/c/nouv@lemmy.world" target="_blank">nouv@lemmy.world on Lemmy</a>
+<a href="https://lemmy.world/c/nouv@lemmy.world" target="_blank">nouv (at) lemmy.world on Lemmy</a>
 
 </div>
 
