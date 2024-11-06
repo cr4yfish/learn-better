@@ -25,10 +25,17 @@ export function isSameDay(date1: Date, date2: Date): boolean {
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 }
 
-export function formatSeconds(seconds: number) {
+export function formatSeconds(seconds: number): { minutes: number, seconds: number } {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+
+    const paddedMinutes = parseInt(minutes.toString().padStart(2, "0"));
+    const paddedSeconds = parseInt(remainingSeconds.toString().padStart(2, "0"));
+
+    return { 
+        minutes: paddedMinutes, 
+        seconds: paddedSeconds
+    }
 }
 
 
