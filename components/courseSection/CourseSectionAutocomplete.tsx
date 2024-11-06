@@ -7,7 +7,7 @@ import { Course, Course_Section } from "@/types/db";
 import { searchCourseSections } from "@/utils/supabase/courses";
 
 
-export default function CourseSectionAutocomplete({ setCourseSection, course } : { course: Course | null, setCourseSection: (courseSection: Course_Section) => void }) {
+export default function CourseSectionAutocomplete({ setCourseSection, course, description } : { course: Course | null, setCourseSection: (courseSection: Course_Section) => void, description?: string }) {
     
     const list = useAsyncList<Course_Section>({
         async load({filterText}) {
@@ -39,9 +39,8 @@ export default function CourseSectionAutocomplete({ setCourseSection, course } :
             variant="bordered"
             label="Pick a Course Section"
             placeholder="Select a Course Section"
+            description={description}
             isDisabled={!course || course.id === ""}
-            required
-            isRequired
             isLoading={list.isLoading}
             items={list.items}
             inputValue={list.filterText}

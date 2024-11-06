@@ -40,7 +40,7 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
     const [apiKey, setApiKey] = useState<string | null>(sessionState.settings.gemini_api_key ?? null);
     const [filename, setFilename] = useState<string | null>(null);
     const [courseSection, setCourseSection] = useState<Course_Section | null>(null);
-    const [numLevels, setNumLevels] = useState<number>(1);
+    const [numLevels, setNumLevels] = useState<number>(3);
 
     const [isAddingLoading, setIsAddingLoading] = useState<boolean>(false);
     const [isAdded, setIsAdded] = useState<boolean>(false);
@@ -126,7 +126,6 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
             })
         })
 
-        setIsAddingLoading(false);
         setIsAdded(true);
     }
 
@@ -142,12 +141,12 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
         </div>
         <CourseSectionAutocomplete 
             setCourseSection={(courseSection) => setCourseSection(courseSection)} 
-            course={course}
+            course={course} description="Optional"
         />
 
         <Drawer>
             <DrawerTrigger className="w-fit py-6" asChild>
-                <Button isDisabled={!courseSection} variant="solid" color="primary" >Open config</Button>
+                <Button variant="solid" color="primary" >Open config</Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
@@ -176,7 +175,7 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
                         <div className="flex flex-wrap gap-2 items-center">
                             <UppyFileUpload 
                                 session={sessionState} 
-                                label="Upload PDF" 
+                                label="Upload File" 
                                 setFileNameCalback={(filename) => setFilename(filename)}
                                 isDisabled={filename !== null} 
                             />
@@ -264,6 +263,42 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
 
                                             {q?.question_type == "true_false" &&
                                                 <span className={`text-tiny ${q?.true_false?.answer_correct ? "text-green-400" : "text-red-400"}`}>{q?.true_false?.answer_correct ? "true" : "false"}</span>
+                                            }
+
+                                            {q?.question_type == "match_card" &&
+                                                <div className="flex flex-row gap-4">
+
+                                                    <div className="flex flex-col gap-1">
+                                                        {q?.match_card?.answers_correct?.map((a, j) => (
+                                                            <span key={j} className="text-tiny">{a}</span>
+                                                        ))}
+                                                    </div>
+                                  
+                                                    <div className="flex flex-col gap-1">
+                                                        {q?.match_card?.answer_options?.map((a, j) => (
+                                                            <span key={j} className="text-tiny">{a}</span>
+                                                        ))} 
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            {q?.question_type == "fill_in_the_blank" &&
+                                                <div className="flex flex-col">
+                                                    <span>Fill the blank question</span>
+                                                    {q?.fill_in_the_blank?.answers_correct?.map((a, j) => (
+                                                        <span key={j} className="text-tiny">{a}</span>
+                                                    ))}
+
+                                                    <span>Options</span>
+                                                    {q?.fill_in_the_blank?.answer_options?.map((a, j) => (
+                                                        <>
+                                                        <span key={j} className="text-tiny">{a}</span>
+                                                        </>
+                                                    ))
+
+                                                    }
+
+                                                </div>
                                             }
 
                                         </AccordionItem>
