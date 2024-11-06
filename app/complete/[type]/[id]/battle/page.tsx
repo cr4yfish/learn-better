@@ -1,7 +1,7 @@
 "use server";
 
+import LevelCompleteBattles from "@/components/level/complete/LevelCompleteBattles";
 import LevelCompleteContinueButton from "@/components/level/complete/LevelCompleteContinueButton";
-import Battles from "@/components/training/Battles";
 import { getUser } from "@/utils/supabase/auth";
 import { getBattles } from "@/utils/supabase/battles";
 import { getProfileById } from "@/utils/supabase/user";
@@ -30,9 +30,9 @@ export default async function CompleteBattle(params: Params) {
 
     return (
         <>
-        <h1 className=" text-4xl font-bold text-center w-full">Your Battles</h1>
-        <Battles battles={battles} userId={user.id} showButtons={false} userProfile={userProfile} />
-        <LevelCompleteContinueButton type={type} id={id} next="vote" />
+        
+        <LevelCompleteBattles userId={user.id} userProfile={userProfile} battles={battles} />
+        <LevelCompleteContinueButton type={type} id={id} next="vote" listNumber={3} />
 
         </>
     )

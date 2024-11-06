@@ -43,9 +43,9 @@ export default async function CompleteStats(params: Params) {
 
     return (
         <>
-        <h1 className=" w-full text-center text-4xl font-bold  ">{type == "level" ? "Level" : "Training"} Complete!</h1>
-        <LevelCompleteStats xp={xp} accuracy={accuracy} seconds={seconds} />
-        <LevelCompleteContinueButton type={type} id={id} next="rank" rankUp={rankUp} />
+        
+        <LevelCompleteStats xp={xp} accuracy={accuracy} seconds={seconds} type={type} />
+        <LevelCompleteContinueButton type={type} id={id} next="rank" rankUp={rankUp} listNumber={4} />
         </>
     )
 }

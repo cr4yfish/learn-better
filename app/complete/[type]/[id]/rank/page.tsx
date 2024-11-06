@@ -34,7 +34,7 @@ export default async function CompleteRank(params: Params) {
         return (
             <>
             <LevelCompleteRank rankTitle={currentRank.title} />
-            <LevelCompleteContinueButton type={type} id={id} next="battle" />
+            <LevelCompleteContinueButton type={type} id={id} next="battle" listNumber={4} />
             </>
         )
     } else {
