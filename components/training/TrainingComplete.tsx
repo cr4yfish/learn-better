@@ -9,7 +9,7 @@ export default function TrainingComplete({ training } : { training: Training }) 
     return (
         <>
         <div className="flex flex-col gap-4 w-full items-center justify-evenly">
-            <LevelCompleteStats xp={training.xp} seconds={training.seconds} accuracy={training.accuracy} />
+            <LevelCompleteStats xp={training.xp} seconds={training.seconds} accuracy={training.accuracy} type="training" />
 
         </div>
         </>
