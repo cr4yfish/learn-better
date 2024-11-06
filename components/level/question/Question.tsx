@@ -674,7 +674,7 @@ export default function Question({
                                 questionState.selected.length == 0 || 
                                 questionState.correct != "initial" || 
                                 (question.type.title == "Fill in the blank" &&
-                                    (questionState.selected.filter((word) => word !== "").length != question.answer_options.length)
+                                    (questionState.selected.filter((word) => word !== "").length != question.answers_correct.filter((q) => question.answer_options.includes(q)).length)
                                 )
                         }
                         isLoading={isLoading}
