@@ -19,17 +19,7 @@ import QuestionReportButton from "./QuestionReportButton";
 import { addExplainAnswerTokens } from "@/utils/supabase/user";
 import { useToast } from "@/hooks/use-toast";
 
-
-const list = {
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.05,
-      },
-    }),
-    hidden: { opacity: 0, y: -10 },
-}
+import { framerListAnimationProps } from "@/lib/utils";
 
 export default function Question({
     question, setLevelState, session, levelState, questions
@@ -472,9 +462,7 @@ export default function Question({
                 
                 {!switchingQuestion && question.type.title == "Multiple Choice" && question.answer_options.map((option: string, index: number) => (
                     <motion.div 
-                        initial="hidden"
-                        animate="visible"
-                        variants={list}
+                        {...framerListAnimationProps}
                         custom={index}
                         key={index}
                     >
@@ -507,9 +495,7 @@ export default function Question({
                         <div className="flex flex-col w-[45%] gap-2">
                             {questionState.options?.map((option: string, index: number) => (
                                 <motion.div 
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={list}
+                                    {...framerListAnimationProps}
                                     custom={index}
                                     key={index}
                                 >
@@ -531,9 +517,7 @@ export default function Question({
                         <div className="flex flex-col w-[45%] gap-2">
                             {questionState.answers?.map((option: string, index: number) => (
                                 <motion.div
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={list}
+                                    {...framerListAnimationProps}
                                     custom={index}
                                     key={index}
                                 >
@@ -565,9 +549,7 @@ export default function Question({
                                     id={answer}
                                     layout
                                     layoutId={answer}
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={list}
+                                    {...framerListAnimationProps}
                                     custom={index}
                                 >
                                     <Button 
@@ -581,9 +563,7 @@ export default function Question({
                                 </motion.span>) :
                                 (<motion.span 
                                     key={index}
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={list}
+                                    {...framerListAnimationProps}
                                     custom={index}
                                 >
                                     {answer}
@@ -599,9 +579,7 @@ export default function Question({
                                     id={option}
                                     layout
                                     layoutId={option}
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={list}
+                                    {...framerListAnimationProps}
                                     custom={index}
                                     key={index}
                                 >
@@ -622,9 +600,7 @@ export default function Question({
                 {question.type.title == "Boolean" && (
                     <>
                     <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={list}
+                        {...framerListAnimationProps}
                         custom={0}
                         className="w-full"
                     >
@@ -651,9 +627,7 @@ export default function Question({
                     </motion.div>
 
                     <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={list}
+                        {...framerListAnimationProps}
                         custom={1}
                         className="w-full"
                     >
@@ -685,9 +659,7 @@ export default function Question({
             
             { !switchingQuestion && question.type.title != "Match the Cards" &&
                 <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={list}
+                {...framerListAnimationProps}
                     custom={question.answer_options.length +1}
                     className="w-full"
                 >
