@@ -2,18 +2,28 @@
 
 import { useState } from "react";
 import { Input } from "@nextui-org/input"
+import { v4 as uuidv4 } from "uuid";
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"  
 
 import { Button } from "@/components/utils/Button"
 import Icon from "@/components/utils/Icon"
-import BlurModal from "./BlurModal";
 import { uploadTextObject } from "@/utils/supabase/storage";
 
 export default function ScraperForm({ setFilenameCallback, isDisabled } : { setFilenameCallback: (filename: string) => void, isDisabled?: boolean }) {
     const [url, setUrl] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [status, setStatus] = useState<string>("");
-
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const checkValid = () => {
         if(url === "") {
@@ -38,17 +48,18 @@ export default function ScraperForm({ setFilenameCallback, isDisabled } : { setF
 
             const text = await fetchResult.text();
 
+            const filename = uuidv4();
+
             // upload to supabase
             setStatus("Uploading document");
             const uploadResult = await uploadTextObject({
-                path: "scraped.html",
+                path: filename,
                 text: text,
                 bucket: "documents"
             })
 
             setFilenameCallback(uploadResult);
             setStatus("Done");
-            setIsModalOpen(false);
 
         } catch (e) {
             console.error(e);
@@ -59,60 +70,60 @@ export default function ScraperForm({ setFilenameCallback, isDisabled } : { setF
 
     return (
         <>
-        <Button 
-            color="secondary"
-            variant="flat"
-            endContent={<Icon filled>link</Icon>}
-            onClick={() => setIsModalOpen(true)}
-            isDisabled={isDisabled}
-        >
-            Upload URL
-        </Button>
+        <AlertDialog>
 
-        <BlurModal 
-            isOpen={isModalOpen}
-            updateOpen={setIsModalOpen}
-            settings={{
-                hasHeader: true,
-                hasBody: true,
-                hasFooter: true
-            }}
-            header={
-                <><h2 className="font-bold text-lg" >Copy content from another source</h2></>
-            }
-            body={
-                <>
-                <form className="flex flex-col gap-2" >
-                    <Input 
-                        type="url"
-                        label="URL"
-                        isRequired
-                        value={url}
-                        onValueChange={(value) => setUrl(value)}
-                        placeholder="Enter the URL of the content you want to copy"
-                    />
-                </form>
-                </>
-            }
-            footer={
-                <>
-                <div className="flex flex-row gap-2">
-                    <Button 
-                        endContent={<Icon filled>cloud_download</Icon>} 
-                        type="submit" 
-                        onClick={handleStartScraper} 
-                        isLoading={isLoading}
-                        variant="shadow"
-                        color="primary" 
-                        isDisabled={!checkValid()}
-                        fullWidth
-                    >
-                        {isLoading ? status : "Start Scraper"}
-                    </Button>
-                </div>
-                </>
-            }
-        />
+            <AlertDialogTrigger asChild>
+                <Button 
+                    color="secondary"
+                    variant="flat"
+                    endContent={<Icon filled>link</Icon>}
+                    isDisabled={isDisabled}
+                >
+                    Upload URL
+                </Button>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Copy content from another source</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        <form className="flex flex-col gap-2" >
+                            <Input 
+                                type="url"
+                                label="URL"
+                                isRequired
+                                value={url}
+                                onValueChange={(value) => setUrl(value)}
+                                placeholder="Enter the URL of the content you want to copy"
+                            />
+                        </form>
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction asChild>                    
+                        <Button 
+                            endContent={<Icon filled>cloud_download</Icon>} 
+                            type="submit" 
+                            onClick={handleStartScraper} 
+                            isLoading={isLoading}
+                            variant="shadow"
+                            color="primary" 
+                            isDisabled={!checkValid()}
+                            fullWidth
+                        >
+                            {isLoading ? status : "Start Scraper"}
+                        </Button>
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+
+            </AlertDialogContent>
+
+
+        </AlertDialog>
+      
         </>
     )
 }
