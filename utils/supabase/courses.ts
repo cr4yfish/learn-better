@@ -103,7 +103,8 @@ export const getCourses = cache(async (params: GetCoursesParams): Promise<Course
             *,
             institutions (*),
             courses_tags ( course_tags (*), *),
-            course_categories (*)
+            course_categories (*),
+            profiles (*)
         `)
         .order(params.orderBy, { ascending: params.isAscending })
         .range(params.from, params.from + params.limit - 1);
@@ -119,7 +120,8 @@ export const getCourses = cache(async (params: GetCoursesParams): Promise<Course
             category: db.course_categories,
             course_sections_count: db.course_sections_count,
             topics_count: db.topics_count,
-            question_count: db.questions_count
+            question_count: db.questions_count,
+            creator: db.profiles
         }
     })
 })

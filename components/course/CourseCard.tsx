@@ -21,7 +21,7 @@ export default function CourseCard ({
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
-    const [isUpvoted, setIsUpvoted] = useState(false);
+    const [isUpvoted, setIsUpvoted] = useState<boolean | null>(null);
     const [isVoting, setIsVoting] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -89,13 +89,14 @@ export default function CourseCard ({
             return res ? true : false
         };
 
-        if(userID && course.id) {
+        // Fetch vote once when modal is opened
+        if(userID && course.id && isModalOpen && isUpvoted == null) {
             fetchVote(userID, course.id).then((res) => {
                 setIsUpvoted(res)
             });
         }
         
-    }, [userID, course.id])
+    }, [userID, course.id, isModalOpen, isUpvoted])
 
     return (
     <>
@@ -120,6 +121,11 @@ export default function CourseCard ({
                 <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>favorite</Icon>}>
                     {course.votes}
                 </Chip>
+                {(course.questions_count !== undefined) && 
+                    <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>question_mark</Icon>}>
+                        {course.questions_count}
+                    </Chip>
+                }
                 {course.category &&
                     <Chip startContent={<Icon downscale>folder</Icon>} variant="flat" color="secondary" size="sm" className="text-tiny ">
                         {course.category?.title}
@@ -147,10 +153,10 @@ export default function CourseCard ({
                     <span className="font-bold">{course?.abbreviation}</span>
                     <Button 
                         onClick={() => handleUpvoteCourse(course)} 
-                        isLoading={isVoting} 
+                        isLoading={isVoting || isUpvoted == null} 
                         variant="flat" color="danger" isIconOnly
                     >
-                            <Icon filled={isUpvoted}>favorite</Icon>
+                            <Icon filled={isUpvoted ?? false}>favorite</Icon>
                     </Button>
                 </div>
             }
@@ -158,6 +164,7 @@ export default function CourseCard ({
             <>
                 <p className="font-semibold">{course?.title}</p>
                 <p>{course?.description}</p>
+                <span className=" text-sm text-gray-700 dark:text-gray-300 ">By @{course.creator?.username}</span>
                 <div className="flex flex-row items-center gap-2 flex-wrap">
                     <Chip variant="flat" color="secondary" size="sm" className="text-tiny" startContent={<Icon filled downscale>people</Icon>}>
                         {course.members}
