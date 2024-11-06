@@ -240,6 +240,7 @@ export async function upvoteCourseTopic(topicId: string, userId: string): Promis
 
 export async function upsertCourseTopic(topic: Topic): Promise<{ id: string }> {
     const { data, error } = await getClient().from("topics").upsert([{
+        id: topic.id,
         title: topic.title,
         description: topic.description,
         course: topic.course.id,
