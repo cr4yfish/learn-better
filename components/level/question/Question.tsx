@@ -84,10 +84,32 @@ export default function Question({
     
     // update prompt
     useEffect(() => {
-        setInput(`Please explain the correct answer and if my answer is wrong, then also why it is wrong. The Question Title: ${question.title}. The Question Description: ${question.question}. The Correct Answer Options: [${question.answers_correct.join(", ")}]. All the Answer Options: [${question.answer_options.join(", ")}]. The Answers options I chose: [${questionState.selected.join(", ")}]`)
+
+        let answerOptions = questionState.selected;
+
+        if(question.type.title == "Fill in the blank") {
+            answerOptions = question.answers_correct.map((word) => {
+                if(question.answer_options.includes(word) && !questionState.selected.includes(word)) {
+                    return "";
+                } else {
+                    return word;
+                }
+            })
+        }
+
+        const newInput = `
+            Please explain the correct answer and if my answer is wrong, then also why it is wrong. 
+            The Question Title: ${question.title}. 
+            The Question Description: ${question.question}. 
+            The Correct Answer Options: [${question.answers_correct.join(", ")}].
+            All the Answer Options: [${question.answer_options.join(", ")}]. 
+            The Question Type: ${question.type.title}.
+            The Answers options I chose: [${answerOptions.join(", ")}]
+        `
+        setInput(newInput)
+        console.log(newInput);
     }, [
-        question.title, question.question, question.answer_options,
-        question.answers_correct, questionState.selected, setInput
+        question, setInput, questionState
     ])
 
     // restart time when question changes
@@ -150,7 +172,6 @@ export default function Question({
 
     // shuffle the options when the question changes
     useEffect(() => {
-        if(question.type.title == "Fill in the blank") return;
         const randomOptions = shuffleArray(question.answer_options)
         const randomAnswers = shuffleArray(question.answers_correct)
         setQuestionState((prevState) => ({
@@ -195,13 +216,10 @@ export default function Question({
 
         if(question.type.title == "Multiple Choice" || question.type.title == "Boolean") {
             if (arraysAreEqual(question.answers_correct, questionState.selected)) {
-                setQuestionState({...questionState, correct: "correct"})
                 xp = 100;
                 completed = true;
                 accuracy = 100;
-            } else {
-                setQuestionState({...questionState, correct: "wrong"})
-            }            
+            }         
         } else if(question.type.title == "Match the Cards"){
             if(matchCardsState.matches.length == question.answer_options.length) {
                 const numCorrect = matchCardsState.matches.filter(match => match.correct == "correct").length;
@@ -216,7 +234,6 @@ export default function Question({
         } else if(question.type.title == "Fill in the blank") {
             const correct = question.answers_correct;
             const selected = questionState.selected;
-
             
             completed = true;
             let numCorrect = 0;
@@ -245,6 +262,12 @@ export default function Question({
             // unknown question type
             console.error("Unknown question type", question.type.title)
             return;
+        }
+
+        if(completed) {
+            setQuestionState({...questionState, correct: "correct"})
+        } else {
+            setQuestionState({...questionState, correct: "wrong"})
         }
 
         await addUserQuestion({
@@ -570,7 +593,7 @@ export default function Question({
 
                         
                         <div className="flex flex-row flex-wrap gap-2">
-                            {question.answer_options.map((option: string, index: number) => (
+                            {questionState.options.map((option: string, index: number) => (
                                 !questionState.selected.includes(option) &&
                                 <motion.div
                                     id={option}
