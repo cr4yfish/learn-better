@@ -32,7 +32,7 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-  } from "@/components/ui/drawer"
+} from "@/components/ui/drawer"
   
 
 
@@ -106,18 +106,37 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
                 if(res) {
                     level.questions.forEach(async (question) => {
                         if(!question || !question.title || !question.question) return;
+                        console.log(question.question_type);
+                        let answer_correct: string[] = [];
+                        let answer_options: string[] = [];
+
+                        switch (question.question_type) {
+                            case "multiple_choice":
+                                answer_correct = question.multiple_choice?.answers_correct as string[];
+                                answer_options = question.multiple_choice?.answer_options as string[];
+                                break;
+                            case "boolean":
+                                answer_correct = question.true_false?.answer_correct ? ["true"] : ["false"];
+                                answer_options = ["true", "false"];
+                                break;
+                            case "match_the_cards":
+                                answer_correct = question.match_card?.answers_correct as string[];
+                                answer_options = question.match_card?.answer_options as string[];
+                                break;
+                            case "fill_in_the_blank":
+                                answer_correct = question.fill_in_the_blank?.answers_correct as string[]
+                                answer_options = question.fill_in_the_blank?.answer_options as string[]
+                                break
+                        }
 
                         const newQuestion: Question = {
                             id: uuidv4(),
                             title: question.title,
                             question: question.question,
-                            topic: {
-                                ...newLevel,
-                                id: res.id
-                            },
-                            answer_options: question.question_type == "multiple_choice" ? question.multiple_choice?.answer_options as string[] : ["true", "false"],
-                            answers_correct: question.question_type == "multiple_choice" ? question.multiple_choice?.answers_correct as string[] : question.true_false?.answer_correct ? ["true"] : ["false"],
-                            type: question.question_type == "multiple_choice" ? QuestionTypes.multiple_choice : QuestionTypes.boolean
+                            topic: newLevel,
+                            answer_options: answer_options,
+                            answers_correct: answer_correct,
+                            type: QuestionTypes[question.question_type as keyof typeof QuestionTypes]
                         }
 
                         await upsertQuestion(newQuestion);
@@ -236,24 +255,23 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
 
 
         <div className="flex flex-col gap-4  h-full overflow-y-auto">
-            {object?.map((section, sectionIndex) => (
-                <div key={sectionIndex} className="flex flex-col gap-2 px-2 py-2 rounded">
+            {object?.map((section) => (
+                <div key={uuidv4()} className="flex flex-col gap-2 px-2 py-2 rounded">
                     <span className=" font-bold text-lg">{section?.title}</span>
                     <span className="">{section?.description}</span>
                     
                     <div className="flex flex-col gap-1">
-                        {section?.levels?.map((level, i) => (
-                        <div className=" p-2 rounded" key={i}>
+                        {section?.levels?.map((level) => (
+                        <div className=" p-2 rounded" key={uuidv4()}>
                             {level?.questions && level.questions.length > 0 &&
-                                <Accordion>
-                                    {level.questions.map((q, i) => (
+                                <Accordion >
+                                    {level.questions.map((q) => (
                                         <AccordionItem 
                                             aria-label="Questions" 
-                                            key={i}
+                                            key={uuidv4()}
                                             title={q?.title} subtitle={q?.question}
                                         >
-
-                                            {q?.question_type == "multiple_choice" &&
+                                            {q?.question_type == QuestionTypes.multiple_choice.title &&
                                                 <div className="flex flex-col">
                                                     {q?.multiple_choice?.answer_options?.map((a, j) => (
                                                         <span key={j} className={`text-tiny ${q?.multiple_choice?.answers_correct?.includes(a) && "text-green-400"}`}>{a}</span>
@@ -261,11 +279,11 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
                                                 </div>
                                             }
 
-                                            {q?.question_type == "true_false" &&
+                                            {q?.question_type == QuestionTypes.boolean.title &&
                                                 <span className={`text-tiny ${q?.true_false?.answer_correct ? "text-green-400" : "text-red-400"}`}>{q?.true_false?.answer_correct ? "true" : "false"}</span>
                                             }
 
-                                            {q?.question_type == "match_card" &&
+                                            {q?.question_type == QuestionTypes.match_the_words.title &&
                                                 <div className="flex flex-row gap-4">
 
                                                     <div className="flex flex-col gap-1">
@@ -282,12 +300,19 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
                                                 </div>
                                             }
 
-                                            {q?.question_type == "fill_in_the_blank" &&
+                                            {q?.question_type == QuestionTypes.fill_in_the_blank.title &&
                                                 <div className="flex flex-col">
                                                     <span>Fill the blank question</span>
-                                                    {q?.fill_in_the_blank?.answers_correct?.map((a, j) => (
-                                                        <span key={j} className="text-tiny">{a}</span>
-                                                    ))}
+
+                                                    <div className="flex flex-row flex-wrap gap-1">
+                                                        {q?.fill_in_the_blank?.answers_correct?.map((a, j) => (
+                                                            <>
+                                                            <span key={j} className={`text-tiny ${q.fill_in_the_blank?.answer_options?.includes(a) && " dark:text-red-500"}`}>
+                                                                {a}
+                                                            </span>
+                                                            </>
+                                                        ))}
+                                                    </div>
 
                                                     <span>Options</span>
                                                     {q?.fill_in_the_blank?.answer_options?.map((a, j) => (
