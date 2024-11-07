@@ -33,6 +33,12 @@ export default async function CommunityMain() {
                     </Link>
                 </div>
                 
+                <div className="h-[50px]">
+                    <Link target="_blank" href={`https://photon.lemmy.world/c/nouv@lemmy.world`}>
+                        <Button startContent={<Icon>people</Icon>} color="secondary" variant="flat">Nouv Community on Lemmy</Button>
+                    </Link>
+                </div>
+                
             
                 <Suspense fallback={<div>Loading Course Search......</div>}>
                     <CourseSearch sessionState={session} />
