@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { Progress } from "@nextui-org/progress";
 
-import Navigation from "@/components/utils/Navigation";
+import Navigation from "@/components/ui/Navigation";
 
 import { getCurrentUser } from "@/utils/supabase/auth";
 import { getProfilesInRank } from "@/utils/supabase/user";

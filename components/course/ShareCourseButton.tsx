@@ -3,7 +3,8 @@
 "use client";
 
 import { Button } from "@nextui-org/button";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
+
 
 type Params = {
     courseId: string;

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Weak_User_Questions } from "@/types/db";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 
 import { createTrainingLevel } from "@/app/training/actions";
 

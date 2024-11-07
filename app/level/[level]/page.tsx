@@ -6,7 +6,7 @@ import { getTopic } from "@/utils/supabase/topics";
 
 import LevelMain from "@/components/level/LevelMain";
 import { getQuestions } from "@/utils/supabase/questions";
-import { shuffleArray } from "@/functions/helpers";
+import { shuffleArray } from "@/utils/functions/helpers";
 import { LevelState } from "@/types/client";
 
 export default async function Level({ params } : { params: { level: string }}) {

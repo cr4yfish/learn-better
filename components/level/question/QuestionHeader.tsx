@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Progress } from "@nextui-org/progress";
 import { Button } from "@/components/utils/Button";
 
-import Icon from "../../utils/Icon";
-import Xp from "../../utils/Xp";
+import Icon from "@/components/ui/Icon";
+import Xp from "@/components/ui/Xp";
 
 export default function QuestionHeader({ progress, xp, numQuestions, show } : { progress: number, xp: number, numQuestions: number, show: boolean }) {
 

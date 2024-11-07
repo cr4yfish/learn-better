@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 import { SessionState } from "@/types/auth";
 import { Button } from "@/components/utils/Button";
 import {  Settings } from "@/types/db";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { upsertSettings } from "@/utils/supabase/settings";
 
 export default function EditSettingsCard({ sessionState } : { sessionState: SessionState }) {

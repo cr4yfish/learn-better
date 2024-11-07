@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Progress } from "@nextui-org/progress";
 
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { Weekly_Goal } from "@/types/db";
 import { setWeeklyGoalByUser } from "@/utils/supabase/weeklyGoals";
 

@@ -5,8 +5,9 @@ import { Button } from "@nextui-org/button";
 import { Card, CardHeader, CardFooter, CardBody } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "../ui/Icon";
+
+import BlurModal from "../ui/BlurModal";
 import { Course_Section, Topic } from "@/types/db";
 import { ReactSortable } from "react-sortablejs";
 import { upsertCourseSection, deleteCourseSection } from "@/utils/supabase/courseSections";

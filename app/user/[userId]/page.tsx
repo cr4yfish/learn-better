@@ -2,13 +2,13 @@
 
 import { redirect } from "next/navigation";
 
-import Navigation from "@/components/utils/Navigation";
+import Navigation from "@/components/ui/Navigation";
 import { getCurrentUser } from "@/utils/supabase/auth";
-import { formatReadableDate } from "@/functions/helpers";
-import Icon from "@/components/utils/Icon";
+import { formatReadableDate } from "@/utils/functions/helpers";
+import Icon from "@/components/ui/Icon";
 import { getProfileById } from "@/utils/supabase/user";
 
-import FollowButton from "@/components/utils/FollowButton";
+import FollowButton from "@/components/ui/FollowButton";
 import UserFriends from "@/components/user/UserFriends";
 import ShareProfileButton from "@/components/user/ShareProfileButton";
 

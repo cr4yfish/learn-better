@@ -8,7 +8,7 @@ import { Input } from "@nextui-org/input"
 
 ;
 import { Question, Question_Type, Topic } from "@/types/db";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { upsertQuestion, deleteQuestion } from "@/utils/supabase/questions";
 import { QuestionTypes } from "@/utils/question_types";
 import EditMultipleChoice from "./questionTypes/EditMultipleChoice";

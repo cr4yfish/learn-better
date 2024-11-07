@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/utils/supabase/auth";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import LevelNewAIMain from "@/components/level/new/ai/LevelNewAIMain";
 import { getCourseById } from "@/utils/supabase/courses";
 

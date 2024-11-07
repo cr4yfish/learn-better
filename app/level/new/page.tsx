@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/utils/Button";
 
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 
 import LevelNewMain from "@/components/level/new/LevelNewMain";
 import { getCourseById } from "@/utils/supabase/courses";

@@ -3,8 +3,8 @@
 import Link from "next/link";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
-import Navigation from "@/components/utils/Navigation";
+import Icon from "@/components/ui/Icon";
+import Navigation from "@/components/ui/Navigation";
 import ShareCourseButton from "@/components/course/ShareCourseButton";
 
 import { getSession } from "@/utils/supabase/auth";

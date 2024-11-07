@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useStopwatch } from "react-use-precision-timer";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import QuestionHeader from "@/components/level/question/QuestionHeader";
 import Question from "@/components/level/question/Question"
 
@@ -16,7 +16,7 @@ import { tryRankUp } from "@/utils/supabase/ranks";
 import { extendOrAddStreak } from "@/utils/supabase/streaks";
 import { addUsersTopics } from "@/utils/supabase/topics";
 import { completeTraining } from "@/utils/supabase/trainings";
-import ConditionalLink from "../utils/ConditionalLink";
+import ConditionalLink from "../ui/ConditionalLink";
 
 export default function LevelMain(
     { session, level, questions, initLevelState, trainingMode=false, training } : 

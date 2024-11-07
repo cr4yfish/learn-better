@@ -5,8 +5,8 @@ import { Progress } from "@nextui-org/progress";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "@/components/ui/Icon";
+import BlurModal from "../ui/BlurModal";
 import { Battle } from "@/types/db";
 import { forfeitBattle } from "@/utils/supabase/battles";
 

@@ -6,8 +6,8 @@ import { Weak_User_Questions } from "@/types/db";
 
 
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "@/components/ui/Icon";
+import BlurModal from "../ui/BlurModal";
 import { Card, CardTitle, CardHeader, CardContent, CardDescription } from "../ui/card";
 
 type Params = {

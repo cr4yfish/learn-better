@@ -1,8 +1,8 @@
 import { formatReadableDate } from "@/utils/functions/helpers";
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 
-import FollowButton from "@/components/utils/FollowButton";
+import FollowButton from "../ui/FollowButton";
 import { Profile } from "@/types/db";
 import { SessionState } from "@/types/auth";
 import ProfileStreak from "./ProfileStreak";

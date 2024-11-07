@@ -8,9 +8,9 @@ import { Input } from "@nextui-org/input";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 import { Button } from "@/components/utils/Button";
-import UppyFileUpload from "@/components/utils/UppyFileUpload";
-import ScraperForm from "@/components/utils/ScraperForm";
-import Icon from "@/components/utils/Icon";
+import UppyFileUpload from "@/components/ui/UppyFileUpload";
+import ScraperForm from "@/components/ui/ScraperForm";
+import Icon from "@/components/ui/Icon";
 
 
 import { multipleLevelSchema } from "@/utils/functions/ai/schemas";

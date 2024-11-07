@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Input } from "@nextui-org/input";
 import { Button } from "@/components/utils/Button";
 
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { Course, Course_Section, Topic } from "@/types/db";
 import CourseSectionSelect from "@/components/courseSection/CourseSectionAutocomplete";
 import { upsertCourseTopic } from "@/utils/supabase/topics";

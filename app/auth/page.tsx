@@ -15,7 +15,7 @@ import {
   
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 
 export default async function Auth() {
 

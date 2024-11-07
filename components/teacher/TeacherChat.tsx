@@ -7,7 +7,7 @@ import { FormEvent, useRef } from "react";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { Input } from "@nextui-org/input";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 import Message from "./Message";
 import { Course, Profile } from "@/types/db";
 import { Spinner } from "@nextui-org/spinner";

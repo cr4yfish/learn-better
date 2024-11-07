@@ -10,7 +10,7 @@ import { Checkbox } from "@nextui-org/checkbox"
 
 import { SessionState } from "@/types/auth";
 import { userSignUp, userLogin, getSession, userLogOut } from "@/utils/supabase/auth";
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 import { getProfileById } from "@/utils/supabase/user";
 
 export default function LoginButton(

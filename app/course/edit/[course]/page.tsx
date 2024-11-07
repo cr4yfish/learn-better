@@ -7,7 +7,7 @@ import { Course_Section, User_Course } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
 import EditCourseCard from "@/components/course/EditCourseCard";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { getCurrentUser } from "@/utils/supabase/auth";
 import { getUserCourse } from "@/utils/supabase/courses";
 import { getCourseSections } from "@/utils/supabase/courseSections";

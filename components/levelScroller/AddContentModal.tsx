@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { Button } from "@/components/utils/Button";
-import BlurModal from "../utils/BlurModal";
-import Icon from "../utils/Icon";
+import BlurModal from "../ui/BlurModal";
+import Icon from "@/components/ui/Icon";
 import { Course } from "@/types/db";
 
 type Props = {

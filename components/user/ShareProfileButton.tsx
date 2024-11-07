@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@nextui-org/button";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 
 type Params = {
     userId: string;

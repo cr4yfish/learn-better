@@ -4,7 +4,7 @@ import { Profile } from "@/types/db";
 import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { getCurrentStreak } from "@/utils/supabase/streaks";
 import { streakToStreakDays } from "@/utils/functions/helpers";
 

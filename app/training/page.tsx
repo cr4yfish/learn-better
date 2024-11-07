@@ -6,8 +6,8 @@ import ViewWeakQuestions from "@/components/training/ViewWeakQuestions";
 import WeeklyGoal from "@/components/training/WeeklyGoal";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
-import Navigation from "@/components/utils/Navigation"
+import Icon from "@/components/ui/Icon";
+import Navigation from "@/components/ui/Navigation";
 import { getSession } from "@/utils/supabase/auth";
 import { getBattles } from "@/utils/supabase/battles";
 import { getWeakQuestions } from "@/utils/supabase/questions";

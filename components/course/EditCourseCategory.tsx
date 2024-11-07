@@ -6,7 +6,7 @@ import CourseCategoryAutocomplete from "./CourseCategoryAutocomplete";
 import { Course_Category } from "@/types/db";
 import { Input } from "@nextui-org/input";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
 
 type Props = {
     category?: Course_Category,

@@ -8,8 +8,8 @@ import TrainingComplete from "./TrainingComplete";
 import { useState } from "react";
 import LevelCompleteStreak from "../level/complete/Streak";
 import LevelCompleteRank from "../level/complete/LevelCompleteRank";
-import ConditionalLink from "../utils/ConditionalLink";
-import Icon from "../utils/Icon";
+import ConditionalLink from "../ui/ConditionalLink";
+import Icon from "@/components/ui/Icon";
 
 export default function TrainingCompleteMain({ training, sessionState, rankUp=false } : { training: Training, sessionState: SessionState, rankUp?: boolean }) {
     const [step, setStep] = useState(0);

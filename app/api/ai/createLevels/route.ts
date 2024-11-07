@@ -1,5 +1,5 @@
 
-import { createLevelFromDocument } from "@/functions/ai/ai";
+import { createLevelFromDocument } from "@/utils/functions/ai/ai";
 
 export async function POST(req: Request) {
     //const context = await req.json();

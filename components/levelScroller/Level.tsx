@@ -5,8 +5,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 
 import { Topic } from "@/types/db";
 import { Button } from "@/components/utils/Button";
-import ConditionalLink from "@/components/utils/ConditionalLink";
-import Icon from "@/components/utils/Icon"
+import ConditionalLink from "../ui/ConditionalLink";
+import Icon from "@/components/ui/Icon";
 import React from "react";
 
 export default function Level({ topic, active, offset, isAdmin=false, isNext } : { topic: Topic, active: boolean, offset: number, isAdmin?: boolean, isNext: boolean }) {

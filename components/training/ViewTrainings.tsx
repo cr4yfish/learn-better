@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { Training } from "@/types/db";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "@/components/ui/Icon";
+import BlurModal from "../ui/BlurModal";
 import TrainingCard from "./TrainingCard";
 import InfiniteScroll from "react-infinite-scroller";
 import { getTrainings } from "@/utils/supabase/trainings";

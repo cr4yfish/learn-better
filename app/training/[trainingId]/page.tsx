@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/utils/supabase/auth";
 import { getTrainingById } from "@/utils/supabase/trainings";
 
 import LevelMain from "@/components/level/LevelMain";
-import { shuffleArray } from "@/functions/helpers";
+import { shuffleArray } from "@/utils/functions/helpers";
 import { LevelState } from "@/types/client";
 
 

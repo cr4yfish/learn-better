@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
 import { Button } from "../utils/Button";
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 import CourseSelectSwiper from "../course/CourseSelectSwiper";
 
 import { useCurrentCourse } from "@/context/SharedCourse";
@@ -14,7 +14,8 @@ import { upsertSettings } from "@/utils/supabase/settings";
 
 import { Course, User_Course } from "@/types/db";
 import { SessionState } from "@/types/auth";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
+
 
 export default function HeaderCourseSelect({ sessionState } : { sessionState: SessionState }) {
 

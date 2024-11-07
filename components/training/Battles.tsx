@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { Battle, Profile } from "@/types/db";
 import { Card, CardContent, CardDescription, CardTitle, CardHeader, CardFooter } from "../ui/card";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 import FriendlistAutocomplete from "./FriendlistAutocomplete";
 import { createBattle, updateBattle } from "@/utils/supabase/battles";
 import BattleCard from "./BattleCard";

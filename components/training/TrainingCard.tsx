@@ -1,7 +1,7 @@
 import { Training } from "@/types/db"
 
 import { Card, CardHeader, CardDescription, CardContent } from "../ui/card"
-import Icon from "../utils/Icon"
+import Icon from "@/components/ui/Icon";
 
 type Params = {
     training: Training

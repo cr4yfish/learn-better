@@ -4,7 +4,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 
 import { Button } from "@/components/utils/Button"
-import Icon from "@/components/utils/Icon"
+import Icon from "@/components/ui/Icon";
 import { framerListAnimationProps } from "@/utils/utils";
 
 type Props = {

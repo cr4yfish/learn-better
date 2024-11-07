@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
 
 import {
     AlertDialog,

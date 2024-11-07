@@ -6,7 +6,7 @@ import NextTopLoader from "nextjs-toploader";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 
-import PushNotification from "@/components/utils/PushNotification";
+import PushNotification from "@/components/ui/PushNotification";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

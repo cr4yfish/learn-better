@@ -9,7 +9,7 @@ import { Course_Section, User_Course } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
 import CourseSectionCard from "@/components/courseSection/CourseSectionCard";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { upsertCourseSection } from "@/utils/supabase/courseSections";
 
 

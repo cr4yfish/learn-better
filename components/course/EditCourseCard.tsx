@@ -6,7 +6,7 @@ import { Switch } from "@nextui-org/switch"
 
 import { Course, Course_Category } from "@/types/db";
 
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
 import { Button } from "@/components/utils/Button";
 import { upsertCourse } from "@/utils/supabase/courses";
 import EditCourseCategory from "./EditCourseCategory";

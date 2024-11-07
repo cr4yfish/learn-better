@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { Battle } from "@/types/db";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "@/components/ui/Icon";
+import BlurModal from "../ui/BlurModal";
 import BattleCard from "./BattleCard";
 
 export default function ViewBattles({ battles, userId } : { battles: Battle[], userId: string }) {

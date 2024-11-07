@@ -11,8 +11,8 @@ import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Question, Question_Type, Topic } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
-import BlurModal from "@/components/utils/BlurModal";
+import Icon from "@/components/ui/Icon";
+import BlurModal from "@/components/ui/BlurModal";
 import EditQuestion from "@/components/level/question/EditQuestion";
 
 import { upsertCourseTopic, deleteCourseTopic } from "@/utils/supabase/topics";

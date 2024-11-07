@@ -3,8 +3,7 @@
 import { Textarea } from "@nextui-org/input";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
-
+import Icon from "@/components/ui/Icon";
 import { Question } from "@/types/db";
 import { useEffect, useState } from "react";
 

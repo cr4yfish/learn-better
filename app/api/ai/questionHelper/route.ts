@@ -1,5 +1,5 @@
 
-import { explainAnswer } from "@/functions/ai/ai";
+import { explainAnswer } from "@/utils/functions/ai/ai";
 
 export async function POST(req: Request) {
     const {messages} = await req.json();

@@ -4,12 +4,12 @@ import React, { useState, useEffect } from "react"
 import { Input } from "@nextui-org/input"
 
 import { Button } from "../utils/Button"
-import Icon from "../utils/Icon"
+import Icon from "../ui/Icon";
 import CourseCard from "./CourseCard"
 import { SessionState } from "@/types/auth"
 import { Course } from "@/types/db"
 import { searchCourses } from "@/utils/supabase/courses"
-import BlurModal from "../utils/BlurModal"
+import BlurModal from "../ui/BlurModal";
 
 export default function CourseSearch(
     { sessionState } : 

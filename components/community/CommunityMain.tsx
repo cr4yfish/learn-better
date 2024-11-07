@@ -9,7 +9,7 @@ import { Button } from "../utils/Button";
 
 import Courses from "../course/Courses";
 import CourseSearch from "../course/CourseSearch";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
 
 import { getCurrentUser } from "@/utils/supabase/auth";
 

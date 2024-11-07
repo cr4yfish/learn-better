@@ -3,8 +3,8 @@
 import { redirect } from "next/navigation";
 
 import LevelScroller from "@/components/levelScroller/LevelScroller";
-import Navigation from "@/components/utils/Navigation";
-import Header from "@/components/utils/Header";
+import Header from "@/components/ui/Header";
+import Navigation from "@/components/ui/Navigation";
 
 import { CurrentCourseProvider } from "@/context/SharedCourse";
 

@@ -9,10 +9,11 @@ import { Switch } from "@nextui-org/switch"
 
 import { Course, Course_Category } from "@/types/db";
 import { useToast } from "@/hooks/use-toast";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
+
 import { Button } from "@/components/utils/Button";
 import { upsertCourse, joinCourse } from "@/utils/supabase/courses";
-import ConditionalLink from "../utils/ConditionalLink";
+import ConditionalLink from "../ui/ConditionalLink";
 import CourseCategoryAutocomplete from "./CourseCategoryAutocomplete";
 
 type Props = {

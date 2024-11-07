@@ -2,13 +2,12 @@
 
 
 import { Badge } from "@nextui-org/badge";
-
-import Navigation from "@/components/utils/Navigation";
+import Navigation from "@/components/ui/Navigation";
 import { getCurrentUser } from "@/utils/supabase/auth";
 import { redirect } from "next/navigation";
-import { formatReadableDate } from "@/functions/helpers";
+import { formatReadableDate } from "@/utils/functions/helpers";
 import { Chip } from "@nextui-org/chip";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import Settings from "@/components/user/Settings";
 import { getXP } from "@/utils/supabase/xp";
 import XPChart from "@/components/user/XPChart";

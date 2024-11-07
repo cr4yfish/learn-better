@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import CourseSearch from "@/components/course/CourseSearch";
 import CoursesShowcaseSwiper from "@/components/course/CoursesShowcaseSwiper";
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 
 import { SessionState } from "@/types/auth";
 import { Course, User_Course } from "@/types/db";
@@ -13,7 +13,7 @@ import { Course, User_Course } from "@/types/db";
 import { useUserCourses } from "@/context/SharedUserCourses";
 import { upsertSettings } from "@/utils/supabase/settings";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
 import NewCourseMain from "../course/NewCourseMain";
 
 type Props = {

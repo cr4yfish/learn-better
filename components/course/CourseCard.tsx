@@ -7,8 +7,8 @@ import { Chip } from "@nextui-org/chip";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "../ui/Icon";
+import BlurModal from "../ui/BlurModal";
 import { Course } from "@/types/db";
 import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/utils/supabase/courses";
 

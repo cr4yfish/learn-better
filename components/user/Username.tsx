@@ -3,7 +3,7 @@
 import { User } from "@nextui-org/user";
 
 import { Profile } from "@/types/db";
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 import ProfileCard from "./ProfileCard";
 import { SessionState } from "@/types/auth";
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Question } from "@/types/db";
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { reportQuestion } from "@/utils/supabase/reports";
 
 export default function QuestionReportButton({ question, userId }: { question: Question, userId?: string }) {

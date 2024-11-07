@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signup, login } from "@/app/auth/actions";
 
 import React from "react";
-import Icon from "../utils/Icon";
+import Icon from "../ui/Icon";
 
 function validateEmail(email: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? true : undefined;

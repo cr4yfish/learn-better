@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 import EditSettingsCard from "./EditSettingsCard";
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { SessionState } from "@/types/auth";
 import EditProfileCard from "./EditProfileCard";
 import LoginButton from "./LoginButton";

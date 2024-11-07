@@ -2,7 +2,7 @@
 
 import { Input } from "@nextui-org/input";
 
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { Button } from "@/components/utils/Button";
 
 import { Question } from "@/types/db";

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Question, Topic } from "@/types/db";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import LevelEditMain from "@/components/level/edit/LevelEditMain";
 
 import { getQuestions } from "@/utils/supabase/questions";

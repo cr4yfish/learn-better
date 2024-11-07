@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { Button } from "../utils/Button";
-import Icon from "../utils/Icon";
-import BlurModal from "../utils/BlurModal";
+import Icon from "@/components/ui/Icon";
+import BlurModal from "../ui/BlurModal";
 import TeacherChat from "./TeacherChat";
 import { Course, Profile } from "@/types/db";
 

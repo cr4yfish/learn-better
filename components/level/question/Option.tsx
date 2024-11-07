@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardBody } from "@nextui-org/card"
-import Icon from "../../utils/Icon"
+import Icon from "@/components/ui/Icon";
 import React from "react";
 
 import { OptionState } from "@/types/client";

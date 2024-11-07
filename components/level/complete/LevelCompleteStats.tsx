@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Count } from "react-price-animation";
 
 import { Card, CardContent } from "@/components/ui/card"
-import Icon from "@/components/utils/Icon"
+import Icon from "@/components/ui/Icon";
 
 import { formatSeconds } from "@/utils/functions/helpers";
 

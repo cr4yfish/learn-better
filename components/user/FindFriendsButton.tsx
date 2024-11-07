@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "../utils/Button";
-import BlurModal from "../utils/BlurModal";
+import BlurModal from "../ui/BlurModal";
 import { Input } from "@nextui-org/input";
 import { Profile } from "@/types/db";
 import { searchProfiles } from "@/utils/supabase/user";
-import FollowButton from "../utils/FollowButton";
+import FollowButton from "../ui/FollowButton";
 
 type Params = {
     userId: string;

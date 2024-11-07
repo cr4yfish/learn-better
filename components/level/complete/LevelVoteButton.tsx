@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Button } from "@/components/utils/Button";
-import Icon from "@/components/utils/Icon";
+import Icon from "@/components/ui/Icon";
 import { upvoteCourseTopic } from "@/utils/supabase/topics";
 
 type Params = {
