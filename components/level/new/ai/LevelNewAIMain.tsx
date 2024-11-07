@@ -190,7 +190,7 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
                         onValueChange={(value) => setNumLevels(parseInt(value))} 
                     />
                     <div className="flex flex-col gap-1">
-                        <p className=" text-sm text-gray-700 dark:text-gray-400 " >{filename == null ? "Upload a Source from either a PDF or a URL" : `Uploaded '${filename}'`}</p>
+                        <p className=" text-sm text-gray-700 dark:text-gray-400 " >{filename == null ? "Upload a Source from either a File or a URL" : `Uploaded '${filename}'`}</p>
                         <div className="flex flex-wrap gap-2 items-center">
                             <UppyFileUpload 
                                 session={sessionState} 
