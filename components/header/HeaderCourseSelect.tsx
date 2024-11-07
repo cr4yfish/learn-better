@@ -8,7 +8,7 @@ import { Button } from "../utils/Button";
 import BlurModal from "../utils/BlurModal";
 import CourseSelectSwiper from "../course/CourseSelectSwiper";
 
-import { useCurrentCourse } from "@/hooks/SharedCourse";
+import { useCurrentCourse } from "@/context/SharedCourse";
 
 import { upsertSettings } from "@/utils/supabase/settings";
 

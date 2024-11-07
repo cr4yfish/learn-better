@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Weak_User_Questions } from "@/types/db";
 import { addTraining } from "@/utils/supabase/trainings";
 import { getUser } from "@/utils/supabase/auth";
-import { shuffleArray } from "@/functions/helpers";
+import { shuffleArray } from "@/utils/functions/helpers";
 
 
 export async function createTrainingLevel(weakQuestions: Weak_User_Questions[]) {

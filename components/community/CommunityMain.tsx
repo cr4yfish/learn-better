@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { UserCoursesProvider } from "@/hooks/SharedUserCourses";
+import { UserCoursesProvider } from "@/context/SharedUserCourses";
 import { Button } from "../utils/Button";
 
 import Courses from "../course/Courses";

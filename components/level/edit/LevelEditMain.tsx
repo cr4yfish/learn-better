@@ -16,7 +16,7 @@ import BlurModal from "@/components/utils/BlurModal";
 import EditQuestion from "@/components/level/question/EditQuestion";
 
 import { upsertCourseTopic, deleteCourseTopic } from "@/utils/supabase/topics";
-import { QuestionTypes } from "@/utils/constants/question_types";
+import { QuestionTypes } from "@/utils/question_types";
 import { SharedSelection } from "@nextui-org/system";
 
 

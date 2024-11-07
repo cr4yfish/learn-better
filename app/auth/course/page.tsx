@@ -6,7 +6,7 @@ import SelectFirstCourse from "@/components/auth/SelectFirstCourse"
 
 import { getCurrentUser } from "@/utils/supabase/auth";
 import { getCourses } from "@/utils/supabase/courses";
-import { UserCoursesProvider } from "@/hooks/SharedUserCourses";
+import { UserCoursesProvider } from "@/context/SharedUserCourses";
 
 
 export default async function SelectCourse() {

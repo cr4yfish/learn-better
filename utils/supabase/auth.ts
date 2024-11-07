@@ -10,7 +10,7 @@ import { getSettings } from "./settings";
 
 import { Profile, Settings } from "@/types/db";
 import { SessionState } from "@/types/auth";
-import { streakToStreakDays } from "@/functions/helpers";
+import { streakToStreakDays } from "../functions/helpers";
 import { getProfileById } from "./user";
 
 // no cache

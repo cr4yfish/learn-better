@@ -6,9 +6,9 @@ import { Count } from "react-price-animation";
 import { Card, CardContent } from "@/components/ui/card"
 import Icon from "@/components/utils/Icon"
 
-import { formatSeconds } from "@/functions/helpers"
+import { formatSeconds } from "@/utils/functions/helpers";
 
-import { framerListAnimationProps } from "@/lib/utils";
+import { framerListAnimationProps } from "@/utils/utils";
 
 export default function LevelCompleteStats({ xp, seconds, accuracy, type } : { xp: number, seconds: number, accuracy: number, type: string }) {
 

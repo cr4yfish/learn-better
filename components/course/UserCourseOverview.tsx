@@ -6,7 +6,7 @@ import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import CourseCard from "./CourseCard";
 import { SessionState } from "@/types/auth";
 
-import { useUserCourses } from "@/hooks/SharedUserCourses";
+import { useUserCourses } from "@/context/SharedUserCourses";
 import { useEffect } from "react";
 
 export default function UserCourseOverview({ sessionState } : { sessionState: SessionState }) {

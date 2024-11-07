@@ -10,7 +10,7 @@ import { Input } from "@nextui-org/input"
 import { Question, Question_Type, Topic } from "@/types/db";
 import Icon from "@/components/utils/Icon";
 import { upsertQuestion, deleteQuestion } from "@/utils/supabase/questions";
-import { QuestionTypes } from "@/utils/constants/question_types";
+import { QuestionTypes } from "@/utils/question_types";
 import EditMultipleChoice from "./questionTypes/EditMultipleChoice";
 import EditBoolean from "./questionTypes/EditBoolean";
 import EditMatchCards from "./questionTypes/EditMatchCards";

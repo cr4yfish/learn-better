@@ -13,7 +13,7 @@ import ScraperForm from "@/components/utils/ScraperForm";
 import Icon from "@/components/utils/Icon";
 
 
-import { multipleLevelSchema } from "@/functions/ai/schemas";
+import { multipleLevelSchema } from "@/utils/functions/ai/schemas";
 import { deleteObject } from "@/utils/supabase/storage";
 import { upsertCourseSection } from "@/utils/supabase/courseSections";
 import { upsertCourseTopic } from "@/utils/supabase/topics";
@@ -22,7 +22,7 @@ import { SessionState } from "@/types/auth";
 import { Course, Course_Section, Question, Topic } from "@/types/db";
 import { upsertQuestion } from "@/utils/supabase/questions";
 import CourseSectionAutocomplete from "@/components/courseSection/CourseSectionAutocomplete";
-import { QuestionTypes } from "@/utils/constants/question_types";
+import { QuestionTypes } from "@/utils/question_types";
 
 import {
     Drawer,

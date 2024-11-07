@@ -10,7 +10,7 @@ import BlurModal from "../utils/BlurModal";
 import { SessionState } from "@/types/auth";
 import { Course, User_Course } from "@/types/db";
 
-import { useUserCourses } from "@/hooks/SharedUserCourses";
+import { useUserCourses } from "@/context/SharedUserCourses";
 import { upsertSettings } from "@/utils/supabase/settings";
 import { Button } from "../utils/Button";
 import Icon from "../utils/Icon";

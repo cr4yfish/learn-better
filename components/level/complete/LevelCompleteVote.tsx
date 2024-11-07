@@ -1,6 +1,6 @@
 "use client";
 
-import { framerListAnimationProps } from "@/lib/utils";
+import { framerListAnimationProps } from "@/utils/utils";
 import { motion } from "framer-motion";
 
 import LevelVoteButton from "./LevelVoteButton";

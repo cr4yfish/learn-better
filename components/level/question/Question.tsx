@@ -14,12 +14,12 @@ import Option from "./Option";
 import BlurModal from "@/components/utils/BlurModal";
 import { addUserQuestion } from "@/utils/supabase/questions";
 import Icon from "@/components/utils/Icon";
-import { areArraysEqual as arraysAreEqual, shuffleArray } from "@/functions/helpers";
+import { shuffleArray, areArraysEqual } from "@/utils/functions/helpers";
 import QuestionReportButton from "./QuestionReportButton";
 import { addExplainAnswerTokens } from "@/utils/supabase/user";
 import { useToast } from "@/hooks/use-toast";
 
-import { framerListAnimationProps } from "@/lib/utils";
+import { framerListAnimationProps } from "@/utils/utils";
 
 export default function Question({
     question, setLevelState, session, levelState, questions
@@ -205,7 +205,7 @@ export default function Question({
         let accuracy = 0;
 
         if(question.type.title == "Multiple Choice" || question.type.title == "Boolean") {
-            if (arraysAreEqual(question.answers_correct, questionState.selected)) {
+            if (areArraysEqual(question.answers_correct, questionState.selected)) {
                 xp = 100;
                 completed = true;
                 accuracy = 100;

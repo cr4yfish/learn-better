@@ -8,7 +8,7 @@ import HeaderCourseSelect from "../header/HeaderCourseSelect";
 
 import { Streak as StreakType } from "@/types/db";
 
-import { getDayBefore, isSameDay } from "@/functions/helpers";
+import { getDayBefore, isSameDay } from "@/utils/functions/helpers";
 import { getCurrentUser } from "@/utils/supabase/auth";
 
 /**

@@ -1,4 +1,4 @@
-import { formatReadableDate } from "@/functions/helpers";
+import { formatReadableDate } from "@/utils/functions/helpers";
 import { Button } from "@/components/utils/Button";
 import Icon from "@/components/utils/Icon";
 

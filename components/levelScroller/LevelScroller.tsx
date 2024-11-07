@@ -10,7 +10,7 @@ import Level from "./Level"
 import CourseSectionBanner from "./CourseSectionBanner";
 import { getCourseTopics } from "@/utils/supabase/topics";
 
-import { useCurrentCourse } from "@/hooks/SharedCourse";
+import { useCurrentCourse } from "@/context/SharedCourse";
 import { getUserCourse } from "@/utils/supabase/courses";
 import AddContentModal from "./AddContentModal";
 

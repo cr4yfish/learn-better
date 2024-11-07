@@ -7,7 +7,7 @@ import { getCurrentUserRank } from "./ranks";
 import { createClient as getClient } from "./server/server";
 import { Followed_Profile, Profile, Rank, User_Follow } from "@/types/db";
 import { getCurrentStreak } from "./streaks";
-import { streakToStreakDays } from "@/functions/helpers";
+import { streakToStreakDays } from "../functions/helpers";
 
 export const getProfileById = cache(async(userId: string): Promise<Profile> => {
     const { data, error } = await getClient().from("profiles").select(`

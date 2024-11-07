@@ -6,7 +6,7 @@ import { Spinner } from "@nextui-org/spinner";
 
 import Icon from "../utils/Icon";
 import { getCurrentStreak } from "@/utils/supabase/streaks";
-import { streakToStreakDays } from "@/functions/helpers";
+import { streakToStreakDays } from "@/utils/functions/helpers";
 
 export default function ProfileStreak({ profile } : { profile: Profile }) {
     const [streakDays, setStreakDays] = useState<number>(0);

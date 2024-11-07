@@ -1,6 +1,6 @@
 "use client";
 
-import { framerListAnimationProps } from "@/lib/utils";
+import { framerListAnimationProps } from "@/utils/utils";
 import { motion } from "framer-motion";
 
 export default  function LevelCompleteRank({ rankTitle } : { rankTitle: string }) {

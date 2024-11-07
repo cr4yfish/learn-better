@@ -1,5 +1,5 @@
 
-import { QuestionTypes } from "@/utils/constants/question_types";
+import { QuestionTypes } from "@/utils/question_types";
 import { z } from "zod";
 
 const multiple_choice_question = z.object({

@@ -3,7 +3,7 @@
 import { cache } from "react";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { getDayBefore, isSameDay } from "../../functions/helpers";
+import { getDayBefore, isSameDay } from "../functions/helpers";
 import { createClient as getClient } from "./server/server";
 
 import { Streak } from "@/types/db";

@@ -5,7 +5,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createMistral } from "@ai-sdk/mistral";
 import { convertToCoreMessages, Message, streamObject, streamText, UserContent } from "ai"; 
-import { downloadObject } from "../../utils/supabase/storage";
+import { downloadObject } from "@/utils/supabase/storage";
 import { multipleLevelSchema } from "./schemas";
 
 function createLevelPrompt({ hasCourseSection, title, description } : { hasCourseSection: boolean, title: string, description: string }) {

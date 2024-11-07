@@ -12,7 +12,7 @@ import BlurModal from "../utils/BlurModal";
 import { Course } from "@/types/db";
 import { getOwnCourseVote, joinCourse, leaveCourse, upvoteCourse } from "@/utils/supabase/courses";
 
-import { useUserCourses } from "@/hooks/SharedUserCourses";
+import { useUserCourses } from "@/context/SharedUserCourses";
 
 export default function CourseCard ({ 
     course, userID,
