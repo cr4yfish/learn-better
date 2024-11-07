@@ -17,7 +17,7 @@ import {
   } from "@/components/ui/alert-dialog"  
 
 import { Button } from "@/components/utils/Button"
-import Icon from "@/components/utils/Icon"
+import Icon from "./Icon";
 import { uploadTextObject } from "@/utils/supabase/storage";
 
 export default function ScraperForm({ setFilenameCallback, isDisabled } : { setFilenameCallback: (filename: string) => void, isDisabled?: boolean }) {

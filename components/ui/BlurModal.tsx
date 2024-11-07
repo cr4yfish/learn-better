@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { Noise, NoiseContent } from "react-noise";
 import "react-noise/css";
 import Icon from "./Icon";
-import { Button } from "./Button";
+import { Button } from "../utils/Button";
 
 export default function BlurModal({
     settings, header, body, footer, isOpen, updateOpen

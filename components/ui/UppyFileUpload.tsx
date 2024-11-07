@@ -16,7 +16,7 @@ import '@uppy/dashboard/dist/style.min.css';
 import { SessionState } from "@/types/auth";
 import { getAnonkey, getSupabaseStorageURL } from "@/utils/functions/helpers";
 import Icon from "./Icon";
-import { Button } from "./Button";
+import { Button } from "../utils/Button";
 import BlurModal from "./BlurModal";
 
 export default function UppyFileUpload({ session, label, setFileNameCalback, isDisabled } : { session: SessionState | null, label?: string, setFileNameCalback?: (fileName: string) => void, isDisabled?: boolean }) {

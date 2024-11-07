@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "./Button"
+import { Button } from "../utils/Button";
 
 import { followUser, getFriendStatus, unFollowUser } from "@/utils/supabase/user";
 import Icon from "./Icon";

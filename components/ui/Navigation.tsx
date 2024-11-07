@@ -3,7 +3,7 @@
 import Link from "next/link"
 import React from "react"
 
-import Icon from "../utils/Icon"
+import Icon from "./Icon";
 
 type Links = "Home" | "Training" | "Community" | "Profile" | "Leaderboard"
 

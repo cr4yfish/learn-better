@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 
-import Streak from "../utils/Streak"
-import Xp from "../utils/Xp"
+import Streak from "./Streak";
+import Xp from "./Xp";
 import HeaderCourseSelect from "../header/HeaderCourseSelect";
 
 import { Streak as StreakType } from "@/types/db";
