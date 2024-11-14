@@ -30,7 +30,7 @@ export default async function Home() {
   }
 
   const currentUserCourse = await getUserCourse(currentCourse.id, sessionState.user.id);
-  const initTopics = await getCourseTopics(currentCourse.id, 0, 10);
+  const initTopics = await getCourseTopics(currentCourse.id, 0, 5);
 
   return (
     <>

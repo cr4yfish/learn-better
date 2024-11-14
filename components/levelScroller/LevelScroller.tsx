@@ -13,6 +13,7 @@ import { getCourseTopics } from "@/utils/supabase/topics";
 import { useCurrentCourse } from "@/context/SharedCourse";
 import { getUserCourse } from "@/utils/supabase/courses";
 import AddContentModal from "./AddContentModal";
+import { getTopicsLocal, saveTopicsToLocal } from "@/utils/indexedDB/topics";
 
 const list = {
     visible: (i: number) => ({
@@ -76,6 +77,9 @@ async function loadMoreTopics({
         if (filteredRes.length < limit || filteredRes.length === 0) {  canLoadMore = false;  }
         if (filteredRes.length === 0) { return { error: "No more topics to load" }; }
 
+        // save topics to local
+        await saveTopicsToLocal(filteredRes);
+
         return {
             data :{
                 cursor: cursor + limit + 1,
@@ -108,7 +112,7 @@ export default function LevelScroller({ initUserCourse, initTopics, userId } : {
 
     const { currentCourse, setCurrentCourse } = useCurrentCourse(); // For switching courses
 
-    /*const scrollToNext = () => {
+    const scrollToNext = () => {
         const parent = document.getElementById("scrollparent");
         const target = document.getElementById("isNextLevel");
         if(parent && target) {
@@ -117,7 +121,7 @@ export default function LevelScroller({ initUserCourse, initTopics, userId } : {
                 behavior: "smooth"
             });
         }
-    }*/
+    }
 
     // Reset stuff if currentCourse changes
     useEffect(() => {
@@ -130,6 +134,14 @@ export default function LevelScroller({ initUserCourse, initTopics, userId } : {
         if((currentCourse.id == initUserCourse.course.id ) && (topics.length > 0)) {
             setIsAdmin(initUserCourse.is_admin || initUserCourse.is_collaborator || initUserCourse.is_moderator)
             setCurrentCourse(initUserCourse.course);
+
+            // download the initTopics to local
+            saveTopicsToLocal(initTopics);
+            populateTopicsFromLocal();
+            
+            // TODO: check if next is already loaded
+            scrollToNext();
+
             return;
         }
 
@@ -142,6 +154,15 @@ export default function LevelScroller({ initUserCourse, initTopics, userId } : {
         
     }, [currentCourse,initUserCourse?.course.id])
 
+    const populateTopicsFromLocal = async () => {
+        if(!currentCourse) { return; }
+        const dbTopics = await getTopicsLocal(currentCourse.id);
+
+        // filter out ones we already have in state
+        const newTopics = dbTopics.filter((topic) => !topics.some((t) => t.id === topic.id));
+
+        setTopics(newTopics);
+    }
 
     const handleLoadMore = async () => {
         if(isLoading || !canLoadMore || (!currentCourse && !initUserCourse.course)) { return; } // this line can be called very often, so leave it short

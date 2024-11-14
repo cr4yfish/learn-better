@@ -12,11 +12,13 @@ import { Button } from "@/components/utils/Button";
 import {  Settings } from "@/types/db";
 import Icon from "@/components/ui/Icon";
 import { upsertSettings } from "@/utils/supabase/settings";
+import { clearDB } from "@/utils/indexedDB/indexedDB";
 
 export default function EditSettingsCard({ sessionState } : { sessionState: SessionState }) {
     const [settings, setSettings] = useState<Settings>(sessionState.settings);
     const [isSaveLoading, setIsSaveLoading] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
+    const [isClearingDB, setIsClearingDB] = useState(false);
     const { setTheme } = useTheme();
 
     useEffect(() => {
@@ -49,6 +51,14 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
         handleSettingsChange("theme_is_dark", value);
     }
 
+    const handleClearDB = async () => {
+        setIsClearingDB(true);
+        await clearDB();
+        setTimeout(() => {
+           setIsClearingDB(false); 
+        }, 1000);
+    }
+
     return (
         <>
         <Card className=" text-black dark:text-white ">
@@ -70,6 +80,19 @@ export default function EditSettingsCard({ sessionState } : { sessionState: Sess
                     />
                 </Skeleton>
                 <Switch classNames={{ label: "text-black dark:text-white" }} isSelected={settings.theme_is_dark} onValueChange={handleThemeChange}  >Dark Mode</Switch>
+            
+                <div className="flex flex-col gap-1">
+                    <Button 
+                        isLoading={isClearingDB} 
+                        onClick={handleClearDB} 
+                        startContent={<Icon>warning</Icon>} 
+                        variant="flat" color="danger"
+                    >
+                        Clear Local Storage
+                    </Button>
+                    <span className=" text-sm text-gray-700 dark:text-gray-400 ">This will clear local copies of Courses, Levels etc.</span>
+                </div>
+          
             </CardBody>
             <CardFooter className="flex flex-row gap-4 items-center">
                 <div className="flex flex-col gap-1">
