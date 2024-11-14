@@ -132,14 +132,14 @@ Features marked with a question mark are not yet decided on, and might be droppe
 
 ### Future Features
 - [ ] Full offline Mode
-    - [ ] Downloadable Course Content
+    - [ ] Downloadable Course Content -- WIP
     - [ ] Full download of frontend
     - [ ] Fallback for online features
     - [ ] Syncing of offline progress
 - [ ] Course Collaboration  
 - [ ] Friend Quests
 - [ ] Importing Levels & Questions from other sources
-    - [ ] Anki decks
+    - [ ] Anki decks -- WIP
     - [x] Website Scraper (only works on server-rendered websites)
 - [ ] Security features
     - [ ] Cloudflare
