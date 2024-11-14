@@ -72,7 +72,7 @@ export default function NewCourseMain(props: Props) {
             if(res.id) {
                 // subscribe to the course
                 try {
-                    const joinedCourse = await joinCourse(res.id, props.userId, {
+                    await joinCourse(res.id, props.userId, {
                         is_admin: true,
                         is_moderator: true,
                         is_collaborator: true,
