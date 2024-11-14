@@ -68,9 +68,7 @@ export default function NewCourseMain(props: Props) {
         courseToSave.is_official = false;
         
         try {
-            console.log(courseToSave, props)
             const res = await upsertCourse(courseToSave, props.userId);
-            console.log(res)
             if(res.id) {
                 // subscribe to the course
                 try {
@@ -79,7 +77,6 @@ export default function NewCourseMain(props: Props) {
                         is_moderator: true,
                         is_collaborator: true,
                     });
-                    console.log(joinedCourse)
 
                 } catch (e) {
                     console.error(e);
@@ -90,7 +87,6 @@ export default function NewCourseMain(props: Props) {
                     })
                 } finally {
                     if(props.dontRedirect && props.callback) {
-                        console.log("callback")
                         props.callback(res.id);
                     } else  {
                         window.location.href = `/course/${res.id}`;

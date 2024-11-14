@@ -50,7 +50,6 @@ export default function EditCourseCard(props: Props) {
     }
 
     useEffect(() => {
-        console.log(props.course)
         if(props.course) {
             setNewCourse(props.course);
         }

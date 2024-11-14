@@ -34,9 +34,6 @@ export default function SignupCard({ isSignUp } : { isSignUp: boolean }) {
         e.preventDefault();
         setIsLoading(true);
 
-        console.log(e.currentTarget)
-
-
         if(isSignUp) {
             const signUpResponse = await signup(form);
 

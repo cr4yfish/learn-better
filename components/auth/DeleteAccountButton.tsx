@@ -26,11 +26,7 @@ export default function DeleteAccountButton() {
     const handleDeleteAccount = async () => {
 
         try {
-            const { data: { user } } = await deleteAccount();
-
-            if(user?.id) {
-                console.log("Account deleted");
-            }
+            await deleteAccount();
 
             redirect("/");
         } catch(e) {

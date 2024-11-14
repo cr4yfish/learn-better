@@ -106,7 +106,6 @@ export default function LevelNewAIMain({ sessionState, course } : { sessionState
                 if(res) {
                     level.questions.forEach(async (question) => {
                         if(!question || !question.title || !question.question) return;
-                        console.log(question.question_type);
                         let answer_correct: string[] = [];
                         let answer_options: string[] = [];
 

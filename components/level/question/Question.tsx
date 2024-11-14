@@ -97,7 +97,6 @@ export default function Question({
             The Answers options I chose: [${answerOptions.join(", ")}]
         `
         setInput(newInput)
-        console.log(newInput);
     }, [
         question, setInput, questionState
     ])
@@ -232,10 +231,8 @@ export default function Question({
                 if(!selected[index]) return;
 
                 if(selected[index] == word) {
-                    console.log("hit")
                     numCorrect++; 
                 } else {
-                    console.log("wrong!", word, index, selected[index])
                     completed = false;
                 }
             })

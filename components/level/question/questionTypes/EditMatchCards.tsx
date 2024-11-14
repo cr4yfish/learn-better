@@ -16,7 +16,6 @@ export default function EditMatchCards(
     
     const handleCorrectAnswerChange = (value: string, index: number) => {
         if(question.answers_correct.length < index + 1) {
-            console.log("Adding value at index", index, "to", value);
             // fill index with empty strings up to the index
             const newAnswers = [...question.answers_correct];
             for(let i = newAnswers.length; i < index; i++) {
@@ -27,7 +26,6 @@ export default function EditMatchCards(
         }
         else {
             // update the value at the index, leave rest alone
-            console.log("Updating value at index", index, "to", value);
             handleUpdateValue("answers_correct", question.answers_correct.map((a, i) => i == index ? value : a));
         }
     }
