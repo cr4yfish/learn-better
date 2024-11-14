@@ -45,7 +45,7 @@ export default function DeleteAccountButton() {
         <AlertDialog>
 
             <AlertDialogTrigger asChild>
-                <Button  color="danger" startContent={<Icon filled>delete</Icon>} >
+                <Button  color="danger" variant="flat" startContent={<Icon filled>delete</Icon>} >
                     Delete Account
                 </Button>
             </AlertDialogTrigger>
