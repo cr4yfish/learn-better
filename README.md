@@ -111,9 +111,6 @@ Features marked with a question mark are not yet decided on, and might be droppe
     - [x] Notification System
     - [x] Better caching
     - [x] Offline Mode
-- [ ] Anon views
-    - [ ] Anon view of courses
-    - [ ] Demo mode for onboarding
 - [x] Community Features 2
     - [x] Following other users
     - [x] Friend Battles    
@@ -126,6 +123,9 @@ Features marked with a question mark are not yet decided on, and might be droppe
 - [x] Buy a domain
 
 ### Future Features
+- [ ] Anon views
+    - [ ] Anon view of courses
+    - [ ] Demo mode for onboarding
 - [ ] Full offline Mode
     - [ ] Downloadable Course Content -- WIP
     - [ ] Full download of frontend
