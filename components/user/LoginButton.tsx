@@ -3,7 +3,6 @@
 
 import {  useState } from "react";
 
-import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { Checkbox } from "@nextui-org/checkbox"
 
@@ -11,6 +10,7 @@ import { Checkbox } from "@nextui-org/checkbox"
 import { SessionState } from "@/types/auth";
 import { userSignUp, userLogin, getSession, userLogOut } from "@/utils/supabase/auth";
 import BlurModal from "../ui/BlurModal";
+import { Button } from "../utils/Button";
 import { getProfileById } from "@/utils/supabase/user";
 
 export default function LoginButton(
@@ -101,7 +101,7 @@ export default function LoginButton(
     return (
         <>
         {!sessionState?.isLoggedIn ? <Button color="primary" variant="shadow" onClick={() => setIsModalOpen(true)}>Login</Button>
-        : <Button color="danger" variant="shadow" onClick={handleLogout}>Logout</Button>     }
+        : <Button color="danger" variant="flat" onClick={handleLogout}>Logout</Button>     }
 
         <BlurModal 
             isOpen={isModalOpen}
